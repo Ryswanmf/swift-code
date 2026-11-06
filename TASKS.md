@@ -19,13 +19,13 @@ Centang `[x]` saat selesai. Urutan mengikuti fase di `PRD.md`.
 - [x] Notifikasi email lead baru (queue)
 
 ## Fase 3 – Panel admin
-- [ ] `AdminLayout.vue` + sidebar
-- [ ] Dashboard (jumlah lead baru, total proyek)
-- [ ] CRUD Projects (upload cover + galeri, WebP)
-- [ ] CRUD Services, Packages, Testimonials, FAQs
-- [ ] Manajemen Leads: filter status, detail, catatan, hapus
-- [ ] Halaman Settings (WA, email, alamat, sosmed, meta)
-- [ ] Batasi akses admin, nonaktifkan registrasi publik
+- [x] `AdminLayout.vue` + sidebar
+- [x] Dashboard (jumlah lead baru, total proyek)
+- [x] CRUD Projects (upload cover + galeri, WebP)
+- [x] CRUD Services, Packages, Testimonials, FAQs
+- [x] Manajemen Leads: filter status, detail, catatan, hapus
+- [x] Halaman Settings (WA, email, alamat, sosmed, meta)
+- [x] Batasi akses admin, nonaktifkan registrasi publik
 
 ## Fase 4 – Poles & SEO
 - [ ] Meta tag, Open Graph, canonical per halaman

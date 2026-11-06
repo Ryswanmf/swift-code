@@ -35,9 +35,4 @@ class Project extends Model
             'sort_order' => 'integer',
         ];
     }
-
-    public function getRouteKeyName(): string
-    {
-        return 'slug';
-    }
 }
