@@ -11,12 +11,12 @@ Centang `[x]` saat selesai. Urutan mengikuti fase di `PRD.md`.
 - [x] Setup Pint, ESLint, Prettier, GitHub repo
 
 ## Fase 2 – Data dinamis
-- [ ] Migration + model + factory + seeder: services, projects, packages, testimonials, faqs, leads, settings
-- [ ] `HomeController` kirim props ke `Home.vue`
-- [ ] Komponen: ServiceCard, ProjectCard, PricingCard, Testimonial, FaqItem
-- [ ] Halaman detail portofolio `/portofolio/{slug}`
-- [ ] `ContactController` + `StoreLeadRequest` + honeypot + throttle
-- [ ] Notifikasi email lead baru (queue)
+- [x] Migration + model + factory + seeder: services, projects, packages, testimonials, faqs, leads, settings
+- [x] `HomeController` kirim props ke `Home.vue`
+- [x] Komponen: ServiceCard, ProjectCard, PricingCard, Testimonial, FaqItem
+- [x] Halaman detail portofolio `/portofolio/{slug}`
+- [x] `ContactController` + `StoreLeadRequest` + honeypot + throttle
+- [x] Notifikasi email lead baru (queue)
 
 ## Fase 3 – Panel admin
 - [ ] `AdminLayout.vue` + sidebar

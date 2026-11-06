@@ -18,6 +18,7 @@ const props = defineProps<{
     packages?: PackageItem[];
     testimonials?: TestimonialItem[];
     faqs?: FaqData[];
+    settings?: Record<string, string>;
 }>();
 
 // Default Static Data (Used in Fase 1 and as fallback)
