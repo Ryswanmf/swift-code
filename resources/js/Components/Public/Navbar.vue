@@ -1,22 +1,30 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue';
-import { Link } from '@inertiajs/vue3';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
+import { Link, usePage } from '@inertiajs/vue3';
 import SwiftCodeLogo from '../SwiftCodeLogo.vue';
 import { useDarkMode } from '../../composables/useDarkMode';
 
 const { isDark, toggleDark } = useDarkMode();
 const isScrolled = ref(false);
 const isMobileMenuOpen = ref(false);
+const page = usePage();
 
-const navLinks = [
-    { name: 'Beranda', href: '#hero' },
-    { name: 'Layanan', href: '#layanan' },
-    { name: 'Keunggulan', href: '#keunggulan' },
-    { name: 'Portofolio', href: '#portofolio' },
-    { name: 'Paket Harga', href: '#harga' },
-    { name: 'Alur Kerja', href: '#alur' },
-    { name: 'FAQ', href: '#faq' },
+const isHomePage = computed(() => page.url === '/' || page.url.startsWith('/#'));
+
+const rawLinks = [
+    { name: 'Beranda', hash: '#hero' },
+    { name: 'Layanan', hash: '#layanan' },
+    { name: 'Portofolio', hash: '#portofolio' },
+    { name: 'Paket Harga', hash: '#harga' },
+    { name: 'Artikel', hash: '#artikel' },
 ];
+
+const navLinks = computed(() => {
+    return rawLinks.map((item) => ({
+        name: item.name,
+        href: isHomePage.value ? item.hash : `/${item.hash}`,
+    }));
+});
 
 const handleScroll = () => {
     isScrolled.value = window.scrollY > 20;

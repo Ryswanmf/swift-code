@@ -13,14 +13,13 @@ const servicesList = [
 ];
 
 const navLinks = [
-    { name: 'Beranda', href: '#hero' },
-    { name: 'Layanan', href: '#layanan' },
-    { name: 'Keunggulan', href: '#keunggulan' },
-    { name: 'Portofolio', href: '#portofolio' },
-    { name: 'Paket Harga', href: '#harga' },
-    { name: 'Alur Kerja', href: '#alur' },
-    { name: 'FAQ', href: '#faq' },
-    { name: 'Hubungi Kami', href: '#kontak' },
+    { name: 'Beranda', href: '/#hero' },
+    { name: 'Layanan', href: '/#layanan' },
+    { name: 'Portofolio', href: '/#portofolio' },
+    { name: 'Paket Harga', href: '/#harga' },
+    { name: 'Artikel & Panduan', href: '/#artikel' },
+    { name: 'FAQ', href: '/#faq' },
+    { name: 'Hubungi Kami', href: '/#kontak' },
 ];
 </script>
 

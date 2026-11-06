@@ -10,6 +10,7 @@ import PricingCard, { PackageItem } from '../Components/Public/PricingCard.vue';
 import Workflow from '../Components/Public/Workflow.vue';
 import Testimonial, { TestimonialItem } from '../Components/Public/Testimonial.vue';
 import FaqItem, { FaqData } from '../Components/Public/FaqItem.vue';
+import ArticleSection from '../Components/Public/ArticleSection.vue';
 import ContactForm from '../Components/Public/ContactForm.vue';
 
 const props = defineProps<{
@@ -490,7 +491,10 @@ const localBusinessSchema = computed(() =>
             </div>
         </section>
 
-        <!-- 9. Contact Form Section -->
+        <!-- 9. Artikel & Wawasan Edukasi Section -->
+        <ArticleSection />
+
+        <!-- 10. Contact Form Section -->
         <ContactForm />
     </PublicLayout>
 </template>
