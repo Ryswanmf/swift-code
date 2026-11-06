@@ -100,3 +100,21 @@ test('contact form validates required fields', function () {
 
     $response->assertSessionHasErrors(['name', 'phone', 'service_type', 'message']);
 });
+
+test('sitemap xml endpoint returns valid xml with published projects', function () {
+    $project = Project::create([
+        'title' => 'Sitemap Test Project',
+        'slug' => 'sitemap-test-project',
+        'category' => 'company',
+        'summary' => 'Summary for sitemap test',
+        'is_published' => true,
+        'sort_order' => 1,
+    ]);
+
+    $response = $this->get('/sitemap.xml');
+
+    $response->assertStatus(200);
+    $response->assertHeader('Content-Type', 'application/xml');
+    expect($response->getContent())->toContain('sitemap-test-project');
+    expect($response->getContent())->toContain('<urlset');
+});

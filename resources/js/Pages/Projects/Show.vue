@@ -29,15 +29,43 @@ const consultationWaUrl = computed(() => {
     const text = `Halo Swift Code Lampung, saya melihat portofolio *${props.project.title}* dan ingin membuat website serupa untuk bisnis saya.`;
     return `https://wa.me/${cleanWa}?text=${encodeURIComponent(text)}`;
 });
+const projectSchema = computed(() =>
+    JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'CreativeWork',
+        name: props.project.title,
+        description: props.project.summary,
+        creator: {
+            '@type': 'Organization',
+            name: 'Swift Code Lampung',
+        },
+        image: props.project.cover_image || undefined,
+    })
+);
 </script>
 
 <template>
     <Head>
         <title>{{ project.title }} - Portofolio Swift Code Lampung</title>
         <meta name="description" :content="project.summary" />
+        <link rel="canonical" :href="`/portofolio/${project.slug}`" />
+
+        <!-- Open Graph -->
+        <meta property="og:type" content="article" />
         <meta property="og:title" :content="`${project.title} | Swift Code Lampung`" />
         <meta property="og:description" :content="project.summary" />
         <meta v-if="project.cover_image" property="og:image" :content="project.cover_image" />
+        <meta property="og:site_name" content="Swift Code Lampung" />
+        <meta property="og:locale" content="id_ID" />
+
+        <!-- Twitter Card -->
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" :content="`${project.title} | Swift Code Lampung`" />
+        <meta name="twitter:description" :content="project.summary" />
+        <meta v-if="project.cover_image" name="twitter:image" :content="project.cover_image" />
+
+        <!-- Structured Data -->
+        <component :is="'script'" type="application/ld+json" v-html="projectSchema" />
     </Head>
 
     <PublicLayout>

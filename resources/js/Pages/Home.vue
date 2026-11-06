@@ -213,21 +213,71 @@ const filteredProjects = computed(() => {
     if (activeCategory.value === 'all') return projectsList.value;
     return projectsList.value.filter((p) => p.category === activeCategory.value);
 });
+
+// Structured Data Schema.org LocalBusiness
+const localBusinessSchema = computed(() =>
+    JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'ProfessionalService',
+        name: props.settings?.site_name || 'Swift Code Lampung',
+        description:
+            props.settings?.meta_description ||
+            'Jasa pembuatan website profesional, landing page, company profile, website sekolah, dan sistem kustom di Lampung.',
+        telephone: props.settings?.whatsapp ? `+${props.settings.whatsapp}` : '+62895325852575',
+        priceRange: 'Rp 950.000 - Rp 5.000.000+',
+        address: {
+            '@type': 'PostalAddress',
+            streetAddress: 'Bandar Lampung',
+            addressLocality: 'Bandar Lampung',
+            addressRegion: 'Lampung',
+            postalCode: '35141',
+            addressCountry: 'ID',
+        },
+        geo: {
+            '@type': 'GeoCoordinates',
+            latitude: -5.39714,
+            longitude: 105.266792,
+        },
+        openingHoursSpecification: {
+            '@type': 'OpeningHoursSpecification',
+            dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+            opens: '08:00',
+            closes: '21:00',
+        },
+        sameAs: [props.settings?.instagram || 'https://instagram.com/swiftcode.lpg'],
+    })
+);
 </script>
 
 <template>
     <Head>
-        <title>Jasa Pembuatan Website Profesional Lampung | Swift Code</title>
+        <title>{{ settings?.meta_title || 'Jasa Pembuatan Website Profesional Lampung | Swift Code' }}</title>
         <meta
             name="description"
-            content="Swift Code Lampung melayani jasa pembuatan website landing page, company profile, website sekolah, toko online, dan sistem custom yang cepat, elegan, dan terjangkau."
+            :content="settings?.meta_description || 'Swift Code Lampung melayani jasa pembuatan website landing page, company profile, website sekolah, toko online, dan sistem custom yang cepat, elegan, dan terjangkau.'"
         />
-        <meta property="og:title" content="Jasa Pembuatan Website Profesional Lampung - Swift Code" />
+        <link rel="canonical" href="/" />
+
+        <!-- Open Graph / Facebook -->
+        <meta property="og:type" content="website" />
+        <meta property="og:title" :content="settings?.meta_title || 'Jasa Pembuatan Website Profesional Lampung - Swift Code'" />
         <meta
             property="og:description"
-            content="Bantu UMKM dan bisnis di Lampung go-digital dengan website modern berkecepatan tinggi dan siap menghasilkan calon klien."
+            :content="settings?.meta_description || 'Bantu UMKM dan bisnis di Lampung go-digital dengan website modern berkecepatan tinggi dan siap menghasilkan calon klien.'"
         />
-        <meta property="og:type" content="website" />
+        <meta property="og:locale" content="id_ID" />
+        <meta property="og:site_name" content="Swift Code Lampung" />
+
+        <!-- Twitter Card -->
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" :content="settings?.meta_title || 'Jasa Pembuatan Website Profesional Lampung - Swift Code'" />
+        <meta
+            name="twitter:description"
+            :content="settings?.meta_description || 'Bantu UMKM dan bisnis di Lampung go-digital dengan website modern berkecepatan tinggi.'"
+        />
+
+        <!-- Structured Data JSON-LD Schema.org -->
+        <component :is="'script'" type="application/ld+json" v-html="localBusinessSchema" />
     </Head>
 
     <PublicLayout>

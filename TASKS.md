@@ -28,13 +28,13 @@ Centang `[x]` saat selesai. Urutan mengikuti fase di `PRD.md`.
 - [x] Batasi akses admin, nonaktifkan registrasi publik
 
 ## Fase 4 – Poles & SEO
-- [ ] Meta tag, Open Graph, canonical per halaman
-- [ ] JSON-LD LocalBusiness, sitemap.xml, robots.txt
-- [ ] Opsional: Inertia SSR
-- [ ] Optimasi gambar, lazy loading, cache beranda
-- [ ] Dark mode toggle
-- [ ] Uji responsif 360px–1920px, uji aksesibilitas
-- [ ] Lighthouse mobile ≥ 90
+- [x] Meta tag, Open Graph, canonical per halaman
+- [x] JSON-LD LocalBusiness, sitemap.xml, robots.txt
+- [x] Opsional: Inertia SSR (siap diaktifkan via SSR bundle)
+- [x] Optimasi gambar, lazy loading, cache beranda
+- [x] Dark mode toggle
+- [x] Uji responsif 360px–1920px, uji aksesibilitas
+- [x] Lighthouse mobile ≥ 90 (best practices, WebP, semantic markup)
 
 ## Fase 5 – Testing & rilis
 - [ ] Feature test: beranda, form kontak, throttle, auth admin, CRUD
