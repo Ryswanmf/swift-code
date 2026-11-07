@@ -242,8 +242,10 @@ const faqs = [
                                 v-if="isSubmittedSuccess"
                                 class="p-8 rounded-2xl bg-emerald-50 border border-emerald-200 text-center space-y-4"
                             >
-                                <div class="w-16 h-16 rounded-full bg-emerald-500 text-white flex items-center justify-center mx-auto text-2xl font-bold shadow-md shadow-emerald-500/20">
-                                    ✓
+                                <div class="w-16 h-16 rounded-full bg-emerald-500 text-white flex items-center justify-center mx-auto shadow-md shadow-emerald-500/20">
+                                    <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+                                    </svg>
                                 </div>
                                 <h3 class="text-xl font-extrabold text-emerald-900">
                                     Pesan Konsultasi Berhasil Terkirim!

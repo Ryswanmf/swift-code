@@ -37,7 +37,10 @@ const deleteService = (id: number, title: string) => {
                     href="/admin/services/create"
                     class="inline-flex items-center gap-2 px-4 py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs rounded-xl shadow-sm transition-all self-start sm:self-auto"
                 >
-                    <span>➕ Tambah Layanan</span>
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                    </svg>
+                    <span>Tambah Layanan</span>
                 </Link>
             </div>
 

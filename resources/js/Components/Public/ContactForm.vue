@@ -118,8 +118,10 @@ const submit = () => {
                 <div class="lg:col-span-7">
                     <div class="p-8 sm:p-10 rounded-3xl bg-white border border-neutral-200 shadow-xl">
                         <div v-if="isSubmittedSuccess" class="p-6 rounded-2xl bg-emerald-50 border border-emerald-200 text-center space-y-3">
-                            <div class="w-12 h-12 rounded-full bg-emerald-500 text-white flex items-center justify-center mx-auto text-xl font-bold">
-                                ✓
+                            <div class="w-12 h-12 rounded-full bg-emerald-500 text-white flex items-center justify-center mx-auto shadow-md shadow-emerald-500/20">
+                                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+                                </svg>
                             </div>
                             <h3 class="text-lg font-bold text-emerald-800">
                                 Pesan Anda Berhasil Dikirim!

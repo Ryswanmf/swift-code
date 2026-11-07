@@ -50,8 +50,11 @@ const coreStrengths = [
                     <div class="absolute -top-16 -right-16 w-48 h-48 bg-brand-600/20 rounded-full blur-3xl pointer-events-none"></div>
 
                     <div class="space-y-6 relative z-10">
-                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-brand-600/20 border border-brand-500/30 text-brand-400 text-xs font-bold uppercase tracking-wider">
-                            <span>⚡ Performa Utama</span>
+                        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-brand-600/20 border border-brand-500/30 text-brand-400 text-xs font-bold uppercase tracking-wider">
+                            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                            </svg>
+                            <span>Performa Utama</span>
                         </div>
 
                         <div>
@@ -78,7 +81,12 @@ const coreStrengths = [
                             <div class="p-4 rounded-xl bg-brand-950/40 border border-brand-500/40 text-xs space-y-1.5 ring-1 ring-brand-500/20">
                                 <div class="flex items-center justify-between font-bold">
                                     <span class="text-white">Standar Website Swift Code</span>
-                                    <span class="text-emerald-400">⚡ &lt; 1 Detik</span>
+                                    <span class="inline-flex items-center gap-1 text-emerald-400 font-mono">
+                                        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                        </svg>
+                                        <span>&lt; 1 Detik</span>
+                                    </span>
                                 </div>
                                 <p class="text-neutral-300 leading-normal">
                                     Skor Lighthouse 90+, navigasi sentuh instan, gambar otomatis terkompresi WebP, dan siap dibuka di jaringan 4G.

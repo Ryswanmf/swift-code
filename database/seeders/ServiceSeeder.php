@@ -14,7 +14,7 @@ class ServiceSeeder extends Seeder
     {
         $services = [
             [
-                'icon' => '🚀',
+                'icon' => 'rocket',
                 'title' => 'Landing Page Konversi Tinggi',
                 'description' => 'Halaman promosi satu halaman yang dirancang khusus untuk memikat pembeli dan langsung mengarahkan ke nomor WhatsApp Anda.',
                 'badge' => 'Favorit UMKM',
@@ -22,7 +22,7 @@ class ServiceSeeder extends Seeder
                 'is_active' => true,
             ],
             [
-                'icon' => '🏢',
+                'icon' => 'building',
                 'title' => 'Website Company Profile',
                 'description' => 'Pamerkan portofolio, visi misi, legalitas, dan layanan perusahaan Anda dengan desain elegan dan profesional.',
                 'badge' => 'Kredibilitas',
@@ -30,7 +30,7 @@ class ServiceSeeder extends Seeder
                 'is_active' => true,
             ],
             [
-                'icon' => '🎓',
+                'icon' => 'academic',
                 'title' => 'Website Sekolah & Pesantren',
                 'description' => 'Dilengkapi profil madrasah/sekolah, PPDB online, galeri kegiatan siswa, berita, dan integrasi pengumuman.',
                 'badge' => 'Institusi',
@@ -38,7 +38,7 @@ class ServiceSeeder extends Seeder
                 'is_active' => true,
             ],
             [
-                'icon' => '🛍️',
+                'icon' => 'cart',
                 'title' => 'Toko Online (E-Commerce)',
                 'description' => 'Katalog produk modern, hitung ongkir otomatis, checkout via WhatsApp / payment gateway yang mudah dikelola.',
                 'badge' => 'Penjualan',
@@ -46,7 +46,7 @@ class ServiceSeeder extends Seeder
                 'is_active' => true,
             ],
             [
-                'icon' => '⚡',
+                'icon' => 'code',
                 'title' => 'Sistem Informasi Kustom',
                 'description' => 'Aplikasi berbasis web sesuai kebutuhan spesifik usaha: sistem absensi, inventaris kasir, booking antrean, dll.',
                 'badge' => 'Custom',
@@ -54,7 +54,7 @@ class ServiceSeeder extends Seeder
                 'is_active' => true,
             ],
             [
-                'icon' => '🛠️',
+                'icon' => 'tool',
                 'title' => 'Redesign & Optimasi SEO',
                 'description' => 'Perbarui website lama Anda yang lambat atau rusak agar kembali modern, cepat diakses HP, dan naik ke halaman 1 Google.',
                 'badge' => 'Performa',

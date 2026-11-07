@@ -84,11 +84,13 @@ const formatRupiah = (val: number | null) => {
                 </div>
                 <p
                     :class="[
-                        'text-[11px] mt-1.5 flex items-center gap-1',
+                        'text-[11px] mt-1.5 flex items-center gap-1.5',
                         pkg.is_highlighted ? 'text-neutral-400' : 'text-neutral-500 dark:text-neutral-400',
                     ]"
                 >
-                    <span class="text-emerald-500 font-bold">✓</span>
+                    <svg class="w-3.5 h-3.5 text-emerald-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+                    </svg>
                     <span>Biaya transparan • Termasuk setup domain &amp; hosting</span>
                 </p>
             </div>

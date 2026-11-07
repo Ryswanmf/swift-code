@@ -18,7 +18,7 @@ const props = defineProps<{
 }>();
 
 const form = useForm({
-    icon: props.service?.icon || '🚀',
+    icon: props.service?.icon || 'rocket',
     title: props.service?.title || '',
     description: props.service?.description || '',
     badge: props.service?.badge || '',
@@ -56,14 +56,14 @@ const submit = () => {
                 <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
                     <div>
                         <label class="block text-xs font-bold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
-                            Ikon Emoji <span class="text-brand-600">*</span>
+                            Kode Ikon <span class="text-brand-600">*</span>
                         </label>
                         <input
                             v-model="form.icon"
                             type="text"
                             required
-                            placeholder="🚀"
-                            class="w-full text-center px-4 py-2.5 rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white text-lg focus:ring-2 focus:ring-brand-500 outline-none"
+                            placeholder="rocket"
+                            class="w-full text-center px-4 py-2.5 rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white text-xs font-mono focus:ring-2 focus:ring-brand-500 outline-none"
                         />
                     </div>
 

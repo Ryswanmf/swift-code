@@ -27,38 +27,80 @@ const defaultServices: ServiceItem[] = [
     {
         icon: 'rocket',
         title: 'Landing Page Konversi Tinggi',
-        description: 'Halaman promosi satu halaman yang dirancang khusus untuk memikat pembeli dan langsung mengarahkan ke nomor WhatsApp Anda.',
         badge: 'Favorit UMKM',
+        timeline: '3 - 5 Hari Kerja',
+        target: 'UMKM, Produk Tunggal & Promosi Iklan',
+        description: 'Halaman promosi satu halaman yang dirancang terarah untuk memikat pembeli dan langsung mengarahkan transaksi ke nomor WhatsApp Anda.',
+        features: [
+            'Desain responsif mobile-first',
+            'Integrasi tombol WhatsApp & formulir leads',
+            'Gratis domain (.my.id/.com) & hosting SSD 1 tahun',
+        ],
     },
     {
         icon: 'building',
         title: 'Website Company Profile',
-        description: 'Pamerkan portofolio, visi misi, legalitas, dan layanan perusahaan Anda dengan desain elegan dan profesional.',
-        badge: 'Kredibilitas',
+        badge: 'Kredibilitas Bisnis',
+        timeline: '5 - 10 Hari Kerja',
+        target: 'PT, CV, Kantor Advokat, Klinik & Agensi',
+        description: 'Pamerkan portofolio, visi misi, legalitas, dan layanan perusahaan Anda dengan desain elegan, cepat, dan profesional.',
+        features: [
+            'Hingga 5 - 7 halaman terstruktur rapi',
+            'Email bisnis resmi (@namaperusahaan.com)',
+            'Panel admin mandiri untuk update konten',
+        ],
     },
     {
         icon: 'academic',
         title: 'Website Sekolah & Pesantren',
-        description: 'Dilengkapi profil madrasah/sekolah, PPDB online, galeri kegiatan siswa, berita, dan integrasi pengumuman.',
-        badge: 'Institusi',
+        badge: 'Institusi Pendidikan',
+        timeline: '7 - 14 Hari Kerja',
+        target: 'SD, SMP, SMA/SMK, Madrasah & Pondok Pesantren',
+        description: 'Dilengkapi profil madrasah/sekolah, formulir PPDB online, galeri kegiatan siswa, portal pengumuman, dan berita sekolah.',
+        features: [
+            'Domain resmi (.sch.id / .ponpes.id)',
+            'Modul informasi PPDB online mandiri',
+            'Mudah dikelola staf tata usaha (TU)',
+        ],
     },
     {
         icon: 'cart',
         title: 'Toko Online (E-Commerce)',
-        description: 'Katalog produk modern, hitung ongkir otomatis, checkout via WhatsApp / payment gateway yang mudah dikelola.',
-        badge: 'Penjualan',
+        badge: 'Penjualan Digital',
+        timeline: '7 - 14 Hari Kerja',
+        target: 'Toko Retail, Fashion & Oleh-Oleh Khas Lampung',
+        description: 'Katalog produk modern, hitung ongkir otomatis, dan alur checkout mudah yang langsung tersambung ke WhatsApp atau payment gateway.',
+        features: [
+            'Katalog produk rapi & pencarian cepat',
+            'Hitung estimasi ongkir otomatis se-Indonesia',
+            'Manajemen stok dan varian barang',
+        ],
     },
     {
         icon: 'code',
         title: 'Sistem Informasi Kustom',
-        description: 'Aplikasi berbasis web sesuai kebutuhan spesifik usaha: sistem absensi, inventaris kasir, booking antrean, dll.',
-        badge: 'Custom',
+        badge: 'Solusi Khusus',
+        timeline: '14 - 30 Hari Kerja',
+        target: 'Manajemen Bisnis, Gudang & Operasional Internal',
+        description: 'Aplikasi berbasis web sesuai kebutuhan alur kerja unik usaha: sistem absensi, inventaris stok, kasir POS, hingga antrean booking.',
+        features: [
+            'Struktur database & logika kustom',
+            'Multi-role hak akses (Admin, Kasir, Klien)',
+            'Export laporan rekapitulasi data PDF / Excel',
+        ],
     },
     {
         icon: 'tool',
         title: 'Redesign & Optimasi SEO',
-        description: 'Perbarui website lama Anda yang lambat atau rusak agar kembali modern, cepat diakses HP, dan naik ke halaman 1 Google.',
-        badge: 'Performa',
+        badge: 'Performa & Kecepatan',
+        timeline: '3 - 7 Hari Kerja',
+        target: 'Website Usang, Lambat atau Sulit Diakses HP',
+        description: 'Perbarui website lama yang lambat atau rusak agar kembali modern, gesit di HP, dan bersaing di halaman pencarian Google.',
+        features: [
+            'Audit Core Web Vitals & percepatan loading',
+            'Pembaruan tampilan UI/UX modern',
+            'Perbaikan struktur meta SEO & sitemap',
+        ],
     },
 ];
 
@@ -220,24 +262,28 @@ const defaultTestimonials: TestimonialItem[] = [
 
 const defaultFaqs: FaqData[] = [
     {
-        question: 'Berapa lama proses pengerjaan website?',
-        answer: 'Untuk paket landing page berkisar 3-5 hari kerja. Website company profile atau sekolah membutuhkan 7-14 hari kerja tergantung kesiapan konten teks dan foto dari Anda.',
+        question: 'Apakah biaya pembuatan sudah termasuk domain dan cloud hosting?',
+        answer: 'Ya, seluruh paket pembuatan website di Swift Code sudah mencakup nama domain pilihan (.com, .my.id, atau .sch.id) serta cloud hosting SSD berkecepatan tinggi gratis selama 1 tahun pertama tanpa biaya tersembunyi.',
     },
     {
-        question: 'Apakah saya bisa update teks dan foto sendiri setelah website jadi?',
-        answer: 'Tentu saja! Kami menyediakan panel admin yang sangat mudah dipelajari bahkan bagi yang belum pernah menyentuh website sebelumnya. Kami juga menyediakan video panduan.',
+        question: 'Berapa lama estimasi proses pengerjaan website hingga online?',
+        answer: 'Untuk paket Landing Page membutuhkan 3 - 5 hari kerja. Website Company Profile dan Sekolah rata-rata 5 - 10 hari kerja. Sementara sistem kustom atau toko online berkisar 14 - 30 hari kerja tergantung kompleksitas fitur dan kesiapan materi konten Anda.',
     },
     {
-        question: 'Apakah sudah termasuk domain dan hosting?',
-        answer: 'Ya, seluruh paket pembuatan website di Swift Code Lampung sudah termasuk biaya domain dan hosting berkecepatan tinggi gratis selama 1 tahun pertama.',
+        question: 'Bagaimana sistem pembayaran di Swift Code Lampung?',
+        answer: 'Kami menerapkan skema pembayaran transparan: uang muka (DP) 50% di awal saat kesepakatan proyek disetujui, dan sisa pelunasan 50% dibayarkan setelah seluruh proses uji fungsi selesai dan website siap dipublikasikan.',
     },
     {
-        question: 'Bagaimana sistem pembayaran di Swift Code?',
-        answer: 'Kami menerapkan sistem aman dengan DP (Down Payment) sebesar 50% di awal sebelum pengerjaan, dan sisa pelunasan 50% dibayarkan setelah website selesai diuji dan siap online.',
+        question: 'Apakah saya bisa mengelola teks, produk, dan foto sendiri?',
+        answer: 'Tentu saja. Kami menyediakan panel admin (CMS) mandiri yang intuitif dan mudah dipelajari bahkan bagi pemula tanpa latar belakang pemrograman. Kami juga melampirkan video panduan singkat serta sesi konsultasi.',
     },
     {
-        question: 'Apakah website saya akan muncul di Google?',
-        answer: 'Semua website kami dirancang ramah SEO dengan meta tags, sitemap otomatis, dan didaftarkan ke Google Search Console agar mudah diindeks oleh mesin pencari Google.',
+        question: 'Apakah bisa konsultasi atau bertemu langsung (tatap muka) di Lampung?',
+        answer: 'Sangat bisa. Untuk klien di area Bandar Lampung dan sekitarnya (seperti Natar, Gedong Tataan, Jati Agung), tim kami siap berdiskusi langsung ke kantor atau lokasi usaha Anda untuk membahas kebutuhan proyek.',
+    },
+    {
+        question: 'Apakah website kami otomatis terdaftar dan bisa ditemukan di Google?',
+        answer: 'Semua website kami dirancang ramah SEO dengan meta tags lengkap, sitemap otomatis, pengujian loading kilat, dan didaftarkan langsung ke Google Search Console agar halaman Anda dapat segera terindeks secara optimal.',
     },
 ];
 

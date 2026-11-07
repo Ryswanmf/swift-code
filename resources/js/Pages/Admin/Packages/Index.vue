@@ -43,7 +43,10 @@ const deletePackage = (id: number, name: string) => {
                     href="/admin/packages/create"
                     class="inline-flex items-center gap-2 px-4 py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs rounded-xl shadow-sm transition-all self-start sm:self-auto"
                 >
-                    <span>➕ Tambah Paket</span>
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                    </svg>
+                    <span>Tambah Paket</span>
                 </Link>
             </div>
 

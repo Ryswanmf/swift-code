@@ -30,7 +30,7 @@ class NewLeadNotification extends Notification implements ShouldQueue
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject("🔔 Lead Baru Website: {$this->lead->name}")
+            ->subject("Lead Baru Website: {$this->lead->name}")
             ->greeting('Halo Admin Swift Code!')
             ->line('Ada calon klien baru yang mengirimkan formulir konsultasi website melalui website resmi.')
             ->line("**Nama:** {$this->lead->name}")
