@@ -27,6 +27,8 @@ Route::get('/dashboard', function () {
     return redirect()->route('admin.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::get('/admin/login', fn () => redirect()->route('login'))->name('admin.login');
+
 Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(function () {
     require __DIR__.'/admin.php';
 });
