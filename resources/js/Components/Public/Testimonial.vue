@@ -16,7 +16,7 @@ defineProps<{
 
 <template>
     <div
-        class="p-7 rounded-2xl bg-white dark:bg-neutral-900 border border-neutral-200/90 dark:border-neutral-800 shadow-xs hover:shadow-lg transition-all duration-300 flex flex-col justify-between"
+        class="p-7 rounded-2xl bg-white dark:bg-neutral-900 border border-neutral-100 dark:border-neutral-800 shadow-xl shadow-black/15 hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between"
     >
         <!-- Stars Rating -->
         <div>

@@ -2,7 +2,6 @@
 import { ref, computed } from 'vue';
 import { Link, usePage } from '@inertiajs/vue3';
 import SwiftCodeLogo from '../Components/SwiftCodeLogo.vue';
-import { useDarkMode } from '../composables/useDarkMode';
 
 withDefaults(
     defineProps<{
@@ -13,7 +12,6 @@ withDefaults(
     },
 );
 
-const { isDark, toggleDark } = useDarkMode();
 const page = usePage();
 const isSidebarOpen = ref(false);
 
@@ -111,26 +109,10 @@ const isCurrentUrl = (url: string) => {
                     </h1>
                 </div>
 
-                <!-- Right: Theme toggle & Profile -->
+                <!-- Right: Profile & Logout -->
                 <div class="flex items-center gap-3">
-                    <!-- Theme toggle -->
-                    <button
-                        type="button"
-                        @click="toggleDark"
-                        class="p-2 text-neutral-600 dark:text-neutral-300 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
-                        aria-label="Toggle dark mode"
-                    >
-                        <svg v-if="isDark" class="w-5 h-5 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <circle cx="12" cy="12" r="5" stroke-width="2" />
-                            <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke-width="2" />
-                        </svg>
-                        <svg v-else class="w-5 h-5 text-neutral-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" stroke-width="2" />
-                        </svg>
-                    </button>
-
                     <!-- User Account / Logout -->
-                    <div class="flex items-center gap-3 pl-3 border-l border-neutral-200 dark:border-neutral-800">
+                    <div class="flex items-center gap-3 pl-3">
                         <div class="hidden sm:block text-right">
                             <p class="text-xs font-bold text-neutral-900 dark:text-white">{{ $page.props.auth?.user?.name || 'Admin' }}</p>
                             <span class="text-[10px] font-semibold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">Online</span>

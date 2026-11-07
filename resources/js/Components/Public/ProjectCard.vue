@@ -27,11 +27,11 @@ const categoryLabels: Record<string, string> = {
 
 <template>
     <div
-        class="group rounded-2xl bg-white dark:bg-neutral-900 border border-neutral-200/90 dark:border-neutral-800 overflow-hidden shadow-sm hover:shadow-xl hover:border-brand-500/50 transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between"
+        class="group rounded-2xl bg-white border border-neutral-200/90 overflow-hidden shadow-xs hover:shadow-xl hover:border-brand-500/50 transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between"
     >
         <div>
             <!-- Cover Image Container -->
-            <div class="relative aspect-video w-full overflow-hidden bg-neutral-100 dark:bg-neutral-800">
+            <div class="relative aspect-video w-full overflow-hidden bg-neutral-100">
                 <img
                     v-if="project.cover_image"
                     :src="project.cover_image"
@@ -63,17 +63,17 @@ const categoryLabels: Record<string, string> = {
             <!-- Content Area -->
             <div class="p-6">
                 <!-- Client & Meta -->
-                <div v-if="project.client_name" class="text-xs font-semibold text-brand-600 dark:text-brand-400 mb-1.5">
+                <div v-if="project.client_name" class="text-xs font-semibold text-brand-600 mb-1.5">
                     Klien: {{ project.client_name }}
                 </div>
 
                 <!-- Title -->
-                <h3 class="text-lg font-bold text-neutral-900 dark:text-white group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors line-clamp-1">
+                <h3 class="text-lg font-bold text-neutral-900 group-hover:text-brand-600 transition-colors line-clamp-1">
                     {{ project.title }}
                 </h3>
 
                 <!-- Summary -->
-                <p class="text-sm text-neutral-600 dark:text-neutral-400 mt-2 line-clamp-2 leading-relaxed">
+                <p class="text-sm text-neutral-600 mt-2 line-clamp-2 leading-relaxed">
                     {{ project.summary }}
                 </p>
 
@@ -82,7 +82,7 @@ const categoryLabels: Record<string, string> = {
                     <span
                         v-for="tech in project.tech_stack"
                         :key="tech"
-                        class="px-2 py-0.5 text-[10px] font-medium rounded-md bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300"
+                        class="px-2 py-0.5 text-[10px] font-medium rounded-md bg-neutral-100 text-neutral-600"
                     >
                         {{ tech }}
                     </span>
@@ -91,10 +91,10 @@ const categoryLabels: Record<string, string> = {
         </div>
 
         <!-- Card Footer -->
-        <div class="px-6 pb-6 pt-2 flex items-center justify-between border-t border-neutral-100 dark:border-neutral-800/80 mt-2">
+        <div class="px-6 pb-6 pt-2 flex items-center justify-between border-t border-neutral-100 mt-2">
             <Link
                 :href="`/portofolio/${project.slug}`"
-                class="inline-flex items-center gap-1.5 text-xs font-bold text-neutral-800 dark:text-neutral-200 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
+                class="inline-flex items-center gap-1.5 text-xs font-bold text-neutral-800 hover:text-brand-600 transition-colors"
             >
                 <span>Lihat Detail</span>
                 <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">

@@ -43,6 +43,7 @@ class StoreLeadRequest extends FormRequest
         return [
             'name.required' => 'Nama lengkap atau nama bisnis wajib diisi.',
             'phone.required' => 'Nomor WhatsApp wajib diisi agar kami dapat menghubungi Anda.',
+            'service_type.required' => 'Jenis website wajib diisi sesuai kebutuhan Anda.',
             'message.required' => 'Mohon jelaskan secara singkat kebutuhan website Anda.',
             'website_hp.max' => 'Spam terdeteksi.',
         ];

@@ -8,9 +8,19 @@ export interface PackageItem {
     is_highlighted?: boolean;
 }
 
-defineProps<{
-    pkg: PackageItem;
-}>();
+const props = withDefaults(
+    defineProps<{
+        pkg: PackageItem;
+        actionHref?: string;
+        actionText?: string;
+        isExternal?: boolean;
+    }>(),
+    {
+        actionHref: '#kontak',
+        actionText: 'Pilih Paket Ini',
+        isExternal: false,
+    }
+);
 
 const formatRupiah = (val: number | null) => {
     if (val === null || val === undefined) return 'Hubungi Kami';
@@ -27,8 +37,8 @@ const formatRupiah = (val: number | null) => {
         :class="[
             'relative rounded-3xl p-8 flex flex-col justify-between transition-all duration-300',
             pkg.is_highlighted
-                ? 'bg-neutral-900 text-white dark:bg-neutral-900 ring-2 ring-brand-500 shadow-2xl shadow-brand-500/20 lg:-translate-y-2'
-                : 'bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 shadow-sm hover:shadow-xl',
+                ? 'bg-neutral-900 text-white ring-2 ring-brand-500 shadow-2xl shadow-brand-500/20 lg:-translate-y-2'
+                : 'bg-white border border-neutral-200 shadow-xs hover:shadow-xl',
         ]"
     >
         <!-- Highlighted Badge -->
@@ -36,7 +46,7 @@ const formatRupiah = (val: number | null) => {
             v-if="pkg.is_highlighted"
             class="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-brand-600 text-white text-xs font-bold uppercase tracking-wider shadow-md"
         >
-            Paling Populer & Hemat
+            Paling Populer & Rekomendasi
         </div>
 
         <div>
@@ -45,7 +55,7 @@ const formatRupiah = (val: number | null) => {
                 <h3
                     :class="[
                         'text-xl font-bold mb-2',
-                        pkg.is_highlighted ? 'text-white' : 'text-neutral-900 dark:text-white',
+                        pkg.is_highlighted ? 'text-white' : 'text-neutral-900',
                     ]"
                 >
                     {{ pkg.name }}
@@ -53,7 +63,7 @@ const formatRupiah = (val: number | null) => {
                 <p
                     :class="[
                         'text-xs',
-                        pkg.is_highlighted ? 'text-neutral-400' : 'text-neutral-500 dark:text-neutral-400',
+                        pkg.is_highlighted ? 'text-neutral-400' : 'text-neutral-500',
                     ]"
                 >
                     {{ pkg.price_note || 'Investasi terbaik pengembangan bisnis Anda' }}
@@ -61,12 +71,12 @@ const formatRupiah = (val: number | null) => {
             </div>
 
             <!-- Price -->
-            <div class="mb-8 pb-6 border-b border-neutral-200/60 dark:border-neutral-800">
+            <div class="mb-8 pb-6 border-b border-neutral-200/60">
                 <div class="flex items-baseline gap-1">
                     <span
                         :class="[
                             'text-3xl sm:text-4xl font-extrabold tracking-tight',
-                            pkg.is_highlighted ? 'text-white' : 'text-neutral-900 dark:text-white',
+                            pkg.is_highlighted ? 'text-white' : 'text-neutral-900',
                         ]"
                     >
                         {{ formatRupiah(pkg.price) }}
@@ -78,7 +88,7 @@ const formatRupiah = (val: number | null) => {
                         pkg.is_highlighted ? 'text-neutral-400' : 'text-neutral-500',
                     ]"
                 >
-                    * Pembayaran bertahap DP & pelunasan
+                    * Pembayaran bertahap DP 50% & pelunasan
                 </span>
             </div>
 
@@ -99,7 +109,7 @@ const formatRupiah = (val: number | null) => {
                     </svg>
                     <span
                         :class="[
-                            pkg.is_highlighted ? 'text-neutral-200' : 'text-neutral-700 dark:text-neutral-300',
+                            pkg.is_highlighted ? 'text-neutral-200' : 'text-neutral-700',
                         ]"
                     >
                         {{ feat }}
@@ -110,15 +120,17 @@ const formatRupiah = (val: number | null) => {
 
         <!-- Action Button -->
         <a
-            href="#kontak"
+            :href="actionHref"
+            :target="isExternal ? '_blank' : undefined"
+            :rel="isExternal ? 'noopener noreferrer' : undefined"
             :class="[
                 'w-full py-3.5 px-4 rounded-xl font-bold text-center text-sm transition-all duration-200 shadow-md block',
                 pkg.is_highlighted
                     ? 'bg-brand-600 hover:bg-brand-700 text-white shadow-brand-600/30 hover:scale-102'
-                    : 'bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 text-neutral-900 dark:text-white',
+                    : 'bg-neutral-100 hover:bg-neutral-200 text-neutral-900',
             ]"
         >
-            Pilih Paket Ini
+            {{ actionText }}
         </a>
     </div>
 </template>

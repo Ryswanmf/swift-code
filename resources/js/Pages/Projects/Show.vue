@@ -75,27 +75,27 @@ const projectSchema = computed(() =>
                 <nav class="flex items-center gap-2 text-xs text-neutral-500 mb-8">
                     <Link href="/" class="hover:text-brand-600 transition-colors">Beranda</Link>
                     <span>/</span>
-                    <Link href="/#portofolio" class="hover:text-brand-600 transition-colors">Portofolio</Link>
+                    <Link href="/portofolio" class="hover:text-brand-600 transition-colors">Portofolio</Link>
                     <span>/</span>
-                    <span class="text-neutral-900 dark:text-neutral-300 font-medium truncate max-w-xs">{{ project.title }}</span>
+                    <span class="text-neutral-900 font-medium truncate max-w-xs">{{ project.title }}</span>
                 </nav>
 
                 <!-- Header Info -->
                 <div class="space-y-4 mb-10">
                     <div class="flex flex-wrap items-center gap-3">
-                        <span class="px-3 py-1 text-xs font-bold rounded-lg bg-brand-50 dark:bg-brand-950/80 text-brand-700 dark:text-brand-300 border border-brand-200/60 dark:border-brand-800/60 uppercase tracking-wide">
+                        <span class="px-3 py-1 text-xs font-bold rounded-lg bg-brand-50 text-brand-700 border border-brand-200/60 uppercase tracking-wide">
                             {{ categoryLabels[project.category] || project.category }}
                         </span>
-                        <span v-if="project.client_name" class="text-xs font-medium text-neutral-500 dark:text-neutral-400">
-                            Klien: <strong class="text-neutral-800 dark:text-neutral-200">{{ project.client_name }}</strong>
+                        <span v-if="project.client_name" class="text-xs font-medium text-neutral-500">
+                            Klien: <strong class="text-neutral-800">{{ project.client_name }}</strong>
                         </span>
                     </div>
 
-                    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-neutral-900 dark:text-white tracking-tight leading-tight">
+                    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-neutral-900 tracking-tight leading-tight">
                         {{ project.title }}
                     </h1>
 
-                    <p class="text-base sm:text-lg text-neutral-600 dark:text-neutral-300 max-w-3xl leading-relaxed">
+                    <p class="text-base sm:text-lg text-neutral-600 max-w-3xl leading-relaxed">
                         {{ project.summary }}
                     </p>
 
@@ -118,7 +118,7 @@ const projectSchema = computed(() =>
                             :href="consultationWaUrl"
                             target="_blank"
                             rel="noopener noreferrer"
-                            class="inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold text-neutral-800 dark:text-neutral-200 bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 rounded-xl transition-colors"
+                            class="inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold text-neutral-800 bg-neutral-100 hover:bg-neutral-200 rounded-xl transition-colors"
                         >
                             <span>Pesan Website Seperti Ini</span>
                         </a>
@@ -126,7 +126,7 @@ const projectSchema = computed(() =>
                 </div>
 
                 <!-- Main Project Image / Showcase -->
-                <div class="mb-12 rounded-3xl overflow-hidden border border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-900 shadow-xl">
+                <div class="mb-12 rounded-3xl overflow-hidden border border-neutral-200 bg-neutral-100 shadow-xl">
                     <img
                         v-if="project.cover_image"
                         :src="project.cover_image"
@@ -152,24 +152,24 @@ const projectSchema = computed(() =>
                     <!-- Left: Description and Gallery -->
                     <div class="lg:col-span-8 space-y-8">
                         <div>
-                            <h2 class="text-xl font-bold text-neutral-900 dark:text-white mb-4">
+                            <h2 class="text-xl font-bold text-neutral-900 mb-4">
                                 Gambaran & Solusi Proyek
                             </h2>
-                            <div class="prose dark:prose-invert max-w-none text-neutral-700 dark:text-neutral-300 leading-relaxed space-y-4 text-base">
+                            <div class="prose max-w-none text-neutral-700 leading-relaxed space-y-4 text-base">
                                 <p>{{ project.description || project.summary }}</p>
                             </div>
                         </div>
 
                         <!-- Gallery Photos if any -->
                         <div v-if="project.gallery && project.gallery.length > 0" class="pt-4 space-y-4">
-                            <h3 class="text-lg font-bold text-neutral-900 dark:text-white">
+                            <h3 class="text-lg font-bold text-neutral-900">
                                 Galeri Tampilan Halaman
                             </h3>
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div
                                     v-for="(img, idx) in project.gallery"
                                     :key="idx"
-                                    class="rounded-2xl overflow-hidden border border-neutral-200 dark:border-neutral-800 shadow-sm aspect-video bg-neutral-100 dark:bg-neutral-800"
+                                    class="rounded-2xl overflow-hidden border border-neutral-200 shadow-sm aspect-video bg-neutral-100"
                                 >
                                     <img
                                         :src="img"
@@ -184,22 +184,22 @@ const projectSchema = computed(() =>
 
                     <!-- Right Sidebar: Project Meta Details -->
                     <div class="lg:col-span-4 space-y-6">
-                        <div class="p-6 rounded-2xl bg-neutral-50 dark:bg-neutral-900 border border-neutral-200/90 dark:border-neutral-800 space-y-5">
-                            <h3 class="text-sm font-bold text-neutral-900 dark:text-white uppercase tracking-wider">
+                        <div class="p-6 rounded-2xl bg-neutral-50 border border-neutral-200/90 space-y-5">
+                            <h3 class="text-sm font-bold text-neutral-900 uppercase tracking-wider">
                                 Informasi Proyek
                             </h3>
 
-                            <div class="space-y-4 text-sm divide-y divide-neutral-200/60 dark:divide-neutral-800">
+                            <div class="space-y-4 text-sm divide-y divide-neutral-200/60">
                                 <div class="pt-2 flex justify-between items-center">
                                     <span class="text-neutral-500">Kategori</span>
-                                    <span class="font-semibold text-neutral-900 dark:text-white">
+                                    <span class="font-semibold text-neutral-900">
                                         {{ categoryLabels[project.category] || project.category }}
                                     </span>
                                 </div>
 
                                 <div v-if="project.client_name" class="pt-3 flex justify-between items-center">
                                     <span class="text-neutral-500">Klien</span>
-                                    <span class="font-semibold text-neutral-900 dark:text-white">
+                                    <span class="font-semibold text-neutral-900">
                                         {{ project.client_name }}
                                     </span>
                                 </div>
@@ -210,7 +210,7 @@ const projectSchema = computed(() =>
                                         <span
                                             v-for="tech in project.tech_stack || ['Laravel', 'Vue.js', 'Tailwind CSS']"
                                             :key="tech"
-                                            class="px-2.5 py-1 text-xs font-semibold rounded-lg bg-white dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200 border border-neutral-200 dark:border-neutral-700"
+                                            class="px-2.5 py-1 text-xs font-semibold rounded-lg bg-white text-neutral-800 border border-neutral-200"
                                         >
                                             {{ tech }}
                                         </span>
@@ -219,12 +219,12 @@ const projectSchema = computed(() =>
 
                                 <div class="pt-3 flex justify-between items-center">
                                     <span class="text-neutral-500">Garansi & Support</span>
-                                    <span class="font-semibold text-emerald-600 dark:text-emerald-400">Aktif</span>
+                                    <span class="font-semibold text-emerald-600">Aktif</span>
                                 </div>
                             </div>
 
                             <!-- CTA in sidebar -->
-                            <div class="pt-4 border-t border-neutral-200 dark:border-neutral-800">
+                            <div class="pt-4 border-t border-neutral-200">
                                 <a
                                     :href="consultationWaUrl"
                                     target="_blank"
@@ -239,15 +239,15 @@ const projectSchema = computed(() =>
                 </div>
 
                 <!-- Related Projects Section -->
-                <div v-if="relatedProjects && relatedProjects.length > 0" class="mt-20 pt-16 border-t border-neutral-200 dark:border-neutral-800">
+                <div v-if="relatedProjects && relatedProjects.length > 0" class="mt-20 pt-16 border-t border-neutral-200">
                     <div class="flex items-center justify-between mb-8">
                         <div>
                             <span class="text-xs font-bold text-brand-600 uppercase tracking-widest">Karya Lainnya</span>
-                            <h2 class="text-2xl font-extrabold text-neutral-900 dark:text-white mt-1">
+                            <h2 class="text-2xl font-extrabold text-neutral-900 mt-1">
                                 Portofolio Terkait
                             </h2>
                         </div>
-                        <Link href="/#portofolio" class="text-xs font-bold text-brand-600 hover:text-brand-700">
+                        <Link href="/portofolio" class="text-xs font-bold text-brand-600 hover:text-brand-700">
                             Lihat Semua →
                         </Link>
                     </div>

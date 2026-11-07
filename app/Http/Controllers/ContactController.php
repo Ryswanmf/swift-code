@@ -9,10 +9,21 @@ use App\Notifications\NewLeadNotification;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
 use Inertia\Inertia;
+use Inertia\Response as InertiaResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 class ContactController extends Controller
 {
+    /**
+     * Display the contact and consultation page.
+     */
+    public function index(): InertiaResponse
+    {
+        return Inertia::render('Contact/Index', [
+            'settings' => Setting::getAllAsKeyMap(),
+        ]);
+    }
+
     /**
      * Store a newly created contact lead and redirect to WhatsApp.
      */
@@ -46,10 +57,12 @@ class ContactController extends Controller
         $targetWa = Setting::get('whatsapp', '62895325852575');
         $cleanWa = preg_replace('/[^0-9]/', '', $targetWa);
 
+        $budgetLine = !empty($lead->budget) ? "• *Perkiraan Budget:* {$lead->budget}\n" : '';
+
         $text = "Halo Swift Code Lampung,\n\n"
               ."Saya *{$lead->name}* ingin berkonsultasi mengenai pembuatan website:\n"
               ."• *Layanan:* {$lead->service_type}\n"
-              .'• *Perkiraan Budget:* '.($lead->budget ?: 'Fleksibel')."\n"
+              .$budgetLine
               ."• *Kontak:* {$lead->phone}\n\n"
               ."Pesan Kebutuhan:\n\"{$lead->message}\"";
 

@@ -21,23 +21,23 @@ const toggle = () => {
 
 <template>
     <div
-        class="border border-neutral-200/90 dark:border-neutral-800 rounded-2xl bg-white dark:bg-neutral-900 transition-colors duration-200 overflow-hidden"
+        class="border border-neutral-200/90 rounded-2xl bg-white transition-colors duration-200 overflow-hidden"
     >
         <button
             type="button"
             @click="toggle"
-            class="w-full py-5 px-6 flex items-center justify-between text-left gap-4 select-none focus:outline-none"
+            class="w-full py-5 px-6 flex items-center justify-between text-left gap-4 select-none focus:outline-none cursor-pointer"
             :aria-expanded="isOpen"
         >
-            <span class="font-bold text-neutral-900 dark:text-white text-base">
+            <span class="font-bold text-neutral-900 text-base">
                 {{ faq.question }}
             </span>
             <span
                 :class="[
                     'w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-transform duration-200',
                     isOpen
-                        ? 'bg-brand-50 dark:bg-brand-950/60 text-brand-600 rotate-180'
-                        : 'bg-neutral-100 dark:bg-neutral-800 text-neutral-500',
+                        ? 'bg-brand-50 text-brand-600 rotate-180'
+                        : 'bg-neutral-100 text-neutral-500',
                 ]"
             >
                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -54,7 +54,7 @@ const toggle = () => {
             leave-from-class="opacity-100 translate-y-0"
             leave-to-class="opacity-0 -translate-y-2"
         >
-            <div v-show="isOpen" class="px-6 pb-6 text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed border-t border-neutral-100 dark:border-neutral-800/80 pt-4">
+            <div v-show="isOpen" class="px-6 pb-6 text-sm text-neutral-600 leading-relaxed border-t border-neutral-100 pt-4">
                 {{ faq.answer }}
             </div>
         </transition>

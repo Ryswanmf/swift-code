@@ -4,25 +4,25 @@ const steps = [
         num: '01',
         title: 'Konsultasi & Konsep',
         desc: 'Diskusikan model bisnis, tujuan website, referensi desain, dan fitur utama yang Anda perlukan.',
-        icon: '💡',
+        id: 'consult',
     },
     {
         num: '02',
         title: 'Desain & Revisi',
         desc: 'Kami buatkan susunan tampilan modern yang selaras dengan identitas brand hingga disetujui.',
-        icon: '🎨',
+        id: 'design',
     },
     {
         num: '03',
         title: 'Coding & Integrasi',
         desc: 'Tahap pengembangan sistem dengan standar kode bersih, optimasi kecepatan kilat, dan mobile-friendly.',
-        icon: '💻',
+        id: 'code',
     },
     {
         num: '04',
         title: 'Rilis & Pendampingan',
         desc: 'Website online dengan domain & hosting aktif. Kami berikan panduan cara kelola konten tanpa ribet.',
-        icon: '🚀',
+        id: 'launch',
     },
 ];
 </script>
@@ -55,8 +55,23 @@ const steps = [
                         <span class="text-3xl font-black text-brand-600/30 dark:text-brand-500/20 font-mono">
                             {{ step.num }}
                         </span>
-                        <div class="w-10 h-10 rounded-xl bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 flex items-center justify-center text-xl shadow-xs">
-                            {{ step.icon }}
+                        <div class="w-10 h-10 rounded-xl bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 flex items-center justify-center text-brand-600 dark:text-brand-400 shadow-xs shrink-0">
+                            <!-- Consult -->
+                            <svg v-if="step.id === 'consult'" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                            </svg>
+                            <!-- Design -->
+                            <svg v-else-if="step.id === 'design'" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4 5 5 0 013-4.5V10a5 5 0 0110 0v2.5A5 5 0 0119 17a4 4 0 01-4 4H7zM12 3v4m0 0a2 2 0 100 4 2 2 0 000-4z" />
+                            </svg>
+                            <!-- Code -->
+                            <svg v-else-if="step.id === 'code'" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                            </svg>
+                            <!-- Launch -->
+                            <svg v-else class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7m0 0l-4 4m4-4H3" />
+                            </svg>
                         </div>
                     </div>
 

@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { Head } from '@inertiajs/vue3';
+import { Head, Link } from '@inertiajs/vue3';
 import { ref, computed } from 'vue';
 import PublicLayout from '../Layouts/PublicLayout.vue';
 import Hero from '../Components/Public/Hero.vue';
+import PartnerMarquee from '../Components/Public/PartnerMarquee.vue';
 import ServiceCard, { ServiceItem } from '../Components/Public/ServiceCard.vue';
 import WhyUs from '../Components/Public/WhyUs.vue';
 import ProjectCard, { ProjectItem } from '../Components/Public/ProjectCard.vue';
 import PricingCard, { PackageItem } from '../Components/Public/PricingCard.vue';
-import Workflow from '../Components/Public/Workflow.vue';
 import Testimonial, { TestimonialItem } from '../Components/Public/Testimonial.vue';
 import FaqItem, { FaqData } from '../Components/Public/FaqItem.vue';
 import ArticleSection from '../Components/Public/ArticleSection.vue';
@@ -25,37 +25,37 @@ const props = defineProps<{
 // Default Static Data (Used in Fase 1 and as fallback)
 const defaultServices: ServiceItem[] = [
     {
-        icon: '🚀',
+        icon: 'rocket',
         title: 'Landing Page Konversi Tinggi',
         description: 'Halaman promosi satu halaman yang dirancang khusus untuk memikat pembeli dan langsung mengarahkan ke nomor WhatsApp Anda.',
         badge: 'Favorit UMKM',
     },
     {
-        icon: '🏢',
+        icon: 'building',
         title: 'Website Company Profile',
         description: 'Pamerkan portofolio, visi misi, legalitas, dan layanan perusahaan Anda dengan desain elegan dan profesional.',
         badge: 'Kredibilitas',
     },
     {
-        icon: '🎓',
+        icon: 'academic',
         title: 'Website Sekolah & Pesantren',
         description: 'Dilengkapi profil madrasah/sekolah, PPDB online, galeri kegiatan siswa, berita, dan integrasi pengumuman.',
         badge: 'Institusi',
     },
     {
-        icon: '🛍️',
+        icon: 'cart',
         title: 'Toko Online (E-Commerce)',
         description: 'Katalog produk modern, hitung ongkir otomatis, checkout via WhatsApp / payment gateway yang mudah dikelola.',
         badge: 'Penjualan',
     },
     {
-        icon: '⚡',
+        icon: 'code',
         title: 'Sistem Informasi Kustom',
         description: 'Aplikasi berbasis web sesuai kebutuhan spesifik usaha: sistem absensi, inventaris kasir, booking antrean, dll.',
         badge: 'Custom',
     },
     {
-        icon: '🛠️',
+        icon: 'tool',
         title: 'Redesign & Optimasi SEO',
         description: 'Perbarui website lama Anda yang lambat atau rusak agar kembali modern, cepat diakses HP, dan naik ke halaman 1 Google.',
         badge: 'Performa',
@@ -102,6 +102,46 @@ const defaultProjects: ProjectItem[] = [
         client_name: 'Nirwana Tour',
         live_url: 'https://nirwanatour.com',
         tech_stack: ['Laravel', 'Vue.js', 'MySQL'],
+    },
+    {
+        id: 5,
+        title: 'Website Profil Klinik Pratama Medika Bunda',
+        slug: 'klinik-medika-bunda',
+        category: 'company',
+        summary: 'Website profil fasilitas kesehatan dengan jadwal dokter spesialis dan pendaftaran konsultasi online.',
+        client_name: 'Klinik Pratama Medika Bunda',
+        live_url: 'https://medikabunda.co.id',
+        tech_stack: ['Laravel 12', 'Vue 3', 'Tailwind CSS'],
+    },
+    {
+        id: 6,
+        title: 'Sistem Penerimaan Santri Baru Pondok IT',
+        slug: 'psb-pondok-it-lampung',
+        category: 'sekolah',
+        summary: 'Portal pendaftaran santri baru berbasis web dengan tes seleksi online dan verifikasi berkas digital.',
+        client_name: 'Pondok IT Lampung',
+        live_url: 'https://psb.pondokit.id',
+        tech_stack: ['Vue 3', 'Inertia.js', 'MySQL'],
+    },
+    {
+        id: 7,
+        title: 'E-Commerce Kopi Robusta Lampung Craft',
+        slug: 'kopi-robusta-lampung-craft',
+        category: 'toko',
+        summary: 'Platform pemesanan biji kopi sangrai premium dengan perhitungan ongkir otomatis ke seluruh Indonesia.',
+        client_name: 'Lampung Coffee Roastery',
+        live_url: 'https://lampungroastery.com',
+        tech_stack: ['Laravel', 'Vue 3', 'Tailwind CSS'],
+    },
+    {
+        id: 8,
+        title: 'Sistem Logistik Distribusi Sinar Agro',
+        slug: 'sistem-distribusi-sinar-agro',
+        category: 'sistem',
+        summary: 'Dashboard pemantauan armada angkutan hasil bumi Lampung dengan pelacakan status pengiriman real-time.',
+        client_name: 'PT Sinar Agro Lampung',
+        live_url: 'https://logistik.sinaragro.com',
+        tech_stack: ['Laravel 12', 'Vue 3', 'PostgreSQL'],
     },
 ];
 
@@ -214,6 +254,8 @@ const filteredProjects = computed(() => {
     if (activeCategory.value === 'all') return projectsList.value;
     return projectsList.value.filter((p) => p.category === activeCategory.value);
 });
+const displayedHomeProjects = computed(() => filteredProjects.value.slice(0, 6));
+const hasMoreProjects = computed(() => filteredProjects.value.length > 6 || projectsList.value.length > 6);
 
 // Structured Data Schema.org LocalBusiness
 const localBusinessSchema = computed(() =>
@@ -285,18 +327,18 @@ const localBusinessSchema = computed(() =>
         <!-- 1. Hero Section -->
         <Hero />
 
+        <!-- Partner & Client Marquee Section -->
+        <PartnerMarquee />
+
         <!-- 2. Services Section -->
-        <section id="layanan" class="py-20 lg:py-28 bg-white dark:bg-neutral-950 relative">
+        <section id="layanan" class="pt-12 sm:pt-16 pb-14 sm:pb-16 bg-white dark:bg-neutral-950 relative">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <!-- Section Header -->
-                <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
-                    <span class="text-xs sm:text-sm font-bold tracking-widest uppercase text-brand-600 dark:text-brand-400">
-                        Solusi Digital Lengkap
-                    </span>
-                    <h2 class="text-3xl sm:text-4xl font-extrabold text-neutral-900 dark:text-white tracking-tight">
+                <div class="text-center max-w-5xl mx-auto mb-12 space-y-3">
+                    <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-neutral-900 dark:text-white tracking-tight sm:whitespace-nowrap">
                         Layanan Pembuatan Website <span class="text-brand-600">Sesuai Kebutuhan</span>
                     </h2>
-                    <p class="text-base text-neutral-600 dark:text-neutral-400">
+                    <p class="text-base text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
                         Pilih jenis website yang paling pas dengan industri dan skala bisnis Anda saat ini.
                     </p>
                 </div>
@@ -312,21 +354,19 @@ const localBusinessSchema = computed(() =>
             </div>
         </section>
 
-        <!-- 3. Why Choose Us Section -->
-        <WhyUs />
+        <!-- 3. Portfolio Section (Placed right after Services) -->
+        <section id="portofolio" class="pt-12 sm:pt-16 pb-20 lg:pb-28 bg-gradient-to-r from-brand-800 via-brand-600 to-rose-600 text-white relative overflow-hidden shadow-inner">
+            <!-- Background Ambient Accents -->
+            <div class="pointer-events-none absolute -top-24 -left-24 w-96 h-96 bg-white/10 rounded-full blur-3xl"></div>
+            <div class="pointer-events-none absolute -bottom-24 -right-24 w-96 h-96 bg-black/20 rounded-full blur-3xl"></div>
 
-        <!-- 4. Portfolio Section -->
-        <section id="portofolio" class="py-20 lg:py-28 bg-white dark:bg-neutral-950 relative">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 <!-- Section Header -->
-                <div class="text-center max-w-3xl mx-auto mb-12 space-y-4">
-                    <span class="text-xs sm:text-sm font-bold tracking-widest uppercase text-brand-600 dark:text-brand-400">
-                        Karya & Bukti Nyata
-                    </span>
-                    <h2 class="text-3xl sm:text-4xl font-extrabold text-neutral-900 dark:text-white tracking-tight">
-                        Portofolio Proyek <span class="text-brand-600">Pilihan Kami</span>
+                <div class="text-center max-w-3xl mx-auto mb-10 sm:mb-12 space-y-3">
+                    <h2 class="text-3xl sm:text-4xl font-black text-white tracking-tight drop-shadow-xs">
+                        Portofolio Proyek <span class="text-white/95">Pilihan Kami</span>
                     </h2>
-                    <p class="text-base text-neutral-600 dark:text-neutral-400">
+                    <p class="text-base text-white/90 leading-relaxed">
                         Lihat bagaimana kami membantu brand lokal dan instansi tampil profesional di ranah online.
                     </p>
                 </div>
@@ -339,8 +379,8 @@ const localBusinessSchema = computed(() =>
                         :class="[
                             'px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all',
                             activeCategory === 'all'
-                                ? 'bg-brand-600 text-white shadow-md'
-                                : 'bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-700',
+                                ? 'bg-white text-brand-700 font-bold shadow-lg scale-102'
+                                : 'bg-white/15 hover:bg-white/25 text-white border border-white/20 backdrop-blur-xs',
                         ]"
                     >
                         Semua Proyek
@@ -351,8 +391,8 @@ const localBusinessSchema = computed(() =>
                         :class="[
                             'px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all',
                             activeCategory === 'company'
-                                ? 'bg-brand-600 text-white shadow-md'
-                                : 'bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-700',
+                                ? 'bg-white text-brand-700 font-bold shadow-lg scale-102'
+                                : 'bg-white/15 hover:bg-white/25 text-white border border-white/20 backdrop-blur-xs',
                         ]"
                     >
                         Company Profile
@@ -363,8 +403,8 @@ const localBusinessSchema = computed(() =>
                         :class="[
                             'px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all',
                             activeCategory === 'sekolah'
-                                ? 'bg-brand-600 text-white shadow-md'
-                                : 'bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-700',
+                                ? 'bg-white text-brand-700 font-bold shadow-lg scale-102'
+                                : 'bg-white/15 hover:bg-white/25 text-white border border-white/20 backdrop-blur-xs',
                         ]"
                     >
                         Sekolah / Lembaga
@@ -375,8 +415,8 @@ const localBusinessSchema = computed(() =>
                         :class="[
                             'px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all',
                             activeCategory === 'toko'
-                                ? 'bg-brand-600 text-white shadow-md'
-                                : 'bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-700',
+                                ? 'bg-white text-brand-700 font-bold shadow-lg scale-102'
+                                : 'bg-white/15 hover:bg-white/25 text-white border border-white/20 backdrop-blur-xs',
                         ]"
                     >
                         Toko Online
@@ -387,33 +427,43 @@ const localBusinessSchema = computed(() =>
                         :class="[
                             'px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all',
                             activeCategory === 'sistem'
-                                ? 'bg-brand-600 text-white shadow-md'
-                                : 'bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-700',
+                                ? 'bg-white text-brand-700 font-bold shadow-lg scale-102'
+                                : 'bg-white/15 hover:bg-white/25 text-white border border-white/20 backdrop-blur-xs',
                         ]"
                     >
                         Sistem Custom
                     </button>
                 </div>
 
-                <!-- Projects Grid -->
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+                <!-- Projects Grid (3 Kolom per Baris) -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
                     <ProjectCard
-                        v-for="project in filteredProjects"
+                        v-for="project in displayedHomeProjects"
                         :key="project.slug"
                         :project="project"
                     />
                 </div>
+
+                <!-- Tombol Lihat Portofolio Lainnya (Jika melebihi kuota 6) -->
+                <div v-if="hasMoreProjects" class="mt-12 sm:mt-14 text-center">
+                    <Link
+                        href="/portofolio"
+                        class="inline-flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-xl text-sm font-bold text-brand-700 bg-white hover:bg-neutral-100 shadow-xl shadow-black/20 hover:shadow-black/30 transition-all duration-300 hover:scale-105 active:scale-95 group"
+                    >
+                        <span>Lihat Portofolio Lainnya</span>
+                        <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                        </svg>
+                    </Link>
+                </div>
             </div>
         </section>
 
-        <!-- 5. Pricing Section -->
-        <section id="harga" class="py-20 lg:py-28 bg-neutral-50/70 dark:bg-neutral-900/40 relative">
+        <!-- 4. Pricing Section (Placed right after Portfolio) -->
+        <section id="harga" class="pt-12 sm:pt-14 pb-20 lg:pb-28 bg-neutral-50/70 dark:bg-neutral-900/40 relative">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <!-- Section Header -->
-                <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
-                    <span class="text-xs sm:text-sm font-bold tracking-widest uppercase text-brand-600 dark:text-brand-400">
-                        Harga Transparan & Masuk Akal
-                    </span>
+                <div class="text-center max-w-3xl mx-auto mb-12 sm:mb-14 space-y-3">
                     <h2 class="text-3xl sm:text-4xl font-extrabold text-neutral-900 dark:text-white tracking-tight">
                         Paket Investasi <span class="text-brand-600">Pembuatan Website</span>
                     </h2>
@@ -433,21 +483,22 @@ const localBusinessSchema = computed(() =>
             </div>
         </section>
 
-        <!-- 6. Workflow Section -->
-        <Workflow />
+        <!-- 5. Why Choose Us Section -->
+        <WhyUs />
 
-        <!-- 7. Testimonials Section -->
-        <section class="py-20 lg:py-28 bg-neutral-50/70 dark:bg-neutral-900/40 relative">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- 6. Testimonials Section -->
+        <section id="testimoni" class="pt-12 sm:pt-14 pb-20 lg:pb-28 bg-gradient-to-r from-brand-800 via-brand-600 to-rose-600 text-white relative overflow-hidden shadow-inner">
+            <!-- Background Ambient Accents -->
+            <div class="pointer-events-none absolute -top-24 -right-24 w-96 h-96 bg-white/10 rounded-full blur-3xl"></div>
+            <div class="pointer-events-none absolute -bottom-24 -left-24 w-96 h-96 bg-black/20 rounded-full blur-3xl"></div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 <!-- Section Header -->
-                <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
-                    <span class="text-xs sm:text-sm font-bold tracking-widest uppercase text-brand-600 dark:text-brand-400">
-                        Kata Mereka Tentang Kami
-                    </span>
-                    <h2 class="text-3xl sm:text-4xl font-extrabold text-neutral-900 dark:text-white tracking-tight">
-                        Testimoni <span class="text-brand-600">Klien Swift Code</span>
+                <div class="text-center max-w-3xl mx-auto mb-12 sm:mb-14 space-y-3">
+                    <h2 class="text-3xl sm:text-4xl font-black text-white tracking-tight drop-shadow-xs">
+                        Testimoni <span class="text-white/95">Klien Swift Code</span>
                     </h2>
-                    <p class="text-base text-neutral-600 dark:text-neutral-400">
+                    <p class="text-base text-white/90 leading-relaxed">
                         Kepuasan dan kesuksesan digital klien adalah prioritas utama kami.
                     </p>
                 </div>
@@ -463,14 +514,11 @@ const localBusinessSchema = computed(() =>
             </div>
         </section>
 
-        <!-- 8. FAQ Section -->
-        <section id="faq" class="py-20 lg:py-28 bg-white dark:bg-neutral-950 relative">
+        <!-- 7. FAQ Section -->
+        <section id="faq" class="pt-12 sm:pt-14 pb-20 lg:pb-28 bg-white dark:bg-neutral-950 relative">
             <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                 <!-- Header -->
-                <div class="text-center mb-16 space-y-4">
-                    <span class="text-xs sm:text-sm font-bold tracking-widest uppercase text-brand-600 dark:text-brand-400">
-                        Pertanyaan Umum
-                    </span>
+                <div class="text-center mb-12 sm:mb-14 space-y-3">
                     <h2 class="text-3xl sm:text-4xl font-extrabold text-neutral-900 dark:text-white tracking-tight">
                         Hal yang Sering Ditanyakan (FAQ)
                     </h2>

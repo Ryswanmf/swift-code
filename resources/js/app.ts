@@ -1,6 +1,12 @@
 import '../css/app.css';
 import './bootstrap';
 
+// Ensure dark mode is disabled and clean up any stored preference
+if (typeof window !== 'undefined') {
+    localStorage.removeItem('theme');
+    document.documentElement.classList.remove('dark');
+}
+
 import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createApp, DefineComponent, h } from 'vue';

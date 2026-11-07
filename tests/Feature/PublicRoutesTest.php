@@ -18,6 +18,88 @@ test('homepage loads successfully with dynamic data props', function () {
     );
 });
 
+test('services index page loads successfully', function () {
+    $response = $this->get('/layanan');
+
+    $response->assertStatus(200);
+    $response->assertInertia(fn (Assert $page) => $page
+        ->component('Services/Index')
+        ->has('services')
+        ->has('packages')
+        ->has('settings')
+    );
+});
+
+test('pricing index page loads successfully', function () {
+    $response = $this->get('/harga');
+
+    $response->assertStatus(200);
+    $response->assertInertia(fn (Assert $page) => $page
+        ->component('Pricing/Index')
+        ->has('packages')
+        ->has('faqs')
+        ->has('settings')
+    );
+});
+
+test('articles index page loads successfully', function () {
+    $response = $this->get('/artikel');
+
+    $response->assertStatus(200);
+    $response->assertInertia(fn (Assert $page) => $page
+        ->component('Articles/Index')
+        ->has('articles')
+        ->has('settings')
+    );
+});
+
+test('contact page loads successfully', function () {
+    $response = $this->get('/kontak');
+
+    $response->assertStatus(200);
+    $response->assertInertia(fn (Assert $page) => $page
+        ->component('Contact/Index')
+        ->has('settings')
+    );
+});
+
+test('article detail page loads successfully for existing slug', function () {
+    $response = $this->get('/artikel/alasan-bisnis-lampung-wajib-punya-website');
+
+    $response->assertStatus(200);
+    $response->assertInertia(fn (Assert $page) => $page
+        ->component('Articles/Show')
+        ->has('article')
+        ->has('relatedArticles')
+    );
+});
+
+test('article detail returns 404 for non-existent slug', function () {
+    $response = $this->get('/artikel/slug-yang-tidak-ada-9999');
+
+    $response->assertStatus(404);
+});
+
+test('portfolio index page loads successfully with published projects', function () {
+    Project::create([
+        'title' => 'Archive Test Project',
+        'slug' => 'archive-test-project',
+        'category' => 'company',
+        'summary' => 'Summary for archive test',
+        'is_published' => true,
+        'sort_order' => 1,
+    ]);
+
+    $response = $this->get('/portofolio');
+
+    $response->assertStatus(200);
+    $response->assertInertia(fn (Assert $page) => $page
+        ->component('Projects/Index')
+        ->has('projects')
+        ->has('settings')
+    );
+});
+
 test('portfolio detail page loads successfully for published project', function () {
     $project = Project::create([
         'title' => 'Sample Test Project',

@@ -28,17 +28,18 @@ const articles = [
 </script>
 
 <template>
-    <section id="artikel" class="py-20 lg:py-28 bg-white dark:bg-neutral-950 relative">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="artikel" class="pt-12 sm:pt-14 pb-20 lg:pb-28 bg-gradient-to-r from-brand-800 via-brand-600 to-rose-600 text-white relative overflow-hidden shadow-inner">
+        <!-- Background Ambient Accents -->
+        <div class="pointer-events-none absolute -top-24 -left-24 w-96 h-96 bg-white/10 rounded-full blur-3xl"></div>
+        <div class="pointer-events-none absolute -bottom-24 -right-24 w-96 h-96 bg-black/20 rounded-full blur-3xl"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <!-- Header -->
-            <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
-                <span class="text-xs sm:text-sm font-bold tracking-widest uppercase text-brand-600 dark:text-brand-400">
-                    Edukasi & Wawasan Digital
-                </span>
-                <h2 class="text-3xl sm:text-4xl font-extrabold text-neutral-900 dark:text-white tracking-tight">
-                    Artikel & Panduan <span class="text-brand-600">Website Bisnis</span>
+            <div class="text-center max-w-3xl mx-auto mb-12 sm:mb-14 space-y-3">
+                <h2 class="text-3xl sm:text-4xl font-black text-white tracking-tight drop-shadow-xs">
+                    Artikel & Panduan <span class="text-white/95">Website Bisnis</span>
                 </h2>
-                <p class="text-base text-neutral-600 dark:text-neutral-400">
+                <p class="text-base text-white/90 leading-relaxed">
                     Pelajari strategi memaksimalkan kehadiran online bisnis Anda agar lebih dipercaya dan menghasilkan penjualan nyata.
                 </p>
             </div>
@@ -48,7 +49,7 @@ const articles = [
                 <article
                     v-for="(post, idx) in articles"
                     :key="idx"
-                    class="group rounded-2xl bg-neutral-50/70 dark:bg-neutral-900/50 border border-neutral-200/80 dark:border-neutral-800 overflow-hidden shadow-xs hover:shadow-xl hover:border-brand-500/40 transition-all duration-300 flex flex-col justify-between"
+                    class="group rounded-2xl bg-white dark:bg-neutral-900 border border-neutral-100 dark:border-neutral-800 overflow-hidden shadow-xl shadow-black/15 hover:shadow-2xl hover:border-brand-500/40 transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between"
                 >
                     <div>
                         <!-- Cover Image -->
