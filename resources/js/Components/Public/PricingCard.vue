@@ -17,7 +17,7 @@ const props = withDefaults(
     }>(),
     {
         actionHref: '#kontak',
-        actionText: 'Pilih Paket Ini',
+        actionText: 'Konsultasikan Paket Ini',
         isExternal: false,
     }
 );
@@ -35,18 +35,18 @@ const formatRupiah = (val: number | null) => {
 <template>
     <div
         :class="[
-            'relative rounded-3xl p-8 flex flex-col justify-between transition-all duration-300',
+            'relative rounded-2xl p-7 sm:p-8 flex flex-col justify-between transition-all duration-300',
             pkg.is_highlighted
-                ? 'bg-neutral-900 text-white ring-2 ring-brand-500 shadow-2xl shadow-brand-500/20 lg:-translate-y-2'
-                : 'bg-white border border-neutral-200 shadow-xs hover:shadow-xl',
+                ? 'bg-neutral-950 text-white ring-2 ring-brand-600 shadow-xl shadow-brand-600/15 lg:-translate-y-2'
+                : 'bg-white dark:bg-neutral-900 border border-neutral-200/90 dark:border-neutral-800 shadow-xs hover:shadow-lg',
         ]"
     >
-        <!-- Highlighted Badge -->
+        <!-- Highlighted Badge: Restrained & Informative -->
         <div
             v-if="pkg.is_highlighted"
-            class="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-brand-600 text-white text-xs font-bold uppercase tracking-wider shadow-md"
+            class="absolute -top-3.5 left-1/2 -translate-x-1/2 px-3.5 py-1 rounded-full bg-brand-600 text-white text-[11px] font-extrabold uppercase tracking-wider shadow-md"
         >
-            Paling Populer & Rekomendasi
+            Paling Banyak Dipilih
         </div>
 
         <div>
@@ -54,68 +54,79 @@ const formatRupiah = (val: number | null) => {
             <div class="mb-6">
                 <h3
                     :class="[
-                        'text-xl font-bold mb-2',
-                        pkg.is_highlighted ? 'text-white' : 'text-neutral-900',
+                        'text-xl font-extrabold mb-1.5',
+                        pkg.is_highlighted ? 'text-white' : 'text-neutral-900 dark:text-white',
                     ]"
                 >
                     {{ pkg.name }}
                 </h3>
                 <p
                     :class="[
-                        'text-xs',
-                        pkg.is_highlighted ? 'text-neutral-400' : 'text-neutral-500',
+                        'text-xs leading-relaxed',
+                        pkg.is_highlighted ? 'text-neutral-400' : 'text-neutral-500 dark:text-neutral-400',
                     ]"
                 >
-                    {{ pkg.price_note || 'Investasi terbaik pengembangan bisnis Anda' }}
+                    {{ pkg.price_note || 'Solusi terarah untuk pertumbuhan bisnis dan kredibilitas brand Anda.' }}
                 </p>
             </div>
 
             <!-- Price -->
-            <div class="mb-8 pb-6 border-b border-neutral-200/60">
+            <div class="mb-6 pb-6 border-b border-neutral-200/80 dark:border-neutral-800">
                 <div class="flex items-baseline gap-1">
                     <span
                         :class="[
                             'text-3xl sm:text-4xl font-extrabold tracking-tight',
-                            pkg.is_highlighted ? 'text-white' : 'text-neutral-900',
+                            pkg.is_highlighted ? 'text-white' : 'text-neutral-900 dark:text-white',
                         ]"
                     >
                         {{ formatRupiah(pkg.price) }}
                     </span>
                 </div>
-                <span
+                <p
                     :class="[
-                        'text-xs font-medium',
-                        pkg.is_highlighted ? 'text-neutral-400' : 'text-neutral-500',
+                        'text-[11px] mt-1.5 flex items-center gap-1',
+                        pkg.is_highlighted ? 'text-neutral-400' : 'text-neutral-500 dark:text-neutral-400',
                     ]"
                 >
-                    * Pembayaran bertahap DP 50% & pelunasan
-                </span>
+                    <span class="text-emerald-500 font-bold">✓</span>
+                    <span>Biaya transparan • Termasuk setup domain &amp; hosting</span>
+                </p>
             </div>
 
-            <!-- Feature list -->
-            <ul class="space-y-3.5 mb-8">
-                <li
-                    v-for="(feat, fIdx) in pkg.features"
-                    :key="fIdx"
-                    class="flex items-start gap-3 text-sm"
+            <!-- Feature list with clear checkmarks -->
+            <div class="space-y-3 mb-8">
+                <p
+                    :class="[
+                        'text-xs font-bold uppercase tracking-wider',
+                        pkg.is_highlighted ? 'text-neutral-300' : 'text-neutral-700 dark:text-neutral-300',
+                    ]"
                 >
-                    <svg
-                        class="w-5 h-5 text-emerald-500 shrink-0 mt-0.5"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
+                    Fitur &amp; Spesifikasi:
+                </p>
+                <ul class="space-y-2.5">
+                    <li
+                        v-for="(feat, fIdx) in pkg.features"
+                        :key="fIdx"
+                        class="flex items-start gap-2.5 text-xs sm:text-sm"
                     >
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
-                    </svg>
-                    <span
-                        :class="[
-                            pkg.is_highlighted ? 'text-neutral-200' : 'text-neutral-700',
-                        ]"
-                    >
-                        {{ feat }}
-                    </span>
-                </li>
-            </ul>
+                        <svg
+                            class="w-4 h-4 text-emerald-500 shrink-0 mt-0.5"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+                        </svg>
+                        <span
+                            :class="[
+                                pkg.is_highlighted ? 'text-neutral-200' : 'text-neutral-700 dark:text-neutral-300',
+                            ]"
+                        >
+                            {{ feat }}
+                        </span>
+                    </li>
+                </ul>
+            </div>
         </div>
 
         <!-- Action Button -->
@@ -124,10 +135,10 @@ const formatRupiah = (val: number | null) => {
             :target="isExternal ? '_blank' : undefined"
             :rel="isExternal ? 'noopener noreferrer' : undefined"
             :class="[
-                'w-full py-3.5 px-4 rounded-xl font-bold text-center text-sm transition-all duration-200 shadow-md block',
+                'w-full py-3.5 px-4 rounded-xl font-bold text-center text-xs sm:text-sm transition-all duration-200 shadow-sm block cursor-pointer',
                 pkg.is_highlighted
-                    ? 'bg-brand-600 hover:bg-brand-700 text-white shadow-brand-600/30 hover:scale-102'
-                    : 'bg-neutral-100 hover:bg-neutral-200 text-neutral-900',
+                    ? 'bg-brand-600 hover:bg-brand-700 active:bg-brand-800 text-white shadow-brand-600/30 hover:-translate-y-0.5'
+                    : 'bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 text-neutral-900 dark:text-white',
             ]"
         >
             {{ actionText }}
