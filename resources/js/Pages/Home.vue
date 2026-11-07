@@ -506,7 +506,7 @@ const localBusinessSchema = computed(() =>
         </section>
 
         <!-- 4. Pricing Section (Placed right after Portfolio) -->
-        <section id="harga" class="pt-12 sm:pt-14 pb-20 lg:pb-28 bg-neutral-50/70 dark:bg-neutral-900/40 relative">
+        <section id="harga" class="pt-12 sm:pt-14 pb-12 sm:pb-16 bg-neutral-50/70 dark:bg-neutral-900/40 relative">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <!-- Section Header -->
                 <div class="text-center max-w-3xl mx-auto mb-12 sm:mb-14 space-y-3">

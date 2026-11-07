@@ -28,13 +28,10 @@ const coreStrengths = [
 </script>
 
 <template>
-    <section id="keunggulan" class="py-16 sm:py-20 lg:py-28 bg-white dark:bg-neutral-950 relative">
+    <section id="keunggulan" class="pt-8 sm:pt-10 lg:pt-12 pb-16 sm:pb-20 lg:pb-24 bg-white dark:bg-neutral-950 relative">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <!-- Section Header -->
-            <div class="text-center max-w-3xl mx-auto mb-14 sm:mb-16 space-y-3">
-                <span class="text-xs sm:text-sm font-bold tracking-widest uppercase text-brand-600 dark:text-brand-400">
-                    Standar Kualitas Swift Code
-                </span>
+            <div class="text-center max-w-3xl mx-auto mb-10 sm:mb-12 space-y-3">
                 <h2 class="text-3xl sm:text-4xl font-extrabold text-neutral-900 dark:text-white tracking-tight">
                     Website Anda Bukan Sekadar Pajangan, Tapi <span class="text-brand-600">Alat Penjualan Nyata</span>
                 </h2>
