@@ -37,6 +37,7 @@ const navLinks = [
     { name: 'Testimoni Klien', href: '/#testimoni' },
     { name: 'Tanya Jawab (FAQ)', href: '/#faq' },
     { name: 'Artikel & Panduan', href: '/artikel' },
+    { name: 'Tentang Kami', href: '/tentang' },
     { name: 'Hubungi Kami', href: '/kontak' },
 ];
 

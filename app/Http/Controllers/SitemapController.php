@@ -22,6 +22,7 @@ class SitemapController extends Controller
             ['url' => '/harga', 'priority' => '0.9', 'changefreq' => 'weekly'],
             ['url' => '/portofolio', 'priority' => '0.9', 'changefreq' => 'weekly'],
             ['url' => '/artikel', 'priority' => '0.8', 'changefreq' => 'daily'],
+            ['url' => '/tentang', 'priority' => '0.8', 'changefreq' => 'monthly'],
             ['url' => '/kontak', 'priority' => '0.8', 'changefreq' => 'monthly'],
         ];
 

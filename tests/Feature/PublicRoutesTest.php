@@ -53,6 +53,20 @@ test('articles index page loads successfully', function () {
     );
 });
 
+test('about page loads successfully', function () {
+    $response = $this->get('/tentang');
+
+    $response->assertStatus(200);
+    $response->assertInertia(fn (Assert $page) => $page
+        ->component('About/Index')
+        ->has('partners')
+        ->has('testimonials')
+        ->has('services')
+        ->has('projectsCount')
+        ->has('settings')
+    );
+});
+
 test('contact page loads successfully', function () {
     $response = $this->get('/kontak');
 
@@ -203,6 +217,7 @@ test('sitemap xml endpoint returns valid xml with published projects', function 
     expect($response->getContent())->toContain('/harga');
     expect($response->getContent())->toContain('/portofolio');
     expect($response->getContent())->toContain('/artikel');
+    expect($response->getContent())->toContain('/tentang');
     expect($response->getContent())->toContain('/kontak');
 });
 

@@ -17,8 +17,15 @@ const navLinks = computed(() => [
     { name: 'Portofolio', href: '/portofolio', isRoute: true },
     { name: 'Paket Harga', href: '/harga', isRoute: true },
     { name: 'Artikel', href: '/artikel', isRoute: true },
+    { name: 'Tentang', href: '/tentang', isRoute: true },
     { name: 'Kontak', href: '/kontak', isRoute: true },
 ]);
+
+const isCurrentRoute = (href: string) => {
+    if (!href || href.startsWith('#')) return false;
+    if (href === '/') return page.url === '/';
+    return page.url === href || page.url.startsWith(href + '/');
+};
 
 const handleScroll = () => {
     isScrolled.value = window.scrollY > 20;
@@ -60,14 +67,19 @@ const closeMobileMenu = () => {
                         <Link
                             v-if="link.isRoute"
                             :href="link.href"
-                            class="px-3 py-2 text-sm font-medium text-neutral-700 hover:text-brand-600 rounded-lg transition-colors"
+                            :class="[
+                                'px-3 py-2 text-sm font-medium rounded-lg transition-colors',
+                                isCurrentRoute(link.href)
+                                    ? 'text-brand-600 bg-brand-50/80 font-semibold'
+                                    : 'text-neutral-700 hover:text-brand-600 hover:bg-neutral-50',
+                            ]"
                         >
                             {{ link.name }}
                         </Link>
                         <a
                             v-else
                             :href="link.href"
-                            class="px-3 py-2 text-sm font-medium text-neutral-700 hover:text-brand-600 rounded-lg transition-colors"
+                            class="px-3 py-2 text-sm font-medium text-neutral-700 hover:text-brand-600 hover:bg-neutral-50 rounded-lg transition-colors"
                         >
                             {{ link.name }}
                         </a>
@@ -126,7 +138,12 @@ const closeMobileMenu = () => {
                             v-if="link.isRoute"
                             :href="link.href"
                             @click="closeMobileMenu"
-                            class="px-4 py-2.5 text-base font-medium text-neutral-800 hover:text-brand-600 hover:bg-neutral-100 rounded-xl transition-colors"
+                            :class="[
+                                'px-4 py-2.5 text-base font-medium rounded-xl transition-colors',
+                                isCurrentRoute(link.href)
+                                    ? 'text-brand-600 bg-brand-50 font-semibold'
+                                    : 'text-neutral-800 hover:text-brand-600 hover:bg-neutral-100',
+                            ]"
                         >
                             {{ link.name }}
                         </Link>
