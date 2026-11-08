@@ -18,6 +18,14 @@ const trust1 = computed(() => props.settings?.hero_trust_1 || 'Domain & Cloud Ho
 const trust2 = computed(() => props.settings?.hero_trust_2 || 'Struktur SEO & Kecepatan Dioptimasi');
 const trust3 = computed(() => props.settings?.hero_trust_3 || 'Garansi Perbaikan & Dukungan');
 
+const heroImage = computed(() => props.settings?.hero_image || '/images/hero-showcase.png');
+const metricScore = computed(() => props.settings?.hero_metric_score || '100');
+const metricLabel = computed(() => props.settings?.hero_metric_label || 'PageSpeed Score');
+const metricDesc = computed(() => props.settings?.hero_metric_desc || '0.4s Super Kilat');
+const mockupUrl = computed(() => props.settings?.hero_mockup_url || 'swiftcode.id');
+const mockupBadge = computed(() => props.settings?.hero_mockup_badge || 'Laravel 12 • Vue 3 • Tailwind CSS');
+const mockupLocation = computed(() => props.settings?.hero_mockup_location || 'Bandar Lampung');
+
 const highlights = computed(() => [
     {
         title: props.settings?.hero_highlight_1_title || '3 – 7 Hari',
@@ -122,13 +130,13 @@ const highlights = computed(() => [
                         <!-- Metric Badge -->
                         <div class="absolute -top-3 -right-2 sm:-right-4 z-20 flex items-center gap-2.5 px-3.5 py-2 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 shadow-xl">
                             <div class="w-7 h-7 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-black text-xs ring-1 ring-emerald-500/30">
-                                100
+                                {{ metricScore }}
                             </div>
                             <div>
-                                <div class="text-[10px] text-neutral-500 font-medium">PageSpeed Score</div>
+                                <div class="text-[10px] text-neutral-500 font-medium">{{ metricLabel }}</div>
                                 <div class="text-xs font-bold text-neutral-900 dark:text-white flex items-center gap-1">
                                     <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                                    0.4s Super Kilat
+                                    {{ metricDesc }}
                                 </div>
                             </div>
                         </div>
@@ -146,8 +154,7 @@ const highlights = computed(() => [
                                     <svg class="w-3 h-3 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                                     </svg>
-                                    <span class="text-neutral-300">swiftcode.id</span>
-                                    <span class="text-neutral-500 hidden sm:inline">/preview</span>
+                                    <span class="text-neutral-300">{{ mockupUrl }}</span>
                                 </div>
                                 <div class="flex items-center gap-1.5">
                                     <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
@@ -158,7 +165,7 @@ const highlights = computed(() => [
                             <!-- Inner Image Container -->
                             <div class="relative rounded-xl overflow-hidden aspect-[4/3] sm:aspect-[16/11] bg-neutral-900">
                                 <img
-                                    src="/images/hero-showcase.png"
+                                    :src="heroImage"
                                     alt="Swift Code Lampung - Modern Web Development & Digital Solution"
                                     class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                                     loading="eager"
@@ -168,15 +175,15 @@ const highlights = computed(() => [
 
                                 <div class="absolute bottom-3 right-3 z-10 flex items-center gap-2 px-3 py-1.5 rounded-lg bg-neutral-900/90 border border-white/10 text-white text-[11px] font-mono shadow-md">
                                     <span class="w-2 h-2 rounded-full bg-brand-500"></span>
-                                    <span>Laravel 12 • Vue 3 • Tailwind CSS</span>
+                                    <span>{{ mockupBadge }}</span>
                                 </div>
 
-                                <div class="absolute bottom-3 left-3 z-10 hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-neutral-900/80 border border-white/10 text-neutral-300 text-[11px]">
+                                <div v-if="mockupLocation" class="absolute bottom-3 left-3 z-10 hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-neutral-900/80 border border-white/10 text-neutral-300 text-[11px]">
                                     <svg class="w-3.5 h-3.5 text-brand-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                                     </svg>
-                                    <span>Bandar Lampung</span>
+                                    <span>{{ mockupLocation }}</span>
                                 </div>
                             </div>
                         </div>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Faq;
 use App\Models\Package;
+use App\Models\Partner;
 use App\Models\Project;
 use App\Models\Service;
 use App\Models\Setting;
@@ -45,6 +46,11 @@ class HomeController extends Controller
                     ->where('is_published', true)
                     ->orderBy('sort_order')
                     ->get(['id', 'question', 'answer']),
+
+                'partners' => Partner::query()
+                    ->where('is_active', true)
+                    ->orderBy('sort_order')
+                    ->get(['id', 'name', 'category', 'color', 'icon', 'logo_image']),
 
                 'settings' => Setting::getAllAsKeyMap(),
             ];

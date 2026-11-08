@@ -7,6 +7,8 @@ interface ServiceData {
     icon: string;
     title: string;
     description: string;
+    suitable_for?: string | null;
+    features?: string[] | null;
     badge: string | null;
     sort_order: number;
     is_active: boolean;
@@ -21,6 +23,8 @@ const form = useForm({
     icon: props.service?.icon || 'rocket',
     title: props.service?.title || '',
     description: props.service?.description || '',
+    suitable_for: props.service?.suitable_for || '',
+    features: Array.isArray(props.service?.features) ? props.service.features.join('\n') : '',
     badge: props.service?.badge || '',
     sort_order: props.service?.sort_order ?? 0,
     is_active: props.service?.is_active ?? true,
@@ -310,6 +314,39 @@ const submit = () => {
                         class="w-full px-4 py-2.5 rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white text-xs focus:ring-2 focus:ring-brand-500 outline-none resize-none transition-all"
                     ></textarea>
                     <p v-if="form.errors.description" class="text-xs text-rose-500 mt-1 font-semibold">{{ form.errors.description }}</p>
+                </div>
+
+                <!-- Suitable For (Target Audience) -->
+                <div>
+                    <label class="block text-xs font-bold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
+                        Target Pengguna / Cocok Untuk
+                    </label>
+                    <input
+                        v-model="form.suitable_for"
+                        type="text"
+                        placeholder="Contoh: UMKM, produk kuliner, event, PT, CV, kantor advokat, dll"
+                        class="w-full px-4 py-2.5 rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white text-xs focus:ring-2 focus:ring-brand-500 outline-none transition-all"
+                    />
+                    <p class="text-[10px] text-neutral-400 mt-1">Ditampilkan pada kartu katalog halaman Layanan.</p>
+                    <p v-if="form.errors.suitable_for" class="text-xs text-rose-500 mt-1 font-semibold">{{ form.errors.suitable_for }}</p>
+                </div>
+
+                <!-- Features List (Multiline Textarea) -->
+                <div>
+                    <label class="block text-xs font-bold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
+                        Daftar Fitur & Fasilitas (1 baris per fitur)
+                    </label>
+                    <textarea
+                        v-model="form.features"
+                        rows="5"
+                        placeholder="Desain 1 halaman modern & mobile-first
+Integrasi tombol WhatsApp otomatis & form leads
+Gratis domain (.my.id/.com) & hosting SSD 1 tahun
+Loading kilat optimal < 2 detik"
+                        class="w-full px-4 py-2.5 rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white text-xs focus:ring-2 focus:ring-brand-500 outline-none font-mono transition-all"
+                    ></textarea>
+                    <p class="text-[10px] text-neutral-400 mt-1">Tekan Enter untuk memisahkan setiap poin fitur unggulan.</p>
+                    <p v-if="form.errors.features" class="text-xs text-rose-500 mt-1 font-semibold">{{ form.errors.features }}</p>
                 </div>
 
                 <!-- Badge and Sort Order -->

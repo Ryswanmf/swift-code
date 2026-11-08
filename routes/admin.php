@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\HomePageController;
 use App\Http\Controllers\Admin\LeadController;
 use App\Http\Controllers\Admin\PackageController;
+use App\Http\Controllers\Admin\PartnerController;
 use App\Http\Controllers\Admin\ProjectController;
 use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\SettingController;
@@ -27,6 +28,8 @@ Route::resource('paket', PackageController::class);
 Route::resource('paket-harga', PackageController::class);
 Route::resource('testimonials', TestimonialController::class);
 Route::resource('faqs', FaqController::class);
+Route::resource('partners', PartnerController::class);
+Route::resource('mitra', PartnerController::class);
 
 // CRUD Kontak / Leads Management
 Route::resource('leads', LeadController::class);

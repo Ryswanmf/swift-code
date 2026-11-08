@@ -27,6 +27,7 @@ const navigation = [
     { name: 'Artikel & Blog', href: '/admin/articles', id: 'articles' },
     { name: 'Layanan', href: '/admin/services', id: 'services' },
     { name: 'Paket Harga', href: '/admin/packages', id: 'packages' },
+    { name: 'Mitra & Klien', href: '/admin/partners', id: 'partners' },
     { name: 'Testimoni', href: '/admin/testimonials', id: 'testimonials' },
     { name: 'FAQ', href: '/admin/faqs', id: 'faqs' },
     { name: 'Pengaturan Situs', href: '/admin/settings', id: 'settings' },
@@ -53,6 +54,9 @@ const isCurrentUrl = (url: string) => {
     }
     if (url === '/admin/packages') {
         return page.url.startsWith('/admin/packages') || page.url.startsWith('/admin/paket');
+    }
+    if (url === '/admin/partners') {
+        return page.url.startsWith('/admin/partners') || page.url.startsWith('/admin/mitra');
     }
     return page.url.startsWith(url);
 };

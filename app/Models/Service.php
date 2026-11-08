@@ -13,6 +13,8 @@ class Service extends Model
         'icon',
         'title',
         'description',
+        'suitable_for',
+        'features',
         'badge',
         'sort_order',
         'is_active',
@@ -23,6 +25,7 @@ class Service extends Model
         return [
             'is_active' => 'boolean',
             'sort_order' => 'integer',
+            'features' => 'array',
         ];
     }
 }

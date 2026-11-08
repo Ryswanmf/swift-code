@@ -1,12 +1,20 @@
 <script setup lang="ts">
-interface Partner {
+import { computed } from 'vue';
+
+export interface Partner {
+    id?: number;
     name: string;
-    category: string;
-    color: string;
-    icon: 'education' | 'leaf' | 'clinic' | 'coffee' | 'truck' | 'travel' | 'shop' | 'building';
+    category?: string;
+    color?: string;
+    icon?: string;
+    logo_image?: string | null;
 }
 
-const partners: Partner[] = [
+const props = defineProps<{
+    partners?: Partner[];
+}>();
+
+const defaultPartners: Partner[] = [
     {
         name: 'Dinas Pendidikan Lampung',
         category: 'Instansi Pemerintah',
@@ -62,6 +70,8 @@ const partners: Partner[] = [
         icon: 'building',
     },
 ];
+
+const activePartners = computed(() => (props.partners && props.partners.length > 0 ? props.partners : defaultPartners));
 </script>
 
 <template>
@@ -88,13 +98,22 @@ const partners: Partner[] = [
             <div class="partner-marquee-track flex items-center gap-4 sm:gap-6 py-2">
                 <!-- Duplicate array twice for smooth infinite loop -->
                 <div
-                    v-for="(partner, idx) in [...partners, ...partners]"
+                    v-for="(partner, idx) in [...activePartners, ...activePartners]"
                     :key="`${partner.name}-${idx}`"
                     class="group flex items-center gap-3.5 px-4 sm:px-5 py-3 rounded-2xl bg-white shadow-md hover:shadow-xl border border-white/40 transition-all shrink-0 cursor-default hover:scale-102"
                 >
-                    <!-- Partner Logo Badge -->
+                    <!-- Partner Logo Image (if uploaded) -->
                     <div
-                        :class="partner.color"
+                        v-if="partner.logo_image"
+                        class="w-10 h-10 rounded-xl bg-neutral-50 border border-neutral-100 flex items-center justify-center p-1 overflow-hidden shrink-0 group-hover:scale-105 transition-transform"
+                    >
+                        <img :src="partner.logo_image" :alt="partner.name" class="w-full h-full object-contain" />
+                    </div>
+
+                    <!-- Partner Logo Badge (Icon SVG fallback) -->
+                    <div
+                        v-else
+                        :class="partner.color || 'from-brand-600 to-rose-600'"
                         class="w-10 h-10 rounded-xl bg-gradient-to-br flex items-center justify-center text-white shadow-xs shrink-0 group-hover:scale-105 transition-transform"
                     >
                         <!-- Education -->

@@ -17,6 +17,7 @@ interface SyncStats {
     projects: SyncStatGroup;
     packages: SyncStatGroup;
     testimonials: SyncStatGroup;
+    partners?: SyncStatGroup;
     faqs: SyncStatGroup;
     articles: SyncStatGroup;
     leads: { total: number; new: number };
@@ -44,6 +45,33 @@ const form = useForm({
     hero_trust_2: props.settings.hero_trust_2 || 'Struktur SEO & Kecepatan Dioptimasi',
     hero_trust_3: props.settings.hero_trust_3 || 'Garansi Perbaikan & Dukungan',
 
+    // Hero Showcase Mockup & Badges
+    hero_image: null as File | null,
+    hero_metric_score: props.settings.hero_metric_score || '100',
+    hero_metric_label: props.settings.hero_metric_label || 'PageSpeed Score',
+    hero_metric_desc: props.settings.hero_metric_desc || '0.4s Super Kilat',
+    hero_mockup_url: props.settings.hero_mockup_url || 'swiftcode.id/preview',
+    hero_mockup_badge: props.settings.hero_mockup_badge || 'Laravel 12 • Vue 3 • Tailwind CSS',
+    hero_mockup_location: props.settings.hero_mockup_location || 'Bandar Lampung',
+
+    // Why Us Customization
+    why_us_problem_title: props.settings.why_us_problem_title || 'Kecepatan Akses Tinggi & Tampilan Mobile Sempurna',
+    why_us_problem_desc: props.settings.why_us_problem_desc || 'Pengunjung rata-rata meninggalkan website jika loading lebih dari 3 detik. Swift Code membangun website dengan kompresi modern dan struktur kode yang sangat ringan.',
+    why_us_solution_title: props.settings.why_us_solution_title || 'Standar Website Swift Code',
+    why_us_solution_desc: props.settings.why_us_solution_desc || 'Skor Lighthouse 90+, navigasi sentuh instan, gambar otomatis terkompresi WebP, dan siap dibuka di jaringan 4G.',
+    why_us_card_1_title: props.settings.why_us_card_1_title || 'Optimasi Google & SEO Lokal Lampung',
+    why_us_card_1_desc: props.settings.why_us_card_1_desc || 'Dilengkapi Schema.org LocalBusiness, sitemap otomatis, dan kata kunci lokal agar bisnis Anda mudah ditemukan calon pembeli terdekat.',
+    why_us_card_1_tag: props.settings.why_us_card_1_tag || 'Ditemukan di Google',
+    why_us_card_2_title: props.settings.why_us_card_2_title || 'Konversi Langsung ke WhatsApp',
+    why_us_card_2_desc: props.settings.why_us_card_2_desc || 'Setiap tombol pemesanan dan formulir langsung mengarahkan pengunjung ke chat WhatsApp admin Anda dengan format pesan rapi.',
+    why_us_card_2_tag: props.settings.why_us_card_2_tag || 'Konversi Instan',
+    why_us_card_3_title: props.settings.why_us_card_3_title || 'Dashboard Kelola Konten Praktis',
+    why_us_card_3_desc: props.settings.why_us_card_3_desc || 'Ubah teks profil, tambah foto portofolio, atau perbarui kontak bisnis kapan saja dengan mudah tanpa perlu paham koding.',
+    why_us_card_3_tag: props.settings.why_us_card_3_tag || 'Mudah Dikelola',
+    why_us_card_4_title: props.settings.why_us_card_4_title || 'Garansi & Dukungan Teknis Purna Jual',
+    why_us_card_4_desc: props.settings.why_us_card_4_desc || 'Kami tidak lepas tangan setelah serah terima. Anda mendapatkan proteksi SSL, perbaikan error teknis, dan konsultasi lanjutan.',
+    why_us_card_4_tag: props.settings.why_us_card_4_tag || 'Pendampingan Penuh',
+
     // Section Titles & Subtitles
     section_services_title: props.settings.section_services_title || 'Layanan Pembuatan Website Sesuai Kebutuhan',
     section_services_desc: props.settings.section_services_desc || 'Pilih jenis website yang paling pas dengan industri dan skala bisnis Anda saat ini.',
@@ -70,8 +98,22 @@ const form = useForm({
     show_contact: props.settings.show_contact !== '0' ? '1' : '0',
 });
 
+const heroImagePreview = ref<string | null>(props.settings.hero_image || '/images/hero-showcase.png');
+
+const handleHeroImageChange = (e: Event) => {
+    const target = e.target as HTMLInputElement;
+    if (target.files && target.files[0]) {
+        const file = target.files[0];
+        form.hero_image = file;
+        heroImagePreview.value = URL.createObjectURL(file);
+    }
+};
+
 const submit = () => {
-    form.put('/admin/beranda', {
+    form.post('/admin/beranda', {
+        headers: {
+            'X-HTTP-Method-Override': 'PUT',
+        },
         preserveScroll: true,
     });
 };
@@ -407,6 +449,93 @@ const submit = () => {
                             />
                         </div>
                     </div>
+
+                    <!-- Hero Showcase Image & Mockup Settings -->
+                    <div class="pt-4 border-t border-neutral-100 dark:border-neutral-800 space-y-4">
+                        <label class="block text-xs font-bold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider">
+                            Tampilan Mockup & Gambar Showcase Hero
+                        </label>
+
+                        <div class="p-4 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-800/40 space-y-3">
+                            <div class="flex flex-col sm:flex-row sm:items-center gap-4">
+                                <div class="w-32 h-20 rounded-xl border border-neutral-300 dark:border-neutral-700 bg-neutral-900 p-1 flex items-center justify-center shrink-0 overflow-hidden">
+                                    <img v-if="heroImagePreview" :src="heroImagePreview" alt="Showcase Hero" class="w-full h-full object-cover rounded-lg" />
+                                </div>
+                                <div class="flex-1 space-y-1">
+                                    <label class="block text-xs font-bold text-neutral-800 dark:text-neutral-200">
+                                        Unggah Gambar Showcase Hero (WebP/PNG/JPG)
+                                    </label>
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        @change="handleHeroImageChange"
+                                        class="text-xs text-neutral-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-[11px] file:font-bold file:bg-brand-50 file:text-brand-700 hover:file:bg-brand-100"
+                                    />
+                                    <p class="text-[10px] text-neutral-400">Rekomendasi rasio 16:10 atau 4:3 resolusi tajam minimal 800x600px.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <div>
+                                <label class="block text-[11px] font-bold text-neutral-600 dark:text-neutral-400 mb-1">Skor PageSpeed</label>
+                                <input
+                                    v-model="form.hero_metric_score"
+                                    type="text"
+                                    placeholder="100"
+                                    class="w-full px-4 py-2 rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white text-xs font-mono outline-none"
+                                />
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-bold text-neutral-600 dark:text-neutral-400 mb-1">Label Metrik</label>
+                                <input
+                                    v-model="form.hero_metric_label"
+                                    type="text"
+                                    placeholder="PageSpeed Score"
+                                    class="w-full px-4 py-2 rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white text-xs outline-none"
+                                />
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-bold text-neutral-600 dark:text-neutral-400 mb-1">Keterangan Kecepatan</label>
+                                <input
+                                    v-model="form.hero_metric_desc"
+                                    type="text"
+                                    placeholder="0.4s Super Kilat"
+                                    class="w-full px-4 py-2 rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white text-xs outline-none"
+                                />
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <div>
+                                <label class="block text-[11px] font-bold text-neutral-600 dark:text-neutral-400 mb-1">URL Mockup Browser</label>
+                                <input
+                                    v-model="form.hero_mockup_url"
+                                    type="text"
+                                    placeholder="swiftcode.id"
+                                    class="w-full px-4 py-2 rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white text-xs font-mono outline-none"
+                                />
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-bold text-neutral-600 dark:text-neutral-400 mb-1">Badge Teknologi (Pojok Kanan)</label>
+                                <input
+                                    v-model="form.hero_mockup_badge"
+                                    type="text"
+                                    placeholder="Laravel 12 • Vue 3 • Tailwind CSS"
+                                    class="w-full px-4 py-2 rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white text-xs outline-none"
+                                />
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-bold text-neutral-600 dark:text-neutral-400 mb-1">Badge Lokasi (Pojok Kiri)</label>
+                                <input
+                                    v-model="form.hero_mockup_location"
+                                    type="text"
+                                    placeholder="Bandar Lampung"
+                                    class="w-full px-4 py-2 rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white text-xs outline-none"
+                                />
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- TAB 2: SECTION TITLES & SUBTITLES -->
@@ -492,7 +621,7 @@ const submit = () => {
                     </div>
 
                     <!-- Keunggulan (Why Us) Section -->
-                    <div class="space-y-3 pb-4 border-b border-neutral-100 dark:border-neutral-800">
+                    <div class="space-y-4 pb-4 border-b border-neutral-100 dark:border-neutral-800">
                         <span class="text-[10px] font-bold px-2 py-0.5 rounded-md bg-purple-50 text-purple-700 dark:bg-purple-950 dark:text-purple-300 border border-purple-200 uppercase">
                             Section Mengapa Memilih Kami (Why Us)
                         </span>
@@ -512,6 +641,87 @@ const submit = () => {
                                     type="text"
                                     class="w-full px-4 py-2.5 rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white text-xs focus:ring-2 focus:ring-brand-500 outline-none"
                                 />
+                            </div>
+                        </div>
+
+                        <!-- Kartu Sorotan Komparasi -->
+                        <div class="p-4 rounded-xl bg-neutral-50 dark:bg-neutral-800/40 border border-neutral-200 dark:border-neutral-700 space-y-3">
+                            <h4 class="text-xs font-bold text-neutral-800 dark:text-neutral-200 uppercase tracking-wider">
+                                Kartu Sorotan Utama (Sisi Kiri)
+                            </h4>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-[11px] font-semibold text-neutral-600 dark:text-neutral-400 mb-1">Judul Masalah / Sorotan</label>
+                                    <input
+                                        v-model="form.why_us_problem_title"
+                                        type="text"
+                                        class="w-full px-3 py-2 rounded-lg border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-xs"
+                                    />
+                                </div>
+                                <div>
+                                    <label class="block text-[11px] font-semibold text-neutral-600 dark:text-neutral-400 mb-1">Deskripsi Masalah</label>
+                                    <input
+                                        v-model="form.why_us_problem_desc"
+                                        type="text"
+                                        class="w-full px-3 py-2 rounded-lg border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-xs"
+                                    />
+                                </div>
+                                <div>
+                                    <label class="block text-[11px] font-semibold text-neutral-600 dark:text-neutral-400 mb-1">Judul Standar Solusi</label>
+                                    <input
+                                        v-model="form.why_us_solution_title"
+                                        type="text"
+                                        class="w-full px-3 py-2 rounded-lg border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-xs"
+                                    />
+                                </div>
+                                <div>
+                                    <label class="block text-[11px] font-semibold text-neutral-600 dark:text-neutral-400 mb-1">Deskripsi Standar Solusi</label>
+                                    <input
+                                        v-model="form.why_us_solution_desc"
+                                        type="text"
+                                        class="w-full px-3 py-2 rounded-lg border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-xs"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 4 Kartu Keunggulan Sisi Kanan -->
+                        <div class="p-4 rounded-xl bg-neutral-50 dark:bg-neutral-800/40 border border-neutral-200 dark:border-neutral-700 space-y-4">
+                            <h4 class="text-xs font-bold text-neutral-800 dark:text-neutral-200 uppercase tracking-wider">
+                                4 Kartu Keunggulan Teknis (Sisi Kanan)
+                            </h4>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <!-- Card 1 -->
+                                <div class="p-3 rounded-lg border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 space-y-2">
+                                    <span class="text-[10px] font-bold text-brand-600">Kartu 1</span>
+                                    <input v-model="form.why_us_card_1_tag" type="text" placeholder="Tag: Ditemukan di Google" class="w-full px-2.5 py-1.5 rounded-lg border text-xs" />
+                                    <input v-model="form.why_us_card_1_title" type="text" placeholder="Judul Kartu 1" class="w-full px-2.5 py-1.5 rounded-lg border text-xs font-bold" />
+                                    <textarea v-model="form.why_us_card_1_desc" rows="2" placeholder="Deskripsi..." class="w-full px-2.5 py-1.5 rounded-lg border text-xs resize-none"></textarea>
+                                </div>
+
+                                <!-- Card 2 -->
+                                <div class="p-3 rounded-lg border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 space-y-2">
+                                    <span class="text-[10px] font-bold text-brand-600">Kartu 2</span>
+                                    <input v-model="form.why_us_card_2_tag" type="text" placeholder="Tag: Konversi Instan" class="w-full px-2.5 py-1.5 rounded-lg border text-xs" />
+                                    <input v-model="form.why_us_card_2_title" type="text" placeholder="Judul Kartu 2" class="w-full px-2.5 py-1.5 rounded-lg border text-xs font-bold" />
+                                    <textarea v-model="form.why_us_card_2_desc" rows="2" placeholder="Deskripsi..." class="w-full px-2.5 py-1.5 rounded-lg border text-xs resize-none"></textarea>
+                                </div>
+
+                                <!-- Card 3 -->
+                                <div class="p-3 rounded-lg border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 space-y-2">
+                                    <span class="text-[10px] font-bold text-brand-600">Kartu 3</span>
+                                    <input v-model="form.why_us_card_3_tag" type="text" placeholder="Tag: Mudah Dikelola" class="w-full px-2.5 py-1.5 rounded-lg border text-xs" />
+                                    <input v-model="form.why_us_card_3_title" type="text" placeholder="Judul Kartu 3" class="w-full px-2.5 py-1.5 rounded-lg border text-xs font-bold" />
+                                    <textarea v-model="form.why_us_card_3_desc" rows="2" placeholder="Deskripsi..." class="w-full px-2.5 py-1.5 rounded-lg border text-xs resize-none"></textarea>
+                                </div>
+
+                                <!-- Card 4 -->
+                                <div class="p-3 rounded-lg border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 space-y-2">
+                                    <span class="text-[10px] font-bold text-brand-600">Kartu 4</span>
+                                    <input v-model="form.why_us_card_4_tag" type="text" placeholder="Tag: Pendampingan Penuh" class="w-full px-2.5 py-1.5 rounded-lg border text-xs" />
+                                    <input v-model="form.why_us_card_4_title" type="text" placeholder="Judul Kartu 4" class="w-full px-2.5 py-1.5 rounded-lg border text-xs font-bold" />
+                                    <textarea v-model="form.why_us_card_4_desc" rows="2" placeholder="Deskripsi..." class="w-full px-2.5 py-1.5 rounded-lg border text-xs resize-none"></textarea>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -577,9 +787,12 @@ const submit = () => {
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <!-- Marquee -->
                         <div class="p-4 rounded-xl border border-neutral-200 dark:border-neutral-800 flex items-center justify-between">
-                            <div>
+                            <div class="space-y-1">
                                 <p class="text-xs font-bold text-neutral-900 dark:text-white">Banner Mitra & Klien (Marquee)</p>
                                 <p class="text-[11px] text-neutral-500">Menampilkan deretan nama mitra yang berjalan di bawah hero.</p>
+                                <Link href="/admin/partners" class="inline-block text-[11px] text-brand-600 dark:text-brand-400 font-bold hover:underline">
+                                    Kelola Data Mitra ({{ syncStats.partners?.total || 0 }}) →
+                                </Link>
                             </div>
                             <label class="cursor-pointer">
                                 <input

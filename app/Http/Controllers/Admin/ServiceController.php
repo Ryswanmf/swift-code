@@ -74,21 +74,28 @@ class ServiceController extends Controller
             'icon' => 'required|string|max:50',
             'title' => 'required|string|max:255',
             'description' => 'required|string',
+            'suitable_for' => 'nullable|string|max:255',
+            'features' => 'nullable',
             'badge' => 'nullable|string|max:50',
             'sort_order' => 'nullable|integer',
             'is_active' => 'boolean',
         ]);
 
+        $features = $this->parseFeatures($request->input('features'));
+
         Service::create([
             'icon' => $validated['icon'],
             'title' => $validated['title'],
             'description' => $validated['description'],
+            'suitable_for' => $validated['suitable_for'] ?? null,
+            'features' => $features,
             'badge' => $validated['badge'] ?? null,
             'sort_order' => (int) ($validated['sort_order'] ?? 0),
             'is_active' => $request->boolean('is_active', true),
         ]);
 
         Cache::forget('home_page_data');
+        Cache::forget('nav_services');
 
         return redirect()->route('admin.services.index')->with('success', 'Layanan berhasil ditambahkan.');
     }
@@ -121,23 +128,46 @@ class ServiceController extends Controller
             'icon' => 'required|string|max:50',
             'title' => 'required|string|max:255',
             'description' => 'required|string',
+            'suitable_for' => 'nullable|string|max:255',
+            'features' => 'nullable',
             'badge' => 'nullable|string|max:50',
             'sort_order' => 'nullable|integer',
             'is_active' => 'boolean',
         ]);
 
+        $features = $this->parseFeatures($request->input('features'));
+
         $service->update([
             'icon' => $validated['icon'],
             'title' => $validated['title'],
             'description' => $validated['description'],
+            'suitable_for' => $validated['suitable_for'] ?? null,
+            'features' => $features,
             'badge' => $validated['badge'] ?? null,
             'sort_order' => (int) ($validated['sort_order'] ?? 0),
             'is_active' => $request->boolean('is_active', true),
         ]);
 
         Cache::forget('home_page_data');
+        Cache::forget('nav_services');
 
         return redirect()->route('admin.services.index')->with('success', 'Layanan berhasil diperbarui.');
+    }
+
+    /**
+     * Parse multiline or array features input into a clean indexed array.
+     */
+    protected function parseFeatures(mixed $features): array
+    {
+        if (is_array($features)) {
+            return array_values(array_filter(array_map('trim', $features)));
+        }
+
+        if (is_string($features)) {
+            return array_values(array_filter(array_map('trim', explode("\n", $features))));
+        }
+
+        return [];
     }
 
     /**
@@ -147,6 +177,7 @@ class ServiceController extends Controller
     {
         $service->delete();
         Cache::forget('home_page_data');
+        Cache::forget('nav_services');
 
         return redirect()->route('admin.services.index')->with('success', 'Layanan berhasil dihapus.');
     }

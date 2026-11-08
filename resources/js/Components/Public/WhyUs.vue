@@ -7,32 +7,38 @@ const props = defineProps<{
 
 const title = computed(() => props.settings?.section_why_us_title || 'Website Anda Bukan Sekadar Pajangan, Tapi Alat Penjualan Nyata');
 const desc = computed(() => props.settings?.section_why_us_desc || 'Calon pelanggan di Lampung kini selalu mengecek kredibilitas bisnis lewat internet sebelum membeli. Website yang lambat dan berantakan membuat mereka langsung beralih ke kompetitor.');
-const coreStrengths = [
+
+const spotlightTitle = computed(() => props.settings?.why_us_problem_title || 'Kecepatan Akses Tinggi & Tampilan Mobile Sempurna');
+const spotlightDesc = computed(() => props.settings?.why_us_problem_desc || 'Pengunjung rata-rata meninggalkan website jika loading lebih dari 3 detik. Swift Code membangun website dengan kompresi modern dan struktur kode yang sangat ringan.');
+const standardTitle = computed(() => props.settings?.why_us_solution_title || 'Standar Website Swift Code');
+const standardDesc = computed(() => props.settings?.why_us_solution_desc || 'Skor Lighthouse 90+, navigasi sentuh instan, gambar otomatis terkompresi WebP, dan siap dibuka di jaringan 4G.');
+
+const coreStrengths = computed(() => [
     {
         id: 'seo',
-        title: 'Optimasi Google & SEO Lokal Lampung',
-        desc: 'Dilengkapi Schema.org LocalBusiness, sitemap otomatis, dan kata kunci lokal agar bisnis Anda mudah ditemukan calon pembeli terdekat.',
-        tag: 'Ditemukan di Google',
+        title: props.settings?.why_us_card_1_title || 'Optimasi Google & SEO Lokal Lampung',
+        desc: props.settings?.why_us_card_1_desc || 'Dilengkapi Schema.org LocalBusiness, sitemap otomatis, dan kata kunci lokal agar bisnis Anda mudah ditemukan calon pembeli terdekat.',
+        tag: props.settings?.why_us_card_1_tag || 'Ditemukan di Google',
     },
     {
         id: 'chat',
-        title: 'Konversi Langsung ke WhatsApp',
-        desc: 'Setiap tombol pemesanan dan formulir langsung mengarahkan pengunjung ke chat WhatsApp admin Anda dengan format pesan rapi.',
-        tag: 'Konversi Instan',
+        title: props.settings?.why_us_card_2_title || 'Konversi Langsung ke WhatsApp',
+        desc: props.settings?.why_us_card_2_desc || 'Setiap tombol pemesanan dan formulir langsung mengarahkan pengunjung ke chat WhatsApp admin Anda dengan format pesan rapi.',
+        tag: props.settings?.why_us_card_2_tag || 'Konversi Instan',
     },
     {
         id: 'cms',
-        title: 'Dashboard Kelola Konten Praktis',
-        desc: 'Ubah teks profil, tambah foto portofolio, atau perbarui kontak bisnis kapan saja dengan mudah tanpa perlu paham koding.',
-        tag: 'Mudah Dikelola',
+        title: props.settings?.why_us_card_3_title || 'Dashboard Kelola Konten Praktis',
+        desc: props.settings?.why_us_card_3_desc || 'Ubah teks profil, tambah foto portofolio, atau perbarui kontak bisnis kapan saja dengan mudah tanpa perlu paham koding.',
+        tag: props.settings?.why_us_card_3_tag || 'Mudah Dikelola',
     },
     {
         id: 'warranty',
-        title: 'Garansi & Dukungan Teknis Purna Jual',
-        desc: 'Kami tidak lepas tangan setelah serah terima. Anda mendapatkan proteksi SSL, perbaikan error teknis, dan konsultasi lanjutan.',
-        tag: 'Pendampingan Penuh',
+        title: props.settings?.why_us_card_4_title || 'Garansi & Dukungan Teknis Purna Jual',
+        desc: props.settings?.why_us_card_4_desc || 'Kami tidak lepas tangan setelah serah terima. Anda mendapatkan proteksi SSL, perbaikan error teknis, dan konsultasi lanjutan.',
+        tag: props.settings?.why_us_card_4_tag || 'Pendampingan Penuh',
     },
-];
+]);
 </script>
 
 <template>
@@ -64,10 +70,10 @@ const coreStrengths = [
 
                         <div>
                             <h3 class="text-2xl font-extrabold tracking-tight text-white leading-snug">
-                                Kecepatan Akses Tinggi &amp; Tampilan Mobile Sempurna
+                                {{ spotlightTitle }}
                             </h3>
                             <p class="text-sm text-neutral-400 mt-2 leading-relaxed">
-                                Pengunjung rata-rata meninggalkan website jika loading lebih dari 3 detik. Swift Code membangun website dengan kompresi modern dan struktur kode yang sangat ringan.
+                                {{ spotlightDesc }}
                             </p>
                         </div>
 
@@ -85,7 +91,7 @@ const coreStrengths = [
 
                             <div class="p-4 rounded-xl bg-brand-950/40 border border-brand-500/40 text-xs space-y-1.5 ring-1 ring-brand-500/20">
                                 <div class="flex items-center justify-between font-bold">
-                                    <span class="text-white">Standar Website Swift Code</span>
+                                    <span class="text-white">{{ standardTitle }}</span>
                                     <span class="inline-flex items-center gap-1 text-emerald-400 font-mono">
                                         <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -94,7 +100,7 @@ const coreStrengths = [
                                     </span>
                                 </div>
                                 <p class="text-neutral-300 leading-normal">
-                                    Skor Lighthouse 90+, navigasi sentuh instan, gambar otomatis terkompresi WebP, dan siap dibuka di jaringan 4G.
+                                    {{ standardDesc }}
                                 </p>
                             </div>
                         </div>

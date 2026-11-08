@@ -6,6 +6,8 @@ import SwiftCodeLogo from '../SwiftCodeLogo.vue';
 const isScrolled = ref(false);
 const isMobileMenuOpen = ref(false);
 const page = usePage();
+const siteSettings = computed(() => ((page.props as any).siteSettings || {}) as Record<string, string>);
+const siteLogo = computed(() => siteSettings.value.site_logo || null);
 
 const isHomePage = computed(() => page.url === '/' || page.url.startsWith('/#'));
 
@@ -46,7 +48,10 @@ const closeMobileMenu = () => {
             <div class="flex items-center justify-between">
                 <!-- Brand Logo -->
                 <Link :href="isHomePage ? '#hero' : '/'" class="flex items-center gap-2">
-                    <SwiftCodeLogo size="md" />
+                    <div v-if="siteLogo" class="h-9 flex items-center">
+                        <img :src="siteLogo" alt="Logo" class="max-h-9 w-auto object-contain" />
+                    </div>
+                    <SwiftCodeLogo v-else size="md" />
                 </Link>
 
                 <!-- Desktop Nav -->

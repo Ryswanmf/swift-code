@@ -39,6 +39,12 @@ class HandleInertiaRequests extends Middleware
                 'error' => fn () => $request->session()->get('error'),
             ],
             'siteSettings' => fn () => \App\Models\Setting::getAllAsKeyMap(),
+            'navServices' => fn () => \Illuminate\Support\Facades\Cache::remember('nav_services', 1800, function () {
+                return \App\Models\Service::query()
+                    ->where('is_active', true)
+                    ->orderBy('sort_order')
+                    ->get(['id', 'title', 'badge']);
+            }),
         ];
     }
 }

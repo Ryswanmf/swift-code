@@ -19,6 +19,7 @@ const props = defineProps<{
     packages?: PackageItem[];
     testimonials?: TestimonialItem[];
     faqs?: FaqData[];
+    partners?: any[];
     settings?: Record<string, string>;
 }>();
 
@@ -391,7 +392,7 @@ const localBusinessSchema = computed(() =>
         <Hero :settings="settings" />
 
         <!-- Partner & Client Marquee Section -->
-        <PartnerMarquee v-if="settings?.show_partner_marquee !== '0'" />
+        <PartnerMarquee v-if="settings?.show_partner_marquee !== '0'" :partners="partners" />
 
         <!-- 2. Services Section -->
         <section v-if="settings?.show_services !== '0'" id="layanan" class="pt-12 sm:pt-16 pb-14 sm:pb-16 bg-white dark:bg-neutral-950 relative">

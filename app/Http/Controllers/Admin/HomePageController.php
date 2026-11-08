@@ -7,9 +7,11 @@ use App\Models\Article;
 use App\Models\Faq;
 use App\Models\Lead;
 use App\Models\Package;
+use App\Models\Partner;
 use App\Models\Project;
 use App\Models\Service;
 use App\Models\Setting;
+use App\Services\ImageUploadService;
 use App\Models\Testimonial;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -44,6 +46,10 @@ class HomePageController extends Controller
                 'highlighted' => Package::where('is_active', true)->where('is_highlighted', true)->count(),
                 'total' => Package::count(),
                 'sample' => Package::where('is_active', true)->orderBy('sort_order')->limit(3)->get(['id', 'name', 'price', 'is_highlighted']),
+            ],
+            'partners' => [
+                'active' => Partner::where('is_active', true)->count(),
+                'total' => Partner::count(),
             ],
             'testimonials' => [
                 'published' => Testimonial::where('is_published', true)->count(),
@@ -86,6 +92,31 @@ class HomePageController extends Controller
             'hero_trust_1' => 'nullable|string|max:100',
             'hero_trust_2' => 'nullable|string|max:100',
             'hero_trust_3' => 'nullable|string|max:100',
+            'hero_metric_score' => 'nullable|string|max:20',
+            'hero_metric_label' => 'nullable|string|max:100',
+            'hero_metric_desc' => 'nullable|string|max:100',
+            'hero_mockup_url' => 'nullable|string|max:100',
+            'hero_mockup_badge' => 'nullable|string|max:100',
+            'hero_mockup_location' => 'nullable|string|max:100',
+            'hero_image' => 'nullable',
+
+            // Why Us Customization
+            'why_us_problem_title' => 'nullable|string|max:255',
+            'why_us_problem_desc' => 'nullable|string|max:500',
+            'why_us_solution_title' => 'nullable|string|max:255',
+            'why_us_solution_desc' => 'nullable|string|max:500',
+            'why_us_card_1_title' => 'nullable|string|max:255',
+            'why_us_card_1_desc' => 'nullable|string|max:500',
+            'why_us_card_1_tag' => 'nullable|string|max:100',
+            'why_us_card_2_title' => 'nullable|string|max:255',
+            'why_us_card_2_desc' => 'nullable|string|max:500',
+            'why_us_card_2_tag' => 'nullable|string|max:100',
+            'why_us_card_3_title' => 'nullable|string|max:255',
+            'why_us_card_3_desc' => 'nullable|string|max:500',
+            'why_us_card_3_tag' => 'nullable|string|max:100',
+            'why_us_card_4_title' => 'nullable|string|max:255',
+            'why_us_card_4_desc' => 'nullable|string|max:500',
+            'why_us_card_4_tag' => 'nullable|string|max:100',
 
             // Section Headers & Descriptions
             'section_services_title' => 'nullable|string|max:255',
@@ -114,7 +145,14 @@ class HomePageController extends Controller
         ]);
 
         foreach ($validated as $key => $value) {
-            Setting::set($key, $value);
+            if ($key !== 'hero_image') {
+                Setting::set($key, $value);
+            }
+        }
+
+        if ($request->hasFile('hero_image')) {
+            $path = ImageUploadService::uploadAsWebp($request->file('hero_image'), 'hero');
+            Setting::set('hero_image', $path);
         }
 
         // Flush all relevant caches to ensure instant sync

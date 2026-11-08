@@ -168,6 +168,28 @@ const whatsappNumber = computed(() => {
 const buildWaUrl = (message: string) => {
     return `https://wa.me/${whatsappNumber.value}?text=${encodeURIComponent(message)}`;
 };
+
+const servicesList = computed<ServiceDetailItem[]>(() => {
+    if (props.services && props.services.length > 0) {
+        return props.services.map((s) => ({
+            id: s.id,
+            icon: s.icon || 'rocket',
+            title: s.title,
+            badge: s.badge || 'Layanan Web',
+            description: s.description,
+            suitableFor: s.suitable_for || s.suitableFor || 'Bisnis, UMKM, & Perusahaan di Lampung',
+            features: Array.isArray(s.features) && s.features.length > 0
+                ? s.features
+                : [
+                    'Desain responsif mobile-first',
+                    'Integrasi tombol WhatsApp & formulir leads',
+                    'Garansi perbaikan & pendampingan teknis',
+                ],
+            waMessage: `Halo Swift Code, saya tertarik untuk berkonsultasi mengenai ${s.title}.`,
+        }));
+    }
+    return detailedServices;
+});
 </script>
 
 <template>
@@ -226,7 +248,7 @@ const buildWaUrl = (message: string) => {
                 <!-- Grid of Rich Services -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
                     <div
-                        v-for="srv in detailedServices"
+                        v-for="srv in servicesList"
                         :key="srv.title"
                         class="group p-6 sm:p-7 rounded-2xl bg-white border border-neutral-200 shadow-xs hover:shadow-xl hover:border-brand-500/40 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between"
                     >

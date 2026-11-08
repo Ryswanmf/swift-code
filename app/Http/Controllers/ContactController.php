@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreLeadRequest;
+use App\Models\Faq;
 use App\Models\Lead;
 use App\Models\Setting;
 use App\Notifications\NewLeadNotification;
@@ -21,6 +22,7 @@ class ContactController extends Controller
     {
         return Inertia::render('Contact/Index', [
             'settings' => Setting::getAllAsKeyMap(),
+            'faqs' => Faq::query()->where('is_published', true)->orderBy('sort_order')->get(['id', 'question', 'answer']),
         ]);
     }
 

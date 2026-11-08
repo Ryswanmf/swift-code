@@ -5,10 +5,12 @@ import PublicLayout from '@/Layouts/PublicLayout.vue';
 
 interface Props {
     settings?: Record<string, string>;
+    faqs?: Array<{ id?: number; question: string; answer: string }>;
 }
 
 const props = withDefaults(defineProps<Props>(), {
     settings: () => ({}),
+    faqs: () => [],
 });
 
 const page = usePage();
@@ -68,24 +70,26 @@ const toggleFaq = (index: number) => {
     activeFaq.value = activeFaq.value === index ? null : index;
 };
 
-const faqs = [
+const defaultFaqs = [
     {
-        q: 'Apakah konsultasi awal dan penyusunan RAB ini benar-benar gratis?',
-        a: 'Ya, 100% gratis tanpa komitmen apa pun. Tim kami akan mendengarkan kebutuhan bisnis Anda, memberikan saran struktur website yang tepat, serta mengestimasi anggaran yang paling efisien.',
+        question: 'Apakah konsultasi awal dan penyusunan RAB ini benar-benar gratis?',
+        answer: 'Ya, 100% gratis tanpa komitmen apa pun. Tim kami akan mendengarkan kebutuhan bisnis Anda, memberikan saran struktur website yang tepat, serta mengestimasi anggaran yang paling efisien.',
     },
     {
-        q: 'Berapa lama waktu yang dibutuhkan hingga website siap online?',
-        a: 'Untuk Paket Landing Page biasanya selesai dalam 3 - 5 hari kerja. Untuk Company Profile berkisar 5 - 10 hari kerja setelah materi konten dan foto kami terima secara lengkap.',
+        question: 'Berapa lama waktu yang dibutuhkan hingga website siap online?',
+        answer: 'Untuk Paket Landing Page biasanya selesai dalam 3 - 5 hari kerja. Untuk Company Profile berkisar 5 - 10 hari kerja setelah materi konten dan foto kami terima secara lengkap.',
     },
     {
-        q: 'Bisakah bertemu langsung (tatap muka) di Lampung?',
-        a: 'Tentu bisa! Untuk area Bandar Lampung dan sekitarnya, tim kami siap mengatur jadwal pertemuan langsung di kantor Anda atau di tempat yang nyaman untuk berdiskusi.',
+        question: 'Bisakah bertemu langsung (tatap muka) di Lampung?',
+        answer: 'Tentu bisa! Untuk area Bandar Lampung dan sekitarnya, tim kami siap mengatur jadwal pertemuan langsung di kantor Anda atau di tempat yang nyaman untuk berdiskusi.',
     },
     {
-        q: 'Apa saja yang perlu saya persiapkan sebelum memesan website?',
-        a: 'Cukup siapkan nama bisnis/domain yang diinginkan, rincian produk atau layanan yang ditawarkan, dan nomor kontak aktif. Jika belum memiliki logo atau materi teks, tim kami siap membantu menyusunnya.',
+        question: 'Apa saja yang perlu saya persiapkan sebelum memesan website?',
+        answer: 'Cukup siapkan nama bisnis/domain yang diinginkan, rincian produk atau layanan yang ditawarkan, dan nomor kontak aktif. Jika belum memiliki logo atau materi teks, tim kami siap membantu menyusunnya.',
     },
 ];
+
+const faqList = computed(() => (props.faqs && props.faqs.length > 0 ? props.faqs : defaultFaqs));
 </script>
 
 <template>
@@ -415,7 +419,7 @@ const faqs = [
 
                     <div class="max-w-3xl mx-auto space-y-3">
                         <div
-                            v-for="(faq, i) in faqs"
+                            v-for="(faq, i) in faqList"
                             :key="i"
                             class="rounded-2xl border border-neutral-200 bg-white overflow-hidden transition-all shadow-2xs"
                         >
@@ -424,7 +428,7 @@ const faqs = [
                                 @click="toggleFaq(i)"
                                 class="w-full flex items-center justify-between p-5 text-left font-bold text-neutral-900 hover:text-brand-600 transition-colors cursor-pointer select-none text-sm sm:text-base"
                             >
-                                <span>{{ faq.q }}</span>
+                                <span>{{ faq.question }}</span>
                                 <svg
                                     class="w-5 h-5 text-neutral-400 shrink-0 transition-transform duration-200 ml-4"
                                     :class="{ 'rotate-180 text-brand-600': activeFaq === i }"
@@ -439,7 +443,7 @@ const faqs = [
                                 v-show="activeFaq === i"
                                 class="px-5 pb-5 text-xs sm:text-sm text-neutral-600 leading-relaxed border-t border-neutral-100 pt-3"
                             >
-                                {{ faq.a }}
+                                {{ faq.answer }}
                             </div>
                         </div>
                     </div>

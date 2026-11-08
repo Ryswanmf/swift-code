@@ -573,3 +573,59 @@ test('admin can manage homepage content and verify automatic resource sync', fun
     $publicHomeResponse = $this->get('/');
     $publicHomeResponse->assertStatus(200);
 });
+
+test('admin can perform full CRUD on partners marquee including aliases and toggle', function () {
+    // 1. Index and Create
+    $indexResponse = $this->actingAs($this->admin)->get('/admin/partners');
+    $indexResponse->assertStatus(200);
+
+    $aliasResponse = $this->actingAs($this->admin)->get('/admin/mitra');
+    $aliasResponse->assertStatus(200);
+
+    $createResponse = $this->actingAs($this->admin)->get('/admin/partners/create');
+    $createResponse->assertStatus(200);
+
+    // 2. Store new partner
+    $storeResponse = $this->actingAs($this->admin)->post('/admin/partners', [
+        'name' => 'Universitas Lampung Digital',
+        'category' => 'Pendidikan Tinggi',
+        'color' => 'from-blue-600 to-indigo-700',
+        'icon' => 'education',
+        'sort_order' => 10,
+        'is_active' => true,
+    ]);
+
+    $storeResponse->assertRedirect('/admin/partners');
+    $this->assertDatabaseHas('partners', [
+        'name' => 'Universitas Lampung Digital',
+        'category' => 'Pendidikan Tinggi',
+    ]);
+
+    $partner = \App\Models\Partner::where('name', 'Universitas Lampung Digital')->first();
+
+    // 3. Edit and Update
+    $editResponse = $this->actingAs($this->admin)->get("/admin/partners/{$partner->id}/edit");
+    $editResponse->assertStatus(200);
+
+    $updateResponse = $this->actingAs($this->admin)->put("/admin/partners/{$partner->id}", [
+        'name' => 'Universitas Lampung Kampus Digital',
+        'category' => 'Institusi Pendidikan',
+        'color' => 'from-cyan-600 to-blue-700',
+        'icon' => 'education',
+        'sort_order' => 12,
+        'is_active' => true,
+    ]);
+
+    $updateResponse->assertRedirect('/admin/partners');
+    $this->assertDatabaseHas('partners', [
+        'id' => $partner->id,
+        'name' => 'Universitas Lampung Kampus Digital',
+    ]);
+
+    // 4. Delete
+    $deleteResponse = $this->actingAs($this->admin)->delete("/admin/partners/{$partner->id}");
+    $deleteResponse->assertRedirect('/admin/partners');
+    $this->assertDatabaseMissing('partners', [
+        'id' => $partner->id,
+    ]);
+});
