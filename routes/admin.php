@@ -16,6 +16,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 Route::post('cache/clear', [DashboardController::class, 'clearCache'])->name('cache.clear');
 
+// Articles Bulk Generator & Bulk Delete
+Route::post('articles/bulk-generate', [ArticleController::class, 'bulkGenerate'])->name('articles.bulk-generate');
+Route::post('articles/bulk-delete-scheduled', [ArticleController::class, 'bulkDeleteScheduled'])->name('articles.bulk-delete-scheduled');
+
 // CRUD Resources
 Route::resource('articles', ArticleController::class);
 Route::resource('artikel', ArticleController::class);

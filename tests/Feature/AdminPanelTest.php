@@ -683,3 +683,42 @@ test('admin can update project gallery and delete individual gallery images', fu
     $freshProject = $project->fresh();
     expect($freshProject->gallery)->toEqual(['/images/screen1.webp', '/images/screen3.webp']);
 });
+
+test('admin can bulk generate scheduled articles and verify public scheduled protection', function () {
+    $initialCount = \App\Models\Article::count();
+
+    $response = $this->actingAs($this->admin)->post('/admin/articles/bulk-generate', [
+        'count' => 15,
+        'category' => 'all',
+        'frequency' => '1_daily',
+        'start_date' => now()->addDays(2)->format('Y-m-d'),
+        'author' => 'Tim Swift Code',
+    ]);
+
+    $response->assertRedirect('/admin/articles?status=scheduled');
+    $response->assertSessionHas('success');
+
+    expect(\App\Models\Article::count())->toBe($initialCount + 15);
+
+    // Verify scheduled articles exist in database with future published_at
+    $futureArticles = \App\Models\Article::where('published_at', '>', now())->get();
+    expect($futureArticles->count())->toBeGreaterThanOrEqual(15);
+
+    // Pick one future scheduled article
+    $futureArticle = $futureArticles->first();
+
+    // Verify public cannot access scheduled future article
+    $publicShow = $this->get("/artikel/{$futureArticle->slug}");
+    $publicShow->assertStatus(404);
+
+    // Verify admin can see it in index with scheduled tab
+    $adminScheduled = $this->actingAs($this->admin)->get('/admin/articles?status=scheduled');
+    $adminScheduled->assertStatus(200);
+
+    // Now test bulk delete scheduled articles
+    $deleteScheduledResponse = $this->actingAs($this->admin)->post('/admin/articles/bulk-delete-scheduled');
+    $deleteScheduledResponse->assertRedirect('/admin/articles');
+    $deleteScheduledResponse->assertSessionHas('success');
+
+    expect(\App\Models\Article::where('published_at', '>', now())->count())->toBe(0);
+});

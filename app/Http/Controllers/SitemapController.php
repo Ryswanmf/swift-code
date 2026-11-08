@@ -55,8 +55,7 @@ class SitemapController extends Controller
         }
 
         // Published Articles
-        $articles = Article::query()
-            ->where('is_published', true)
+        $articles = Article::published()
             ->orderByDesc('published_at')
             ->get(['slug', 'updated_at', 'published_at']);
 
@@ -86,8 +85,7 @@ class SitemapController extends Controller
         $siteName = Setting::get('site_name', 'Swift Code Lampung');
         $siteDescription = Setting::get('meta_description', 'Jasa Pembuatan Website Profesional & Cepat di Lampung');
 
-        $articles = Article::query()
-            ->where('is_published', true)
+        $articles = Article::published()
             ->orderByDesc('published_at')
             ->limit(30)
             ->get();

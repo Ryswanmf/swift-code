@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Article;
+use App\Services\ArticleGeneratorService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -34,8 +35,13 @@ class ArticleController extends Controller
         }
 
         if ($request->filled('status') && $request->status !== 'all') {
-            $isPublished = $request->status === 'published';
-            $query->where('is_published', $isPublished);
+            if ($request->status === 'published') {
+                $query->where('is_published', true)->where('published_at', '<=', now());
+            } elseif ($request->status === 'scheduled') {
+                $query->where('is_published', true)->where('published_at', '>', now());
+            } elseif ($request->status === 'draft') {
+                $query->where('is_published', false);
+            }
         }
 
         $articles = $query->paginate(15)->withQueryString();
@@ -44,7 +50,8 @@ class ArticleController extends Controller
 
         $counts = [
             'all' => Article::count(),
-            'published' => Article::where('is_published', true)->count(),
+            'published' => Article::where('is_published', true)->where('published_at', '<=', now())->count(),
+            'scheduled' => Article::where('is_published', true)->where('published_at', '>', now())->count(),
             'draft' => Article::where('is_published', false)->count(),
         ];
 
@@ -182,5 +189,41 @@ class ArticleController extends Controller
         $article->delete();
 
         return redirect()->route('admin.articles.index')->with('success', 'Artikel berhasil dihapus.');
+    }
+
+    /**
+     * Generate bulk scheduled articles without external API.
+     */
+    public function bulkGenerate(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'count' => 'required|integer|min:1|max:1000',
+            'category' => 'required|string',
+            'frequency' => 'required|string|in:1_daily,2_daily,every_2_days,every_3_days,weekly,instant',
+            'start_date' => 'nullable|date',
+            'author' => 'nullable|string|max:100',
+        ]);
+
+        $result = ArticleGeneratorService::generate($validated);
+
+        return redirect()->route('admin.articles.index', ['status' => 'scheduled'])->with(
+            'success',
+            "Berhasil membuat {$result['count']} artikel otomatis terjadwal untuk periode {$result['first_date']} s/d {$result['last_date']}."
+        );
+    }
+
+    /**
+     * Delete all scheduled articles.
+     */
+    public function bulkDeleteScheduled(): RedirectResponse
+    {
+        $deleted = Article::where('is_published', true)
+            ->where('published_at', '>', now())
+            ->delete();
+
+        return redirect()->route('admin.articles.index')->with(
+            'success',
+            "Berhasil menghapus {$deleted} artikel terjadwal."
+        );
     }
 }

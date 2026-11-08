@@ -71,8 +71,7 @@ class ArticleController extends Controller
      */
     public function index(): Response
     {
-        $dbArticles = Article::query()
-            ->where('is_published', true)
+        $dbArticles = Article::published()
             ->orderBy('sort_order')
             ->latest('published_at')
             ->get();
@@ -90,8 +89,8 @@ class ArticleController extends Controller
      */
     public function show(string $slug): Response
     {
-        $article = Article::where('slug', $slug)
-            ->where('is_published', true)
+        $article = Article::published()
+            ->where('slug', $slug)
             ->first();
 
         if (! $article) {
