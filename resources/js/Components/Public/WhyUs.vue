@@ -1,4 +1,12 @@
 <script setup lang="ts">
+import { computed } from 'vue';
+
+const props = defineProps<{
+    settings?: Record<string, string>;
+}>();
+
+const title = computed(() => props.settings?.section_why_us_title || 'Website Anda Bukan Sekadar Pajangan, Tapi Alat Penjualan Nyata');
+const desc = computed(() => props.settings?.section_why_us_desc || 'Calon pelanggan di Lampung kini selalu mengecek kredibilitas bisnis lewat internet sebelum membeli. Website yang lambat dan berantakan membuat mereka langsung beralih ke kompetitor.');
 const coreStrengths = [
     {
         id: 'seo',
@@ -33,10 +41,10 @@ const coreStrengths = [
             <!-- Section Header -->
             <div class="text-center max-w-3xl mx-auto mb-10 sm:mb-12 space-y-3">
                 <h2 class="text-3xl sm:text-4xl font-extrabold text-neutral-900 dark:text-white tracking-tight">
-                    Website Anda Bukan Sekadar Pajangan, Tapi <span class="text-brand-600">Alat Penjualan Nyata</span>
+                    {{ title }}
                 </h2>
                 <p class="text-base text-neutral-600 dark:text-neutral-400 leading-relaxed">
-                    Calon pelanggan di Lampung kini selalu mengecek kredibilitas bisnis lewat internet sebelum membeli. Website yang lambat dan berantakan membuat mereka langsung beralih ke kompetitor.
+                    {{ desc }}
                 </p>
             </div>
 

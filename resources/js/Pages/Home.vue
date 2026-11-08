@@ -371,21 +371,21 @@ const localBusinessSchema = computed(() =>
 
     <PublicLayout>
         <!-- 1. Hero Section -->
-        <Hero />
+        <Hero :settings="settings" />
 
         <!-- Partner & Client Marquee Section -->
-        <PartnerMarquee />
+        <PartnerMarquee v-if="settings?.show_partner_marquee !== '0'" />
 
         <!-- 2. Services Section -->
-        <section id="layanan" class="pt-12 sm:pt-16 pb-14 sm:pb-16 bg-white dark:bg-neutral-950 relative">
+        <section v-if="settings?.show_services !== '0'" id="layanan" class="pt-12 sm:pt-16 pb-14 sm:pb-16 bg-white dark:bg-neutral-950 relative">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <!-- Section Header -->
                 <div class="text-center max-w-5xl mx-auto mb-12 space-y-3">
                     <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-neutral-900 dark:text-white tracking-tight sm:whitespace-nowrap">
-                        Layanan Pembuatan Website <span class="text-brand-600">Sesuai Kebutuhan</span>
+                        {{ settings?.section_services_title || 'Layanan Pembuatan Website Sesuai Kebutuhan' }}
                     </h2>
                     <p class="text-base text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
-                        Pilih jenis website yang paling pas dengan industri dan skala bisnis Anda saat ini.
+                        {{ settings?.section_services_desc || 'Pilih jenis website yang paling pas dengan industri dan skala bisnis Anda saat ini.' }}
                     </p>
                 </div>
 
@@ -401,7 +401,7 @@ const localBusinessSchema = computed(() =>
         </section>
 
         <!-- 3. Portfolio Section (Placed right after Services) -->
-        <section id="portofolio" class="pt-12 sm:pt-16 pb-20 lg:pb-28 bg-gradient-to-r from-brand-800 via-brand-600 to-rose-600 text-white relative overflow-hidden shadow-inner">
+        <section v-if="settings?.show_portfolio !== '0'" id="portofolio" class="pt-12 sm:pt-16 pb-20 lg:pb-28 bg-gradient-to-r from-brand-800 via-brand-600 to-rose-600 text-white relative overflow-hidden shadow-inner">
             <!-- Background Ambient Accents -->
             <div class="pointer-events-none absolute -top-24 -left-24 w-96 h-96 bg-white/10 rounded-full blur-3xl"></div>
             <div class="pointer-events-none absolute -bottom-24 -right-24 w-96 h-96 bg-black/20 rounded-full blur-3xl"></div>
@@ -410,10 +410,10 @@ const localBusinessSchema = computed(() =>
                 <!-- Section Header -->
                 <div class="text-center max-w-3xl mx-auto mb-10 sm:mb-12 space-y-3">
                     <h2 class="text-3xl sm:text-4xl font-black text-white tracking-tight drop-shadow-xs">
-                        Portofolio Proyek <span class="text-white/95">Pilihan Kami</span>
+                        {{ settings?.section_portfolio_title || 'Portofolio Proyek Pilihan Kami' }}
                     </h2>
                     <p class="text-base text-white/90 leading-relaxed">
-                        Lihat bagaimana kami membantu brand lokal dan instansi tampil profesional di ranah online.
+                        {{ settings?.section_portfolio_desc || 'Lihat bagaimana kami membantu brand lokal dan instansi tampil profesional di ranah online.' }}
                     </p>
                 </div>
 
@@ -506,15 +506,15 @@ const localBusinessSchema = computed(() =>
         </section>
 
         <!-- 4. Pricing Section (Placed right after Portfolio) -->
-        <section id="harga" class="pt-12 sm:pt-14 pb-12 sm:pb-16 bg-neutral-50/70 dark:bg-neutral-900/40 relative">
+        <section v-if="settings?.show_pricing !== '0'" id="harga" class="pt-12 sm:pt-14 pb-12 sm:pb-16 bg-neutral-50/70 dark:bg-neutral-900/40 relative">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <!-- Section Header -->
                 <div class="text-center max-w-3xl mx-auto mb-12 sm:mb-14 space-y-3">
                     <h2 class="text-3xl sm:text-4xl font-extrabold text-neutral-900 dark:text-white tracking-tight">
-                        Paket Investasi <span class="text-brand-600">Pembuatan Website</span>
+                        {{ settings?.section_pricing_title || 'Paket Investasi Pembuatan Website' }}
                     </h2>
                     <p class="text-base text-neutral-600 dark:text-neutral-400">
-                        Tanpa biaya tersembunyi. Semua paket sudah termasuk domain, hosting, dan pendampingan penuh.
+                        {{ settings?.section_pricing_desc || 'Tanpa biaya tersembunyi. Semua paket sudah termasuk domain, hosting, dan pendampingan penuh.' }}
                     </p>
                 </div>
 
@@ -530,10 +530,10 @@ const localBusinessSchema = computed(() =>
         </section>
 
         <!-- 5. Why Choose Us Section -->
-        <WhyUs />
+        <WhyUs v-if="settings?.show_why_us !== '0'" :settings="settings" />
 
         <!-- 6. Testimonials Section -->
-        <section id="testimoni" class="pt-12 sm:pt-14 pb-20 lg:pb-28 bg-gradient-to-r from-brand-800 via-brand-600 to-rose-600 text-white relative overflow-hidden shadow-inner">
+        <section v-if="settings?.show_testimonials !== '0'" id="testimoni" class="pt-12 sm:pt-14 pb-20 lg:pb-28 bg-gradient-to-r from-brand-800 via-brand-600 to-rose-600 text-white relative overflow-hidden shadow-inner">
             <!-- Background Ambient Accents -->
             <div class="pointer-events-none absolute -top-24 -right-24 w-96 h-96 bg-white/10 rounded-full blur-3xl"></div>
             <div class="pointer-events-none absolute -bottom-24 -left-24 w-96 h-96 bg-black/20 rounded-full blur-3xl"></div>
@@ -542,10 +542,10 @@ const localBusinessSchema = computed(() =>
                 <!-- Section Header -->
                 <div class="text-center max-w-3xl mx-auto mb-12 sm:mb-14 space-y-3">
                     <h2 class="text-3xl sm:text-4xl font-black text-white tracking-tight drop-shadow-xs">
-                        Testimoni <span class="text-white/95">Klien Swift Code</span>
+                        {{ settings?.section_testimonials_title || 'Testimoni Klien Swift Code' }}
                     </h2>
                     <p class="text-base text-white/90 leading-relaxed">
-                        Kepuasan dan kesuksesan digital klien adalah prioritas utama kami.
+                        {{ settings?.section_testimonials_desc || 'Kepuasan dan kesuksesan digital klien adalah prioritas utama kami.' }}
                     </p>
                 </div>
 
@@ -561,15 +561,15 @@ const localBusinessSchema = computed(() =>
         </section>
 
         <!-- 7. FAQ Section -->
-        <section id="faq" class="pt-12 sm:pt-14 pb-20 lg:pb-28 bg-white dark:bg-neutral-950 relative">
+        <section v-if="settings?.show_faq !== '0'" id="faq" class="pt-12 sm:pt-14 pb-20 lg:pb-28 bg-white dark:bg-neutral-950 relative">
             <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                 <!-- Header -->
                 <div class="text-center mb-12 sm:mb-14 space-y-3">
                     <h2 class="text-3xl sm:text-4xl font-extrabold text-neutral-900 dark:text-white tracking-tight">
-                        Hal yang Sering Ditanyakan (FAQ)
+                        {{ settings?.section_faq_title || 'Hal yang Sering Ditanyakan (FAQ)' }}
                     </h2>
                     <p class="text-base text-neutral-600 dark:text-neutral-400">
-                        Masih ragu atau punya pertanyaan lain? Temukan jawabannya di bawah ini.
+                        {{ settings?.section_faq_desc || 'Masih ragu atau punya pertanyaan lain? Temukan jawabannya di bawah ini.' }}
                     </p>
                 </div>
 
@@ -586,9 +586,9 @@ const localBusinessSchema = computed(() =>
         </section>
 
         <!-- 9. Artikel & Wawasan Edukasi Section -->
-        <ArticleSection />
+        <ArticleSection v-if="settings?.show_articles !== '0'" />
 
         <!-- 10. Contact Form Section -->
-        <ContactForm />
+        <ContactForm v-if="settings?.show_contact !== '0'" />
     </PublicLayout>
 </template>

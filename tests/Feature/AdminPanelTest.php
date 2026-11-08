@@ -517,3 +517,59 @@ test('admin can perform full CRUD on services including templates and aliases', 
         'id' => $createdService->id,
     ]);
 });
+
+test('admin can manage homepage content and verify automatic resource sync', function () {
+    // 1. Render Homepage Editor and verify props
+    $editResponse = $this->actingAs($this->admin)->get('/admin/beranda');
+    $editResponse->assertStatus(200);
+    $editResponse->assertInertia(fn (Assert $page) => $page
+        ->component('Admin/Home/Edit')
+        ->has('settings')
+        ->has('syncStats')
+    );
+
+    // 2. Test alias routes
+    $aliasHomepage = $this->actingAs($this->admin)->get('/admin/homepage');
+    $aliasHomepage->assertStatus(200);
+
+    $aliasHomePage = $this->actingAs($this->admin)->get('/admin/home-page');
+    $aliasHomePage->assertStatus(200);
+
+    // 3. Update Homepage Sections & Toggles
+    $updateResponse = $this->actingAs($this->admin)->put('/admin/beranda', [
+        'hero_badge' => 'Jasa Pembuatan Website Terbaik di Lampung',
+        'hero_headline' => 'Solusi Pembuatan Website Kredibel & Konversi Tinggi di Lampung',
+        'hero_subheadline' => 'Tingkatkan omzet bisnis Anda dengan website berkecepatan tinggi yang siap online dalam hitungan hari.',
+        'hero_cta_primary_text' => 'Mulai Konsultasi WhatsApp',
+        'hero_cta_primary_link' => '#kontak',
+        'hero_cta_secondary_text' => 'Eksplorasi Portofolio',
+        'hero_cta_secondary_link' => '#portofolio',
+        'hero_trust_1' => 'Domain .COM & Cloud Hosting SSD',
+        'hero_trust_2' => 'Optimasi Kecepatan 100/100',
+        'hero_trust_3' => 'Garansi Pemeliharaan Penuh',
+        'section_services_title' => 'Pilihan Layanan Solusi Digital Kami',
+        'section_services_desc' => 'Daftar penawaran pembuatan website bisnis profesional.',
+        'section_portfolio_title' => 'Hasil Karya & Studi Kasus Proyek',
+        'section_portfolio_desc' => 'Lihat portofolio website yang telah kami bangun.',
+        'section_pricing_title' => 'Transparan Tanpa Biaya Tersembunyi',
+        'section_pricing_desc' => 'Investasi website terbaik untuk pertumbuhan bisnis.',
+        'show_partner_marquee' => '1',
+        'show_services' => '1',
+        'show_portfolio' => '1',
+        'show_pricing' => '1',
+    ]);
+
+    $updateResponse->assertRedirect();
+    $this->assertDatabaseHas('settings', [
+        'key' => 'hero_badge',
+        'value' => 'Jasa Pembuatan Website Terbaik di Lampung',
+    ]);
+    $this->assertDatabaseHas('settings', [
+        'key' => 'hero_headline',
+        'value' => 'Solusi Pembuatan Website Kredibel & Konversi Tinggi di Lampung',
+    ]);
+
+    // 4. Verify public homepage reflects updated content
+    $publicHomeResponse = $this->get('/');
+    $publicHomeResponse->assertStatus(200);
+});

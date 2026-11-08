@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\ArticleController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\FaqController;
+use App\Http\Controllers\Admin\HomePageController;
 use App\Http\Controllers\Admin\LeadController;
 use App\Http\Controllers\Admin\PackageController;
 use App\Http\Controllers\Admin\ProjectController;
@@ -34,3 +35,11 @@ Route::resource('kontak', LeadController::class);
 // Settings
 Route::get('settings', [SettingController::class, 'edit'])->name('settings.edit');
 Route::put('settings', [SettingController::class, 'update'])->name('settings.update');
+
+// Homepage / Beranda Management & Synchronizations
+Route::get('beranda', [HomePageController::class, 'edit'])->name('home.edit');
+Route::put('beranda', [HomePageController::class, 'update'])->name('home.update');
+Route::get('homepage', [HomePageController::class, 'edit']);
+Route::put('homepage', [HomePageController::class, 'update']);
+Route::get('home-page', [HomePageController::class, 'edit']);
+Route::put('home-page', [HomePageController::class, 'update']);
