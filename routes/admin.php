@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\TestimonialController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+Route::post('cache/clear', [DashboardController::class, 'clearCache'])->name('cache.clear');
 
 // CRUD Resources
 Route::resource('articles', ArticleController::class);

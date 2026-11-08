@@ -8,6 +8,9 @@ use App\Models\Lead;
 use App\Models\Package;
 use App\Models\Project;
 use App\Models\Service;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Cache;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -40,5 +43,22 @@ class DashboardController extends Controller
             'recentLeads' => $recentLeads,
             'recentProjects' => $recentProjects,
         ]);
+    }
+
+    /**
+     * Clear application cache, views, routes, and configs.
+     */
+    public function clearCache(): RedirectResponse
+    {
+        Cache::flush();
+        try {
+            Artisan::call('view:clear');
+            Artisan::call('route:clear');
+            Artisan::call('config:clear');
+        } catch (\Throwable $e) {
+            // Silently continue if artisan commands are restricted
+        }
+
+        return back()->with('success', 'Semua cache aplikasi, konfigurasi, dan tampilan berhasil dibersihkan.');
     }
 }

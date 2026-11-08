@@ -42,6 +42,9 @@ class SettingController extends Controller
             'youtube' => 'nullable|string|max:255',
             'meta_title' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string|max:500',
+            'google_analytics_id' => 'nullable|string|max:50',
+            'google_tag_manager_id' => 'nullable|string|max:50',
+            'meta_pixel_id' => 'nullable|string|max:50',
             'site_logo' => 'nullable',
             'site_favicon' => 'nullable',
         ]);

@@ -8,4 +8,4 @@ Disallow: /register
 Disallow: /forgot-password
 Disallow: /reset-password
 
-Sitemap: http://localhost:8000/sitemap.xml
+Sitemap: https://swiftcode.id/sitemap.xml

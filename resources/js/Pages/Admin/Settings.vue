@@ -21,6 +21,9 @@ const form = useForm({
     youtube: props.settings.youtube || '',
     meta_title: props.settings.meta_title || 'Jasa Pembuatan Website Profesional Lampung | Swift Code',
     meta_description: props.settings.meta_description || 'Swift Code Lampung melayani jasa pembuatan landing page, company profile, website sekolah, toko online, dan sistem custom.',
+    google_analytics_id: props.settings.google_analytics_id || '',
+    google_tag_manager_id: props.settings.google_tag_manager_id || '',
+    meta_pixel_id: props.settings.meta_pixel_id || '',
     site_logo: null as File | null,
     site_favicon: null as File | null,
 });
@@ -291,6 +294,57 @@ const submit = () => {
                             rows="3"
                             class="w-full px-4 py-2.5 rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white text-xs focus:ring-2 focus:ring-brand-500 outline-none resize-none"
                         ></textarea>
+                    </div>
+                </div>
+
+                <!-- 5. Pelacakan Iklan & Analitik (Analytics & Pixel) -->
+                <div class="space-y-4">
+                    <h3 class="text-xs font-bold text-neutral-400 uppercase tracking-widest border-b border-neutral-100 dark:border-neutral-800 pb-2">
+                        Pelacakan Iklan & Analitik (Analytics & Pixel)
+                    </h3>
+                    <p class="text-xs text-neutral-500">
+                        Masukkan ID pelacak resmi untuk mengukur traffic pengunjung dan konversi iklan tanpa mengubah kode template.
+                    </p>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
+                                Google Analytics ID (GA4)
+                            </label>
+                            <input
+                                v-model="form.google_analytics_id"
+                                type="text"
+                                placeholder="G-XXXXXXXXXX"
+                                class="w-full px-4 py-2.5 rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white text-xs focus:ring-2 focus:ring-brand-500 outline-none font-mono"
+                            />
+                            <p class="text-[10px] text-neutral-400 mt-1">Contoh: G-AB12C3D4E5</p>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
+                                Google Tag Manager ID (GTM)
+                            </label>
+                            <input
+                                v-model="form.google_tag_manager_id"
+                                type="text"
+                                placeholder="GTM-XXXXXXX"
+                                class="w-full px-4 py-2.5 rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white text-xs focus:ring-2 focus:ring-brand-500 outline-none font-mono"
+                            />
+                            <p class="text-[10px] text-neutral-400 mt-1">Contoh: GTM-ABCD123</p>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
+                                Meta / Facebook Pixel ID
+                            </label>
+                            <input
+                                v-model="form.meta_pixel_id"
+                                type="text"
+                                placeholder="123456789012345"
+                                class="w-full px-4 py-2.5 rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white text-xs focus:ring-2 focus:ring-brand-500 outline-none font-mono"
+                            />
+                            <p class="text-[10px] text-neutral-400 mt-1">Contoh ID angka: 987654321012345</p>
+                        </div>
                     </div>
                 </div>
 

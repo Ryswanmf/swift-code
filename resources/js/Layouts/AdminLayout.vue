@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { Link, usePage } from '@inertiajs/vue3';
+import { Link, router, usePage } from '@inertiajs/vue3';
 import SwiftCodeLogo from '../Components/SwiftCodeLogo.vue';
 
 withDefaults(
@@ -14,10 +14,22 @@ withDefaults(
 
 const page = usePage();
 const isSidebarOpen = ref(false);
+const isClearingCache = ref(false);
 
 const flashSuccess = computed(() => {
     return (page.props as any).flash?.success;
 });
+
+const clearCache = () => {
+    if (isClearingCache.value) return;
+    isClearingCache.value = true;
+    router.post('/admin/cache/clear', {}, {
+        preserveScroll: true,
+        onFinish: () => {
+            isClearingCache.value = false;
+        },
+    });
+};
 
 const navigation = [
     { name: 'Dashboard', href: '/admin', id: 'dashboard' },
@@ -150,8 +162,8 @@ const isCurrentUrl = (url: string) => {
         <div class="flex-1 flex flex-col min-w-0">
             <!-- Topbar -->
             <header class="h-16 bg-white dark:bg-neutral-900 border-b border-neutral-200 dark:border-neutral-800 flex items-center justify-between px-4 sm:px-6 lg:px-8">
-                <!-- Left: Hamburger (mobile) -->
-                <div class="flex items-center gap-3">
+                <!-- Left: Hamburger (mobile) & Title -->
+                <div class="flex items-center gap-3 min-w-0">
                     <button
                         type="button"
                         @click="isSidebarOpen = !isSidebarOpen"
@@ -167,9 +179,43 @@ const isCurrentUrl = (url: string) => {
                     </h1>
                 </div>
 
-                <!-- Right: Profile & Logout -->
-                <div class="flex items-center gap-3">
-                    <div class="flex items-center gap-3 pl-3">
+                <!-- Right: Quick Actions, Profile & Logout -->
+                <div class="flex items-center gap-2 sm:gap-3">
+                    <!-- Quick Action 1: Visit Website -->
+                    <a
+                        href="/"
+                        target="_blank"
+                        class="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-xs font-semibold text-neutral-700 dark:text-neutral-200 bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 rounded-lg transition-colors border border-neutral-200/80 dark:border-neutral-700"
+                        title="Buka Website Publik di Tab Baru"
+                    >
+                        <svg class="w-3.5 h-3.5 text-neutral-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                        </svg>
+                        <span class="hidden md:inline">Lihat Website</span>
+                    </a>
+
+                    <!-- Quick Action 2: Clear Cache -->
+                    <button
+                        type="button"
+                        @click="clearCache"
+                        :disabled="isClearingCache"
+                        class="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-xs font-semibold text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-950/50 hover:bg-amber-100 dark:hover:bg-amber-900/50 border border-amber-200 dark:border-amber-800/80 rounded-lg transition-colors cursor-pointer disabled:opacity-50"
+                        title="Bersihkan Cache Aplikasi & Tampilan"
+                    >
+                        <svg v-if="isClearingCache" class="w-3.5 h-3.5 animate-spin text-amber-600 shrink-0" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                        </svg>
+                        <svg v-else class="w-3.5 h-3.5 text-amber-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                        </svg>
+                        <span class="hidden md:inline">{{ isClearingCache ? 'Membersihkan...' : 'Bersihkan Cache' }}</span>
+                    </button>
+
+                    <div class="h-5 w-px bg-neutral-200 dark:bg-neutral-800 hidden sm:block"></div>
+
+                    <!-- Profile & Logout -->
+                    <div class="flex items-center gap-2 sm:gap-3 pl-1 sm:pl-2">
                         <div class="hidden sm:block text-right">
                             <p class="text-xs font-bold text-neutral-900 dark:text-white">{{ $page.props.auth?.user?.name || 'Admin' }}</p>
                             <span class="text-[10px] font-semibold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">Online</span>

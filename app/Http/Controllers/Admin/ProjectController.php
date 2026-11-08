@@ -175,6 +175,8 @@ class ProjectController extends Controller
             'live_url' => 'nullable|url|max:255',
             'cover_file' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
             'gallery_files.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
+            'existing_gallery' => 'nullable|array',
+            'existing_gallery.*' => 'nullable|string',
             'delete_cover' => 'nullable|boolean',
             'tech_stack' => 'nullable',
             'is_featured' => 'boolean',
@@ -191,7 +193,13 @@ class ProjectController extends Controller
             $coverPath = ImageUploadService::uploadAsWebp($request->file('cover_file'), 'projects');
         }
 
-        $galleryPaths = is_array($project->gallery) ? $project->gallery : [];
+        $galleryPaths = [];
+        if ($request->has('existing_gallery')) {
+            $galleryPaths = array_values(array_filter($request->input('existing_gallery', [])));
+        } else {
+            $galleryPaths = is_array($project->gallery) ? $project->gallery : [];
+        }
+
         if ($request->hasFile('gallery_files')) {
             foreach ($request->file('gallery_files') as $file) {
                 $galleryPaths[] = ImageUploadService::uploadAsWebp($file, 'projects/gallery');

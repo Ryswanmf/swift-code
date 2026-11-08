@@ -629,3 +629,57 @@ test('admin can perform full CRUD on partners marquee including aliases and togg
         'id' => $partner->id,
     ]);
 });
+
+test('admin can clear application cache via quick action', function () {
+    \Illuminate\Support\Facades\Cache::put('test_key', 'test_value', 60);
+    expect(\Illuminate\Support\Facades\Cache::has('test_key'))->toBeTrue();
+
+    $response = $this->actingAs($this->admin)->post('/admin/cache/clear');
+
+    $response->assertSessionHas('success');
+    expect(\Illuminate\Support\Facades\Cache::has('test_key'))->toBeFalse();
+});
+
+test('admin can save analytics and pixel IDs and have them rendered in HTML', function () {
+    $response = $this->actingAs($this->admin)->put('/admin/settings', [
+        'site_name' => 'Swift Code Analytics Test',
+        'whatsapp' => '6289512345678',
+        'email' => 'admin@swiftcode.id',
+        'google_analytics_id' => 'G-TEST12345',
+        'google_tag_manager_id' => 'GTM-TEST678',
+        'meta_pixel_id' => '123456789012345',
+    ]);
+
+    $response->assertSessionHas('success');
+
+    $home = $this->get('/');
+    $content = $home->getContent();
+    expect($content)->toContain('G-TEST12345');
+    expect($content)->toContain('GTM-TEST678');
+    expect($content)->toContain('123456789012345');
+    expect($content)->toContain('/rss.xml');
+});
+
+test('admin can update project gallery and delete individual gallery images', function () {
+    $project = Project::create([
+        'title' => 'Gallery Project Test',
+        'slug' => 'gallery-project-test',
+        'category' => 'company',
+        'summary' => 'Proyek dengan multi galeri',
+        'gallery' => ['/images/screen1.webp', '/images/screen2.webp', '/images/screen3.webp'],
+        'is_published' => true,
+    ]);
+
+    // Keep only screen1 and screen3 (deleting screen2)
+    $response = $this->actingAs($this->admin)->put("/admin/projects/{$project->id}", [
+        'title' => 'Gallery Project Test Updated',
+        'category' => 'company',
+        'summary' => 'Proyek dengan multi galeri diperbarui',
+        'existing_gallery' => ['/images/screen1.webp', '/images/screen3.webp'],
+    ]);
+
+    $response->assertRedirect('/admin/projects');
+
+    $freshProject = $project->fresh();
+    expect($freshProject->gallery)->toEqual(['/images/screen1.webp', '/images/screen3.webp']);
+});

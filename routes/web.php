@@ -22,6 +22,8 @@ Route::get('/artikel/{slug}', [ArticleController::class, 'show'])->name('article
 Route::get('/kontak', [ContactController::class, 'index'])->name('contact.index');
 Route::post('/kontak', [ContactController::class, 'store'])->middleware('throttle:5,1')->name('contact.store');
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
+Route::get('/rss.xml', [SitemapController::class, 'rss'])->name('rss');
+Route::get('/feed', [SitemapController::class, 'rss'])->name('feed');
 
 Route::get('/dashboard', function () {
     return redirect()->route('admin.dashboard');

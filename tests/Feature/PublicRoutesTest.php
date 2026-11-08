@@ -199,4 +199,33 @@ test('sitemap xml endpoint returns valid xml with published projects', function 
     $response->assertHeader('Content-Type', 'application/xml');
     expect($response->getContent())->toContain('sitemap-test-project');
     expect($response->getContent())->toContain('<urlset');
+    expect($response->getContent())->toContain('/layanan');
+    expect($response->getContent())->toContain('/harga');
+    expect($response->getContent())->toContain('/portofolio');
+    expect($response->getContent())->toContain('/artikel');
+    expect($response->getContent())->toContain('/kontak');
+});
+
+test('rss and feed endpoints return valid rss 2.0 xml with published articles', function () {
+    \App\Models\Article::create([
+        'title' => 'Panduan SEO Lokal 2026',
+        'slug' => 'panduan-seo-lokal-2026',
+        'category' => 'tips',
+        'summary' => 'Ringkasan panduan SEO lokal Lampung',
+        'content' => 'Konten lengkap panduan SEO',
+        'author' => 'Tim Swift Code',
+        'is_published' => true,
+        'published_at' => now(),
+    ]);
+
+    $response = $this->get('/rss.xml');
+    $response->assertStatus(200);
+    $response->assertHeader('Content-Type', 'application/rss+xml');
+    expect($response->getContent())->toContain('<rss version="2.0"');
+    expect($response->getContent())->toContain('panduan-seo-lokal-2026');
+
+    $feedResponse = $this->get('/feed');
+    $feedResponse->assertStatus(200);
+    $feedResponse->assertHeader('Content-Type', 'application/rss+xml');
+    expect($feedResponse->getContent())->toContain('panduan-seo-lokal-2026');
 });

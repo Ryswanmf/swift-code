@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Head, Link, usePage } from '@inertiajs/vue3';
-import { computed } from 'vue';
+import { computed, ref, onMounted, onUnmounted } from 'vue';
 import PublicLayout from '../../Layouts/PublicLayout.vue';
 import ProjectCard, { ProjectItem } from '../../Components/Public/ProjectCard.vue';
 
@@ -43,6 +43,66 @@ const projectSchema = computed(() =>
         image: props.project.cover_image || undefined,
     })
 );
+
+// Lightbox state & image list
+const lightboxIndex = ref<number | null>(null);
+
+const galleryImages = computed<string[]>(() => {
+    const list: string[] = [];
+    if (props.project.cover_image) {
+        list.push(props.project.cover_image);
+    }
+    if (Array.isArray(props.project.gallery)) {
+        props.project.gallery.forEach((img) => {
+            if (img && !list.includes(img)) {
+                list.push(img);
+            }
+        });
+    }
+    return list;
+});
+
+const openLightbox = (index: number) => {
+    lightboxIndex.value = index;
+    if (typeof document !== 'undefined') {
+        document.body.style.overflow = 'hidden';
+    }
+};
+
+const closeLightbox = () => {
+    lightboxIndex.value = null;
+    if (typeof document !== 'undefined') {
+        document.body.style.overflow = '';
+    }
+};
+
+const nextImage = () => {
+    if (lightboxIndex.value === null || galleryImages.value.length === 0) return;
+    lightboxIndex.value = (lightboxIndex.value + 1) % galleryImages.value.length;
+};
+
+const prevImage = () => {
+    if (lightboxIndex.value === null || galleryImages.value.length === 0) return;
+    lightboxIndex.value = (lightboxIndex.value - 1 + galleryImages.value.length) % galleryImages.value.length;
+};
+
+const handleKeyDown = (e: KeyboardEvent) => {
+    if (lightboxIndex.value === null) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowRight') nextImage();
+    if (e.key === 'ArrowLeft') prevImage();
+};
+
+onMounted(() => {
+    window.addEventListener('keydown', handleKeyDown);
+});
+
+onUnmounted(() => {
+    window.removeEventListener('keydown', handleKeyDown);
+    if (typeof document !== 'undefined') {
+        document.body.style.overflow = '';
+    }
+});
 </script>
 
 <template>
@@ -127,12 +187,13 @@ const projectSchema = computed(() =>
                 </div>
 
                 <!-- Main Project Image / Showcase -->
-                <div class="mb-12 rounded-3xl overflow-hidden border border-neutral-200 bg-neutral-100 shadow-xl">
+                <div class="mb-12 relative rounded-3xl overflow-hidden border border-neutral-200 bg-neutral-100 shadow-xl group">
                     <img
                         v-if="project.cover_image"
                         :src="project.cover_image"
                         :alt="project.title"
-                        class="w-full aspect-[16/9] object-cover object-top"
+                        @click="openLightbox(0)"
+                        class="w-full aspect-[16/9] object-cover object-top cursor-zoom-in"
                     />
                     <div
                         v-else
@@ -146,6 +207,19 @@ const projectSchema = computed(() =>
                         <p class="text-base font-bold text-white">{{ project.title }}</p>
                         <p class="text-xs text-neutral-400 mt-1">Showcase Portofolio Resmi Swift Code Lampung</p>
                     </div>
+
+                    <!-- Overlay Button to open gallery -->
+                    <button
+                        v-if="galleryImages.length > 0"
+                        type="button"
+                        @click="openLightbox(0)"
+                        class="absolute bottom-4 right-4 inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-neutral-900/80 hover:bg-neutral-900 text-white text-xs font-bold backdrop-blur-md border border-white/20 transition-all shadow-lg cursor-pointer"
+                    >
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                        </svg>
+                        <span>Lihat Semua Foto ({{ galleryImages.length }})</span>
+                    </button>
                 </div>
 
                 <!-- Two columns: Project Story & Specs sidebar -->
@@ -163,21 +237,38 @@ const projectSchema = computed(() =>
 
                         <!-- Gallery Photos if any -->
                         <div v-if="project.gallery && project.gallery.length > 0" class="pt-4 space-y-4">
-                            <h3 class="text-lg font-bold text-neutral-900">
-                                Galeri Tampilan Halaman
-                            </h3>
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-lg font-bold text-neutral-900">
+                                    Galeri Tangkapan Layar Halaman
+                                </h3>
+                                <span class="text-xs font-semibold text-neutral-500">
+                                    Klik untuk memperbesar
+                                </span>
+                            </div>
+
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div
                                     v-for="(img, idx) in project.gallery"
                                     :key="idx"
-                                    class="rounded-2xl overflow-hidden border border-neutral-200 shadow-sm aspect-video bg-neutral-100"
+                                    @click="openLightbox(project.cover_image ? idx + 1 : idx)"
+                                    class="group relative rounded-2xl overflow-hidden border border-neutral-200 shadow-sm aspect-video bg-neutral-100 cursor-pointer"
                                 >
                                     <img
                                         :src="img"
                                         :alt="`${project.title} - Galeri ${idx + 1}`"
                                         loading="lazy"
-                                        class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                                     />
+                                    <div class="absolute inset-0 bg-neutral-950/0 group-hover:bg-neutral-950/30 transition-colors flex items-center justify-center">
+                                        <div class="opacity-0 group-hover:opacity-100 transition-opacity p-2.5 rounded-full bg-white/90 text-neutral-900 shadow-lg">
+                                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <span class="absolute bottom-2 left-2 px-2.5 py-1 rounded-lg bg-black/70 text-white text-[10px] font-bold backdrop-blur-xs">
+                                        Tangkapan Layar {{ idx + 1 }}
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -263,5 +354,86 @@ const projectSchema = computed(() =>
                 </div>
             </div>
         </article>
+
+        <!-- Interactive Lightbox Modal -->
+        <Teleport to="body">
+            <div
+                v-if="lightboxIndex !== null && galleryImages.length > 0"
+                class="fixed inset-0 z-50 flex items-center justify-center bg-neutral-950/95 backdrop-blur-md p-4 select-none"
+                @click="closeLightbox"
+            >
+                <!-- Close Button -->
+                <button
+                    type="button"
+                    @click="closeLightbox"
+                    class="absolute top-4 right-4 p-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer z-50"
+                    title="Tutup (Esc)"
+                >
+                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+
+                <!-- Top Counter -->
+                <div class="absolute top-5 left-6 text-xs font-semibold text-neutral-300">
+                    <span class="text-white font-bold">{{ lightboxIndex + 1 }}</span> / {{ galleryImages.length }} &mdash; {{ project.title }}
+                </div>
+
+                <!-- Prev Button -->
+                <button
+                    v-if="galleryImages.length > 1"
+                    type="button"
+                    @click.stop="prevImage"
+                    class="absolute left-4 p-3 rounded-2xl bg-white/10 hover:bg-white/25 text-white transition-all cursor-pointer z-50"
+                    title="Foto Sebelumnya (Panah Kiri)"
+                >
+                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                </button>
+
+                <!-- Main Image -->
+                <div class="max-w-5xl max-h-[80vh] flex items-center justify-center p-2" @click.stop>
+                    <img
+                        :src="galleryImages[lightboxIndex]"
+                        :alt="`${project.title} - Foto ${lightboxIndex + 1}`"
+                        class="max-w-full max-h-[75vh] object-contain rounded-2xl shadow-2xl"
+                    />
+                </div>
+
+                <!-- Next Button -->
+                <button
+                    v-if="galleryImages.length > 1"
+                    type="button"
+                    @click.stop="nextImage"
+                    class="absolute right-4 p-3 rounded-2xl bg-white/10 hover:bg-white/25 text-white transition-all cursor-pointer z-50"
+                    title="Foto Selanjutnya (Panah Kanan)"
+                >
+                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </button>
+
+                <!-- Thumbnail Navigation Strip -->
+                <div
+                    v-if="galleryImages.length > 1"
+                    class="absolute bottom-4 inset-x-0 flex justify-center items-center gap-2 px-4 overflow-x-auto"
+                    @click.stop
+                >
+                    <button
+                        v-for="(img, tIdx) in galleryImages"
+                        :key="`thumb-${tIdx}`"
+                        type="button"
+                        @click="lightboxIndex = tIdx"
+                        :class="[
+                            'w-16 h-11 rounded-lg overflow-hidden border-2 transition-all shrink-0 cursor-pointer',
+                            lightboxIndex === tIdx ? 'border-brand-500 scale-105' : 'border-white/30 opacity-60 hover:opacity-100',
+                        ]"
+                    >
+                        <img :src="img" alt="Thumbnail" class="w-full h-full object-cover" />
+                    </button>
+                </div>
+            </div>
+        </Teleport>
     </PublicLayout>
 </template>

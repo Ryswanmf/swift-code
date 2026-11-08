@@ -9,6 +9,14 @@
         @php
             $customFavicon = \App\Models\Setting::get('site_favicon');
             $customOgImage = \App\Models\Setting::get('site_logo', asset('images/logo.png'));
+            $rawGa = (string) \App\Models\Setting::get('google_analytics_id', '');
+            $rawGtm = (string) \App\Models\Setting::get('google_tag_manager_id', '');
+            $rawMeta = (string) \App\Models\Setting::get('meta_pixel_id', '');
+
+            // Sanitize IDs so only valid format characters are injected
+            $gaId = preg_replace('/[^a-zA-Z0-9_\-]/', '', $rawGa);
+            $gtmId = preg_replace('/[^a-zA-Z0-9_\-]/', '', $rawGtm);
+            $metaPixelId = preg_replace('/[^0-9]/', '', $rawMeta);
         @endphp
         <!-- Favicon & Brand Icons -->
         @if($customFavicon)
@@ -24,6 +32,50 @@
         <meta name="theme-color" content="#e11d2e">
         <meta property="og:image" content="{{ $customOgImage }}">
 
+        <!-- RSS Feed Auto-Discovery -->
+        <link rel="alternate" type="application/rss+xml" title="Swift Code Lampung - Blog &amp; Artikel" href="{{ url('/rss.xml') }}">
+
+        @if($gtmId)
+            <!-- Google Tag Manager -->
+            <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','{{ $gtmId }}');</script>
+            <!-- End Google Tag Manager -->
+        @endif
+
+        @if($gaId)
+            <!-- Google Analytics 4 (GA4) -->
+            <script async src="https://www.googletagmanager.com/gtag/js?id={{ $gaId }}"></script>
+            <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '{{ $gaId }}');
+            </script>
+        @endif
+
+        @if($metaPixelId)
+            <!-- Meta Pixel Code -->
+            <script>
+                !function(f,b,e,v,n,t,s)
+                {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+                n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+                if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+                n.queue=[];t=b.createElement(e);t.async=!0;
+                t.src=v;s=b.getElementsByTagName(e)[0];
+                s.parentNode.insertBefore(t,s)}(window, document,'script',
+                'https://connect.facebook.net/en_US/fbevents.js');
+                fbq('init', '{{ $metaPixelId }}');
+                fbq('track', 'PageView');
+            </script>
+            <noscript><img height="1" width="1" style="display:none"
+                src="https://www.facebook.com/tr?id={{ $metaPixelId }}&ev=PageView&noscript=1"
+            /></noscript>
+            <!-- End Meta Pixel Code -->
+        @endif
+
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -35,6 +87,13 @@
         @inertiaHead
     </head>
     <body class="font-sans antialiased">
+        @if($gtmId)
+            <!-- Google Tag Manager (noscript) -->
+            <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ $gtmId }}"
+            height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+            <!-- End Google Tag Manager (noscript) -->
+        @endif
+
         @inertia
     </body>
 </html>

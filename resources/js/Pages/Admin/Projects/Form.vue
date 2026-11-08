@@ -26,6 +26,9 @@ const props = defineProps<{
 }>();
 
 const coverPreview = ref<string | null>(props.project?.cover_image || null);
+const existingGallery = ref<string[]>(
+    props.project?.gallery && Array.isArray(props.project.gallery) ? [...props.project.gallery] : []
+);
 const galleryPreviews = ref<string[]>([]);
 const deleteCover = ref(false);
 
@@ -43,6 +46,7 @@ const form = useForm({
     sort_order: props.project?.sort_order ?? 0,
     cover_file: null as File | null,
     gallery_files: [] as File[],
+    existing_gallery: [] as string[],
     delete_cover: false,
 });
 
@@ -167,26 +171,44 @@ const removeCover = () => {
     form.delete_cover = true;
 };
 
+const removeExistingGalleryImage = (index: number) => {
+    existingGallery.value.splice(index, 1);
+};
+
 const handleGalleryChange = (e: Event) => {
     const target = e.target as HTMLInputElement;
     if (target.files) {
         const files = Array.from(target.files);
-        form.gallery_files = files;
-        galleryPreviews.value = files.map((f) => URL.createObjectURL(f));
+        form.gallery_files = [...form.gallery_files, ...files];
+        galleryPreviews.value = [
+            ...galleryPreviews.value,
+            ...files.map((f) => URL.createObjectURL(f)),
+        ];
     }
 };
 
+const removeNewGalleryFile = (index: number) => {
+    form.gallery_files.splice(index, 1);
+    galleryPreviews.value.splice(index, 1);
+};
+
 const submit = () => {
+    form.existing_gallery = existingGallery.value;
+
     if (props.isEdit && props.project) {
         // Inertia multipart PUT is submitted via post with _method=PUT
         form.transform((data) => ({
             ...data,
+            existing_gallery: existingGallery.value,
             _method: 'PUT',
         })).post(`/admin/projects/${props.project.id}`, {
             forceFormData: true,
         });
     } else {
-        form.post('/admin/projects', {
+        form.transform((data) => ({
+            ...data,
+            existing_gallery: existingGallery.value,
+        })).post('/admin/projects', {
             forceFormData: true,
         });
     }
@@ -453,11 +475,16 @@ const submit = () => {
 
                     <!-- Gallery Files -->
                     <div class="space-y-3">
-                        <label class="block text-xs font-bold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider">
-                            Galeri Tangkapan Layar (Opsional)
-                        </label>
+                        <div class="flex items-center justify-between">
+                            <label class="block text-xs font-bold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider">
+                                Galeri Tangkapan Layar (Opsional)
+                            </label>
+                            <span class="text-[11px] font-semibold text-neutral-500">
+                                {{ existingGallery.length + galleryPreviews.length }} Gambar
+                            </span>
+                        </div>
 
-                        <div class="space-y-2">
+                        <div class="space-y-3">
                             <input
                                 type="file"
                                 multiple
@@ -465,25 +492,53 @@ const submit = () => {
                                 @change="handleGalleryChange"
                                 class="w-full text-xs text-neutral-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-neutral-100 file:text-neutral-700 hover:file:bg-neutral-200 dark:file:bg-neutral-800 dark:file:text-neutral-300 cursor-pointer"
                             />
-                            <p class="text-[11px] text-neutral-400">Pilih beberapa gambar tangkapan layar fitur detail aplikasi.</p>
+                            <p class="text-[11px] text-neutral-400">Pilih satu atau beberapa gambar tangkapan layar fitur detail (desktop / mobile). Format JPG, PNG, atau WebP.</p>
 
-                            <!-- Gallery Existing & New Previews -->
-                            <div v-if="galleryPreviews.length > 0" class="grid grid-cols-3 gap-2">
-                                <div
-                                    v-for="(prev, gIdx) in galleryPreviews"
-                                    :key="gIdx"
-                                    class="aspect-video rounded-lg overflow-hidden border border-neutral-200 dark:border-neutral-700 bg-neutral-100"
-                                >
-                                    <img :src="prev" alt="Gallery preview" class="w-full h-full object-cover" />
+                            <!-- Existing Gallery Images -->
+                            <div v-if="existingGallery.length > 0" class="space-y-1.5 pt-1">
+                                <span class="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">Gambar Tersimpan</span>
+                                <div class="grid grid-cols-3 gap-2">
+                                    <div
+                                        v-for="(imgUrl, gIdx) in existingGallery"
+                                        :key="`existing-${gIdx}`"
+                                        class="relative aspect-video rounded-lg overflow-hidden border border-neutral-200 dark:border-neutral-700 bg-neutral-100 dark:bg-neutral-800 group"
+                                    >
+                                        <img :src="imgUrl" alt="Existing gallery" class="w-full h-full object-cover" />
+                                        <button
+                                            type="button"
+                                            @click="removeExistingGalleryImage(gIdx)"
+                                            class="absolute top-1 right-1 p-1 rounded-md bg-black/70 hover:bg-rose-600 text-white transition-all shadow-sm"
+                                            title="Hapus gambar ini dari galeri"
+                                        >
+                                            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                            </svg>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-                            <div v-else-if="project?.gallery && project.gallery.length > 0" class="grid grid-cols-3 gap-2">
-                                <div
-                                    v-for="(imgUrl, gIdx) in project.gallery"
-                                    :key="gIdx"
-                                    class="aspect-video rounded-lg overflow-hidden border border-neutral-200 dark:border-neutral-700 bg-neutral-100"
-                                >
-                                    <img :src="imgUrl" alt="Existing gallery" class="w-full h-full object-cover" />
+
+                            <!-- New Pending Upload Previews -->
+                            <div v-if="galleryPreviews.length > 0" class="space-y-1.5 pt-1">
+                                <span class="text-[10px] font-bold text-brand-600 uppercase tracking-wider block">File Baru Siap Diunggah</span>
+                                <div class="grid grid-cols-3 gap-2">
+                                    <div
+                                        v-for="(prev, pIdx) in galleryPreviews"
+                                        :key="`new-${pIdx}`"
+                                        class="relative aspect-video rounded-lg overflow-hidden border border-brand-300 dark:border-brand-700 bg-neutral-100 dark:bg-neutral-800 group"
+                                    >
+                                        <img :src="prev" alt="New upload preview" class="w-full h-full object-cover" />
+                                        <button
+                                            type="button"
+                                            @click="removeNewGalleryFile(pIdx)"
+                                            class="absolute top-1 right-1 p-1 rounded-md bg-black/70 hover:bg-rose-600 text-white transition-all shadow-sm"
+                                            title="Batalkan gambar ini"
+                                        >
+                                            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                            </svg>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
