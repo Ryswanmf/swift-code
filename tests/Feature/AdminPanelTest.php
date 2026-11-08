@@ -201,3 +201,66 @@ test('admin can perform full CRUD on contact leads including create and full edi
         'id' => $createdLead->id,
     ]);
 });
+
+test('admin can perform full CRUD on articles', function () {
+    // 1. Render Articles Index
+    $indexResponse = $this->actingAs($this->admin)->get('/admin/articles');
+    $indexResponse->assertStatus(200);
+
+    // 2. Render Create Page
+    $createResponse = $this->actingAs($this->admin)->get('/admin/articles/create');
+    $createResponse->assertStatus(200);
+
+    // 3. Store New Article
+    $storeResponse = $this->actingAs($this->admin)->post('/admin/articles', [
+        'title' => 'Panduan Memilih Hosting Cepat untuk Website Lampung',
+        'category' => 'Panduan Web',
+        'summary' => 'Tips memilih server hosting dengan latensi rendah di Indonesia agar website memuat instan.',
+        'content' => 'Server hosting adalah rumah bagi seluruh file website Anda. Memilih penyedia hosting dengan server lokal Indonesia sangat penting agar waktu muat diakses dari Lampung di bawah 1 detik.',
+        'author' => 'Tim Swift Code',
+        'is_published' => true,
+    ]);
+
+    $storeResponse->assertRedirect(route('admin.articles.index'));
+    $this->assertDatabaseHas('articles', [
+        'title' => 'Panduan Memilih Hosting Cepat untuk Website Lampung',
+        'slug' => 'panduan-memilih-hosting-cepat-untuk-website-lampung',
+        'category' => 'Panduan Web',
+        'is_published' => true,
+    ]);
+
+    $createdArticle = \App\Models\Article::where('slug', 'panduan-memilih-hosting-cepat-untuk-website-lampung')->first();
+    expect($createdArticle)->not->toBeNull();
+
+    // 4. Render Edit Page
+    $editResponse = $this->actingAs($this->admin)->get("/admin/articles/{$createdArticle->id}/edit");
+    $editResponse->assertStatus(200);
+
+    // 5. Update Article
+    $updateResponse = $this->actingAs($this->admin)->put("/admin/articles/{$createdArticle->id}", [
+        'title' => 'Panduan Memilih Hosting Cloud SSD Cepat Lampung 2026',
+        'category' => 'Panduan Web',
+        'summary' => 'Tips teruji memilih cloud SSD untuk performa maksimal website bisnis.',
+        'content' => 'Pembaruan panduan lengkap memilih hosting cloud dengan keamanan SSL dan backup harian.',
+        'author' => 'Tim Swift Code Official',
+        'is_published' => true,
+    ]);
+
+    $updateResponse->assertRedirect(route('admin.articles.index'));
+    $this->assertDatabaseHas('articles', [
+        'id' => $createdArticle->id,
+        'title' => 'Panduan Memilih Hosting Cloud SSD Cepat Lampung 2026',
+        'author' => 'Tim Swift Code Official',
+    ]);
+
+    // 6. Test alias route /admin/artikel
+    $aliasResponse = $this->actingAs($this->admin)->get('/admin/artikel');
+    $aliasResponse->assertStatus(200);
+
+    // 7. Delete Article
+    $deleteResponse = $this->actingAs($this->admin)->delete("/admin/articles/{$createdArticle->id}");
+    $deleteResponse->assertRedirect(route('admin.articles.index'));
+    $this->assertDatabaseMissing('articles', [
+        'id' => $createdArticle->id,
+    ]);
+});

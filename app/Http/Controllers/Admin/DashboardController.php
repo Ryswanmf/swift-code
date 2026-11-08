@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Article;
 use App\Models\Lead;
 use App\Models\Package;
 use App\Models\Project;
@@ -21,6 +22,7 @@ class DashboardController extends Controller
             'new_leads' => Lead::where('status', 'new')->count(),
             'total_leads' => Lead::count(),
             'total_projects' => Project::count(),
+            'total_articles' => Article::count(),
             'total_services' => Service::count(),
             'total_packages' => Package::count(),
         ];

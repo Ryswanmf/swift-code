@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Article;
 use App\Models\Setting;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -9,7 +10,7 @@ use Inertia\Response;
 class ArticleController extends Controller
 {
     /**
-     * Curated articles dataset.
+     * Curated fallback articles dataset.
      */
     protected function getArticles(): array
     {
@@ -62,54 +63,6 @@ class ArticleController extends Controller
                 'image' => 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=800&auto=format&fit=crop',
                 'content' => "Harga jasa pembuatan website di pasar seringkali bervariasi dari ratusan ribu hingga puluhan juta rupiah. Memahami komponen biayanya membantu Anda memilih penyedia jasa yang benar-benar berkualitas tanpa jebakan biaya tersembunyi.\n\nKomponen biaya utama yang wajar dalam proyek website profesional:\n\n1. Sewa Domain Resmi Tahunan (.com / .id / .sch.id)\nBiaya pendaftaran domain resmi berkisar Rp 150.000 - Rp 300.000 per tahun. Pastikan domain didaftarkan atas nama kepemilikan Anda sendiri, bukan ditahan oleh pihak agensi.\n\n2. Server Hosting SSD Cepat & Andal\nHosting gratisan atau murahan sering mengalami downtime saat diakses bersamaan. Server cloud SSD dengan uptime 99.9% dan sertifikat SSL aktif membutuhkan biaya sewa sekitar Rp 350.000 - Rp 700.000 per tahun.\n\n3. Desain UI/UX & Koding Antarmuka\nBiaya pengembangan profesional mencakup penyusunan tata letak yang ramah mobile, copywriting persuasif, integrasi tombol WhatsApp, panel admin untuk kelola artikel, dan pengujian bebas eror di semua jenis browser.\n\nDi Swift Code Lampung, paket siap pakai kami mulai dari Rp 950.000 untuk Landing Page dan Rp 2.450.000 untuk Company Profile lengkap tanpa ada biaya tersembunyi di kemudian hari.",
             ],
-            [
-                'id' => 5,
-                'slug' => 'panduan-ppdb-online-sekolah-madrasah',
-                'title' => 'Panduan Lengkap PPDB Online untuk Sekolah & Madrasah di Lampung',
-                'summary' => 'Bagaimana madrasah dan pondok pesantren mengelola pendaftaran santri/siswa baru tanpa antrean panjang formulir kertas.',
-                'category' => 'Institusi & Sekolah',
-                'read_time' => '4 menit baca',
-                'published_at' => '22 Okt 2026',
-                'author' => 'Tim Swift Code',
-                'image' => 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=800&auto=format&fit=crop',
-                'content' => "Setiap musim tahun ajaran baru, panitia penerimaan santri atau peserta didik baru (PPDB) di madrasah dan sekolah swasta Lampung sering kewalahan menangani formulir kertas dan berkas fisik calon wali murid.\n\nTransformasi digital PPDB membawa banyak keuntungan praktis:\n\n1. Formulir Online yang Bisa Diisi dari Smartphone Wali Murid\nCalon orang tua siswa tidak perlu repot datang ke madrasah hanya untuk mengambil dan mengembalikan formulir fisik. Formulir online responsif memungkinkan pengisian biodata dan upload kartu keluarga kapan saja.\n\n2. Notifikasi WhatsApp Otomatis ke Nomor Orang Tua\nBegitu formulir berhasil dikirim, sistem dapat langsung mengirimkan bukti nomor pendaftaran dan panduan ujian seleksi ke nomor WhatsApp wali murid secara otomatis.\n\n3. Rekap Data Terpusat dan Siap Cetak Excel / PDF\nPanitia PPDB dapat memantau kuota pendaftar secara real-time, menyaring kelengkapan berkas, dan mengunduh laporan rekapitulasi data pendaftar hanya dalam sekali klik.\n\nSwift Code Lampung telah berpengalaman membangun portal akademik dan sistem PPDB untuk berbagai institusi pendidikan Islam dan swasta di Lampung.",
-            ],
-            [
-                'id' => 6,
-                'slug' => 'toko-online-whatsapp-umkm-lampung',
-                'title' => 'Toko Online Berbasis WhatsApp: Solusi Praktis UMKM Kuliner & Kerajinan',
-                'summary' => 'Mengapa pembeli Indonesia lebih suka checkout langsung ke WhatsApp dibanding keranjang rumit, dan bagaimana cara menerapkannya.',
-                'category' => 'E-Commerce',
-                'read_time' => '5 menit baca',
-                'published_at' => '15 Okt 2026',
-                'author' => 'Tim Swift Code',
-                'image' => 'https://images.unsplash.com/photo-1556742049-0a67c5574f73?q=80&w=800&auto=format&fit=crop',
-                'content' => "Bagi pelaku UMKM kuliner khas Lampung (seperti keripik pisang, kopi robusta, atau kain tapis), sistem e-commerce raksasa yang mewajibkan pembeli membuat akun dan password seringkali justru membatalkan niat belanja calon pembeli.\n\nFormat Toko Online Checkout WhatsApp menjadi solusi paling diminati karena:\n\n1. Alur Pemesanan Cepat Tanpa Ribet Registrasi Akun\nPengunjung cukup memilih varian produk, menentukan jumlah pesanan, mengisi alamat pengiriman singkat, lalu menekan tombol 'Pesan via WhatsApp'.\n\n2. Format Pesan WhatsApp Rapi & Terstruktur\nPesan yang masuk ke WhatsApp admin penjualan sudah otomatis memuat rincian nama produk, varian rasa/ukuran, total harga belanja, serta alamat tujuan lengkap. Admin tinggal mengonfirmasi nomor rekening pembayaran.\n\n3. Sentuhan Layanan Personal yang Membangun Kepercayaan\nMasyarakat Indonesia sangat menghargai keramahan interaksi langsung. Melalui WhatsApp, admin dapat merekomendasikan produk pelengkap (cross-selling) dan membina hubungan hangat dengan pelanggan setia.",
-            ],
-            [
-                'id' => 7,
-                'slug' => 'keamanan-website-ssl-dan-backup-otomatis',
-                'title' => 'Pentingnya Sertifikat SSL dan Backup Otomatis untuk Website Bisnis',
-                'summary' => 'Hindari peringatan bahaya di browser pengunjung dan amankan data pelanggan Anda dari potensi kehilangan data berharga.',
-                'category' => 'Panduan Web',
-                'read_time' => '4 menit baca',
-                'published_at' => '10 Okt 2026',
-                'author' => 'Tim Swift Code',
-                'image' => 'https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=800&auto=format&fit=crop',
-                'content' => "Keamanan website adalah aspek krusial yang sering diabaikan pemilik bisnis sampai masalah kebocoran data atau peretasan terjadi.\n\nSertifikat SSL (HTTPS) dan backup data rutin adalah dua lapisan proteksi fundamental:\n\n1. Ikon Gembok SSL Menjamin Kepercayaan Pelanggan\nGoogle Chrome dan browser modern lainnya menandai website tanpa SSL sebagai 'Not Secure'. Hal ini langsung menurunkan rasa percaya calon klien sebelum mereka membaca isi penawaran Anda.\n\n2. Perlindungan dari Kerusakan Data & Ransomware\nDengan sistem backup otomatis harian atau mingguan ke server cloud terpisah, Anda dapat memulihkan seluruh data dan tampilan website hanya dalam beberapa menit jika terjadi kesalahan teknis atau insiden peretasan.",
-            ],
-            [
-                'id' => 8,
-                'slug' => 'kecepatan-website-meningkatkan-penjualan-online',
-                'title' => 'Mengapa Kecepatan Website di Bawah 2 Detik Berdampak Langsung pada Penjualan',
-                'summary' => 'Riset membuktikan setiap detik keterlambatan loading memangkas konversi penjualan hingga 7%. Simak cara optimasi performanya.',
-                'category' => 'Strategi Bisnis',
-                'read_time' => '5 menit baca',
-                'published_at' => '5 Okt 2026',
-                'author' => 'Tim Swift Code',
-                'image' => 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=800&auto=format&fit=crop',
-                'content' => "Di era serba instan, pengguna smartphone tidak memiliki kesabaran untuk menunggu website yang memuat lebih dari 3 detik.\n\nFakta empiris seputar kecepatan akses website:\n\n1. Peningkatan Tingkat Konversi (Conversion Rate)\nWebsite yang responsif dan membuka halaman dalam 1 hingga 2 detik memiliki tingkat konversi penjualan hingga 3 kali lipat lebih tinggi dibandingkan website yang berat dan lambat.\n\n2. Nilai Prioritas di Algoritma Google Core Web Vitals\nGoogle secara resmi menjadikan kecepatan interaksi halaman (LCP, FID, CLS) sebagai faktor penentu peringkat halaman pertama. Website yang cepat otomatis mendapatkan peringkat pencarian yang lebih unggul.",
-            ],
         ];
     }
 
@@ -118,8 +71,16 @@ class ArticleController extends Controller
      */
     public function index(): Response
     {
+        $dbArticles = Article::query()
+            ->where('is_published', true)
+            ->orderBy('sort_order')
+            ->latest('published_at')
+            ->get();
+
+        $articles = $dbArticles->isNotEmpty() ? $dbArticles : collect($this->getArticles());
+
         return Inertia::render('Articles/Index', [
-            'articles' => $this->getArticles(),
+            'articles' => $articles,
             'settings' => Setting::getAllAsKeyMap(),
         ]);
     }
@@ -129,18 +90,36 @@ class ArticleController extends Controller
      */
     public function show(string $slug): Response
     {
-        $articles = $this->getArticles();
-        $article = collect($articles)->firstWhere('slug', $slug);
+        $article = Article::where('slug', $slug)
+            ->where('is_published', true)
+            ->first();
 
         if (! $article) {
-            abort(404);
+            $fallback = collect($this->getArticles())->firstWhere('slug', $slug);
+            if ($fallback) {
+                $article = $fallback;
+            } else {
+                abort(404);
+            }
         }
 
-        $relatedArticles = collect($articles)
-            ->filter(fn ($item) => $item['slug'] !== $slug)
+        $currentId = is_array($article) ? ($article['id'] ?? null) : $article->id;
+
+        $relatedArticles = Article::query()
+            ->where('is_published', true)
+            ->when($currentId, fn ($q) => $q->where('id', '!=', $currentId))
+            ->orderBy('sort_order')
+            ->latest('published_at')
             ->take(3)
-            ->values()
-            ->all();
+            ->get();
+
+        if ($relatedArticles->isEmpty()) {
+            $relatedArticles = collect($this->getArticles())
+                ->filter(fn ($item) => $item['slug'] !== $slug)
+                ->take(3)
+                ->values()
+                ->all();
+        }
 
         return Inertia::render('Articles/Show', [
             'article' => $article,

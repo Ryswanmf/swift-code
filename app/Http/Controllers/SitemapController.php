@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Article;
 use App\Models\Project;
 use Illuminate\Http\Response;
 
@@ -37,6 +38,20 @@ class SitemapController extends Controller
             $xml .= '<lastmod>'.$project->updated_at->toAtomString().'</lastmod>';
             $xml .= '<changefreq>monthly</changefreq>';
             $xml .= '<priority>0.8</priority>';
+            $xml .= '</url>';
+        }
+
+        // Published Articles
+        $articles = Article::query()
+            ->where('is_published', true)
+            ->get(['slug', 'updated_at']);
+
+        foreach ($articles as $article) {
+            $xml .= '<url>';
+            $xml .= '<loc>'.htmlspecialchars("{$baseUrl}/artikel/{$article->slug}").'</loc>';
+            $xml .= '<lastmod>'.$article->updated_at->toAtomString().'</lastmod>';
+            $xml .= '<changefreq>weekly</changefreq>';
+            $xml .= '<priority>0.7</priority>';
             $xml .= '</url>';
         }
 

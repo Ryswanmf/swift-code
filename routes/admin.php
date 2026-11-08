@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\ArticleController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\LeadController;
@@ -13,6 +14,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
 // CRUD Resources
+Route::resource('articles', ArticleController::class);
+Route::resource('artikel', ArticleController::class);
 Route::resource('projects', ProjectController::class);
 Route::resource('services', ServiceController::class);
 Route::resource('packages', PackageController::class);
