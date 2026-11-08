@@ -19,6 +19,8 @@ Route::resource('artikel', ArticleController::class);
 Route::resource('projects', ProjectController::class);
 Route::resource('services', ServiceController::class);
 Route::resource('packages', PackageController::class);
+Route::resource('paket', PackageController::class);
+Route::resource('paket-harga', PackageController::class);
 Route::resource('testimonials', TestimonialController::class);
 Route::resource('faqs', FaqController::class);
 

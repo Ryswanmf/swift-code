@@ -264,3 +264,85 @@ test('admin can perform full CRUD on articles', function () {
         'id' => $createdArticle->id,
     ]);
 });
+
+test('admin can perform full CRUD on packages including templates and aliases', function () {
+    // 1. Render Packages Index
+    $indexResponse = $this->actingAs($this->admin)->get('/admin/packages');
+    $indexResponse->assertStatus(200);
+
+    // 2. Render Create Page
+    $createResponse = $this->actingAs($this->admin)->get('/admin/packages/create');
+    $createResponse->assertStatus(200);
+
+    // 3. Store New Package
+    $storeResponse = $this->actingAs($this->admin)->post('/admin/packages', [
+        'name' => 'Paket Web Profil UMKM Kilat',
+        'price' => 1250000,
+        'price_note' => 'Termasuk hosting 1 tahun & domain .my.id',
+        'features' => [
+            '1 Halaman Responsif Mobile-First',
+            'Desain Modern Tailwind',
+            'Integrasi WhatsApp Langsung',
+            'Gratis SSL & Setup Domain',
+        ],
+        'is_highlighted' => true,
+        'sort_order' => 1,
+        'is_active' => true,
+    ]);
+
+    $storeResponse->assertRedirect(route('admin.packages.index'));
+    $this->assertDatabaseHas('packages', [
+        'name' => 'Paket Web Profil UMKM Kilat',
+        'price' => 1250000,
+        'is_highlighted' => true,
+        'is_active' => true,
+    ]);
+
+    $createdPackage = \App\Models\Package::where('name', 'Paket Web Profil UMKM Kilat')->first();
+    expect($createdPackage)->not->toBeNull();
+    expect($createdPackage->features)->toBeArray();
+    expect(count($createdPackage->features))->toBe(4);
+
+    // 4. Render Edit Page
+    $editResponse = $this->actingAs($this->admin)->get("/admin/packages/{$createdPackage->id}/edit");
+    $editResponse->assertStatus(200);
+
+    // 5. Update Package
+    $updateResponse = $this->actingAs($this->admin)->put("/admin/packages/{$createdPackage->id}", [
+        'name' => 'Paket Web Profil UMKM Super Kilat',
+        'price' => 1450000,
+        'price_note' => 'Termasuk hosting Cloud SSD 1 tahun & domain .com',
+        'features' => [
+            '1-3 Halaman Responsif Mobile-First',
+            'Desain Modern Tailwind Custom',
+            'Integrasi WhatsApp & Email Form',
+            'Gratis SSL & Setup Domain .COM',
+            'Garansi Bug & Pemeliharaan 30 Hari',
+        ],
+        'is_highlighted' => false,
+        'sort_order' => 2,
+        'is_active' => true,
+    ]);
+
+    $updateResponse->assertRedirect(route('admin.packages.index'));
+    $this->assertDatabaseHas('packages', [
+        'id' => $createdPackage->id,
+        'name' => 'Paket Web Profil UMKM Super Kilat',
+        'price' => 1450000,
+        'is_highlighted' => false,
+    ]);
+
+    // 6. Test alias routes
+    $aliasPaket = $this->actingAs($this->admin)->get('/admin/paket');
+    $aliasPaket->assertStatus(200);
+
+    $aliasPaketHarga = $this->actingAs($this->admin)->get('/admin/paket-harga');
+    $aliasPaketHarga->assertStatus(200);
+
+    // 7. Delete Package
+    $deleteResponse = $this->actingAs($this->admin)->delete("/admin/packages/{$createdPackage->id}");
+    $deleteResponse->assertRedirect(route('admin.packages.index'));
+    $this->assertDatabaseMissing('packages', [
+        'id' => $createdPackage->id,
+    ]);
+});
