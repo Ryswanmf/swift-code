@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Head, Link } from '@inertiajs/vue3';
+import { Head, Link, usePage } from '@inertiajs/vue3';
 import { computed } from 'vue';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
 
@@ -159,7 +159,11 @@ const standardFeatures = [
     },
 ];
 
-const whatsappNumber = computed(() => props.settings?.whatsapp || '62895325852575');
+const page = usePage();
+const whatsappNumber = computed(() => {
+    const raw = (page.props as any).siteSettings?.whatsapp || props.settings?.whatsapp || '62895325852575';
+    return String(raw).replace(/[^0-9]/g, '');
+});
 
 const buildWaUrl = (message: string) => {
     return `https://wa.me/${whatsappNumber.value}?text=${encodeURIComponent(message)}`;

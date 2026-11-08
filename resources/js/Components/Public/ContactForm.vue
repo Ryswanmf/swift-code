@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useForm } from '@inertiajs/vue3';
-import { ref } from 'vue';
+import { useForm, usePage } from '@inertiajs/vue3';
+import { ref, computed } from 'vue';
 
 withDefaults(
     defineProps<{
@@ -10,6 +10,21 @@ withDefaults(
         hideHeader: false,
     }
 );
+
+const page = usePage();
+const siteSettings = computed(() => ((page.props as any).siteSettings || (page.props as any).settings || {}) as Record<string, string>);
+const rawWa = computed(() => siteSettings.value.whatsapp || '62895325852575');
+const cleanWa = computed(() => rawWa.value.replace(/[^0-9]/g, ''));
+const formattedWa = computed(() => {
+    const num = cleanWa.value;
+    if (num.startsWith('62') && num.length >= 11) {
+        return `+62 ${num.slice(2, 5)}-${num.slice(5, 9)}-${num.slice(9)}`;
+    }
+    return `+${num}`;
+});
+const email = computed(() => siteSettings.value.email || 'halo@swiftcode.id');
+const instagram = computed(() => siteSettings.value.instagram || 'https://instagram.com/swiftcode.lpg');
+const waUrl = computed(() => `https://wa.me/${cleanWa.value}`);
 
 const suggestions = [
     'Landing Page',
@@ -40,9 +55,9 @@ const submit = () => {
             form.reset();
         },
         onError: () => {
-            // Fallback: If backend endpoint is not yet mounted (Fase 1 static), redirect directly to WhatsApp!
+            // Fallback: If network error occurs, redirect directly to WhatsApp!
             const text = `Halo Swift Code Lampung, saya *${form.name}* ingin berkonsultasi mengenai pembuatan website *${form.service_type}*.\n\nPesan: ${form.message}`;
-            window.open(`https://wa.me/62895325852575?text=${encodeURIComponent(text)}`, '_blank');
+            window.open(`https://wa.me/${cleanWa.value}?text=${encodeURIComponent(text)}`, '_blank');
         },
     });
 };
@@ -76,8 +91,8 @@ const submit = () => {
                             </div>
                             <div>
                                 <p class="text-xs text-neutral-500">Respons Cepat WhatsApp</p>
-                                <a href="https://wa.me/62895325852575" target="_blank" class="text-sm font-bold text-neutral-900 hover:text-brand-600 transition-colors">
-                                    +62 895-3258-52575
+                                <a :href="waUrl" target="_blank" class="text-sm font-bold text-neutral-900 hover:text-brand-600 transition-colors">
+                                    {{ formattedWa }}
                                 </a>
                             </div>
                         </div>
@@ -90,8 +105,8 @@ const submit = () => {
                             </div>
                             <div>
                                 <p class="text-xs text-neutral-500">Email Resmi</p>
-                                <a href="mailto:halo@swiftcode.id" class="text-sm font-bold text-neutral-900 hover:text-brand-600 transition-colors">
-                                    halo@swiftcode.id
+                                <a :href="`mailto:${email}`" class="text-sm font-bold text-neutral-900 hover:text-brand-600 transition-colors">
+                                    {{ email }}
                                 </a>
                             </div>
                         </div>
@@ -106,7 +121,7 @@ const submit = () => {
                             </div>
                             <div>
                                 <p class="text-xs text-neutral-500">Instagram Resmi</p>
-                                <a href="https://instagram.com/swiftcode.lpg" target="_blank" class="text-sm font-bold text-neutral-900 hover:text-brand-600 transition-colors">
+                                <a :href="instagram" target="_blank" class="text-sm font-bold text-neutral-900 hover:text-brand-600 transition-colors">
                                     @swiftcode.lpg
                                 </a>
                             </div>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
+import { usePage } from '@inertiajs/vue3';
 
 const props = withDefaults(
     defineProps<{
@@ -7,13 +8,23 @@ const props = withDefaults(
         message?: string;
     }>(),
     {
-        phone: '62895325852575',
+        phone: '',
         message: 'Halo Swift Code Lampung, saya ingin berkonsultasi mengenai pembuatan website.',
     },
 );
 
+const page = usePage();
+
+const activePhone = computed(() => {
+    if (props.phone && props.phone.trim().length > 0) {
+        return props.phone;
+    }
+    const sharedPhone = (page.props as any).siteSettings?.whatsapp || (page.props as any).settings?.whatsapp;
+    return sharedPhone || '62895325852575';
+});
+
 const whatsappUrl = computed(() => {
-    const cleanPhone = props.phone.replace(/[^0-9]/g, '');
+    const cleanPhone = activePhone.value.replace(/[^0-9]/g, '');
     const encodedMessage = encodeURIComponent(props.message);
     return `https://wa.me/${cleanPhone}?text=${encodedMessage}`;
 });

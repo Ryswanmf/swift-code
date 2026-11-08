@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Head, Link, useForm } from '@inertiajs/vue3';
+import { Head, Link, useForm, usePage } from '@inertiajs/vue3';
 import { ref, computed } from 'vue';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
 
@@ -11,12 +11,18 @@ const props = withDefaults(defineProps<Props>(), {
     settings: () => ({}),
 });
 
-const whatsappNumber = computed(() => props.settings?.whatsapp || '62895325852575');
-const emailAddress = computed(() => props.settings?.email || 'halo@swiftcode.id');
-const instagramHandle = computed(() => props.settings?.instagram || '@swiftcode.lpg');
-const officeAddress = computed(() => props.settings?.address || 'Bandar Lampung, Lampung, Indonesia');
+const page = usePage();
+const activeSettings = computed<Record<string, string>>(() => ({
+    ...props.settings,
+    ...((page.props as any).siteSettings || {}),
+}));
 
-const cleanWaNumber = computed(() => whatsappNumber.value.replace(/[^0-9]/g, ''));
+const whatsappNumber = computed(() => activeSettings.value.whatsapp || '62895325852575');
+const emailAddress = computed(() => activeSettings.value.email || 'halo@swiftcode.id');
+const instagramHandle = computed(() => activeSettings.value.instagram || '@swiftcode.lpg');
+const officeAddress = computed(() => activeSettings.value.address || 'Bandar Lampung, Lampung, Indonesia');
+
+const cleanWaNumber = computed(() => String(whatsappNumber.value).replace(/[^0-9]/g, ''));
 const waLink = computed(() => {
     const text = 'Halo Swift Code Lampung, saya ingin berkonsultasi mengenai pembuatan website untuk bisnis saya.';
     return `https://wa.me/${cleanWaNumber.value}?text=${encodeURIComponent(text)}`;

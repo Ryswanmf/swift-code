@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Head, Link } from '@inertiajs/vue3';
+import { Head, Link, usePage } from '@inertiajs/vue3';
 import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
 
@@ -125,7 +125,11 @@ onUnmounted(() => {
     document.removeEventListener('click', handleClickOutside);
 });
 
-const whatsappNumber = computed(() => props.settings?.whatsapp || '62895325852575');
+const page = usePage();
+const whatsappNumber = computed(() => {
+    const raw = (page.props as any).siteSettings?.whatsapp || props.settings?.whatsapp || '62895325852575';
+    return String(raw).replace(/[^0-9]/g, '');
+});
 </script>
 
 <template>

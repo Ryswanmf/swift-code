@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Head, Link } from '@inertiajs/vue3';
+import { Head, Link, usePage } from '@inertiajs/vue3';
 import { ref, computed } from 'vue';
 import PublicLayout from '../Layouts/PublicLayout.vue';
 import Hero from '../Components/Public/Hero.vue';
@@ -303,16 +303,33 @@ const filteredProjects = computed(() => {
 const displayedHomeProjects = computed(() => filteredProjects.value.slice(0, 6));
 const hasMoreProjects = computed(() => filteredProjects.value.length > 6 || projectsList.value.length > 6);
 
+// Global settings fallback from Inertia siteSettings
+const page = usePage();
+const activeSettings = computed<Record<string, string>>(() => ({
+    ...props.settings,
+    ...((page.props as any).siteSettings || {}),
+}));
+
+const cleanWaNumber = computed(() => {
+    const raw = activeSettings.value.whatsapp || '62895325852575';
+    return String(raw).replace(/[^0-9]/g, '');
+});
+
+const buildPackageWaUrl = (pkgName: string) => {
+    const text = `Halo Swift Code Lampung, saya ingin berkonsultasi dan memesan *${pkgName}* untuk bisnis saya.`;
+    return `https://wa.me/${cleanWaNumber.value}?text=${encodeURIComponent(text)}`;
+};
+
 // Structured Data Schema.org LocalBusiness
 const localBusinessSchema = computed(() =>
     JSON.stringify({
         '@context': 'https://schema.org',
         '@type': 'ProfessionalService',
-        name: props.settings?.site_name || 'Swift Code Lampung',
+        name: activeSettings.value.site_name || 'Swift Code Lampung',
         description:
-            props.settings?.meta_description ||
+            activeSettings.value.meta_description ||
             'Jasa pembuatan website profesional, landing page, company profile, website sekolah, dan sistem kustom di Lampung.',
-        telephone: props.settings?.whatsapp ? `+${props.settings.whatsapp}` : '+62895325852575',
+        telephone: activeSettings.value.whatsapp ? `+${cleanWaNumber.value}` : '+62895325852575',
         priceRange: 'Rp 950.000 - Rp 5.000.000+',
         address: {
             '@type': 'PostalAddress',
@@ -333,7 +350,7 @@ const localBusinessSchema = computed(() =>
             opens: '08:00',
             closes: '21:00',
         },
-        sameAs: [props.settings?.instagram || 'https://instagram.com/swiftcode.lpg'],
+        sameAs: [activeSettings.value.instagram || 'https://instagram.com/swiftcode.lpg'],
     })
 );
 </script>
@@ -524,6 +541,9 @@ const localBusinessSchema = computed(() =>
                         v-for="pkg in packagesList"
                         :key="pkg.name"
                         :pkg="pkg"
+                        :action-href="buildPackageWaUrl(pkg.name)"
+                        action-text="Pesan Paket Ini via WhatsApp"
+                        :is-external="true"
                     />
                 </div>
             </div>

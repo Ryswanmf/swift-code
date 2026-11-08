@@ -1,7 +1,26 @@
 <script setup lang="ts">
+import { computed } from 'vue';
+import { usePage } from '@inertiajs/vue3';
 import SwiftCodeLogo from '../SwiftCodeLogo.vue';
 
+const page = usePage();
 const currentYear = new Date().getFullYear();
+
+const siteSettings = computed(() => ((page.props as any).siteSettings || (page.props as any).settings || {}) as Record<string, string>);
+
+const rawWa = computed(() => siteSettings.value.whatsapp || '62895325852575');
+const cleanWa = computed(() => rawWa.value.replace(/[^0-9]/g, ''));
+const formattedWa = computed(() => {
+    const num = cleanWa.value;
+    if (num.startsWith('62') && num.length >= 11) {
+        return `+62 ${num.slice(2, 5)}-${num.slice(5, 9)}-${num.slice(9)}`;
+    }
+    return `+${num}`;
+});
+const email = computed(() => siteSettings.value.email || 'halo@swiftcode.id');
+const address = computed(() => siteSettings.value.address || 'Bandar Lampung, Lampung, Indonesia');
+const instagram = computed(() => siteSettings.value.instagram || 'https://instagram.com/swiftcode.lpg');
+const waUrl = computed(() => `https://wa.me/${cleanWa.value}`);
 
 const navLinks = [
     { name: 'Beranda', href: '/#hero' },
@@ -44,7 +63,7 @@ const servicesList = [
                     <!-- Social Contact Buttons -->
                     <div class="pt-2 flex flex-wrap items-center gap-2.5">
                         <a
-                            href="https://wa.me/62895325852575"
+                            :href="waUrl"
                             target="_blank"
                             rel="noopener noreferrer"
                             class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-neutral-900 hover:bg-emerald-600 text-neutral-300 hover:text-white border border-neutral-800 text-xs font-semibold transition-all duration-200"
@@ -57,7 +76,7 @@ const servicesList = [
                         </a>
 
                         <a
-                            href="https://instagram.com/swiftcode.lpg"
+                            :href="instagram"
                             target="_blank"
                             rel="noopener noreferrer"
                             class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-neutral-900 hover:bg-gradient-to-tr hover:from-amber-600 hover:to-rose-600 text-neutral-300 hover:text-white border border-neutral-800 text-xs font-semibold transition-all duration-200"
@@ -108,7 +127,7 @@ const servicesList = [
                             </div>
                             <div>
                                 <p class="text-xs text-neutral-500 font-medium">Lokasi Kantor</p>
-                                <span class="text-neutral-300">Bandar Lampung, Lampung, Indonesia</span>
+                                <span class="text-neutral-300">{{ address }}</span>
                             </div>
                         </li>
 
@@ -120,8 +139,8 @@ const servicesList = [
                             </div>
                             <div>
                                 <p class="text-xs text-neutral-500 font-medium">WhatsApp / Telepon</p>
-                                <a href="https://wa.me/62895325852575" target="_blank" class="text-neutral-300 hover:text-white font-semibold transition-colors">
-                                    +62 895-3258-52575
+                                <a :href="waUrl" target="_blank" class="text-neutral-300 hover:text-white font-semibold transition-colors">
+                                    {{ formattedWa }}
                                 </a>
                             </div>
                         </li>
@@ -134,8 +153,8 @@ const servicesList = [
                             </div>
                             <div>
                                 <p class="text-xs text-neutral-500 font-medium">Email Resmi</p>
-                                <a href="mailto:halo@swiftcode.id" class="text-neutral-300 hover:text-white transition-colors">
-                                    halo@swiftcode.id
+                                <a :href="`mailto:${email}`" class="text-neutral-300 hover:text-white transition-colors">
+                                    {{ email }}
                                 </a>
                             </div>
                         </li>

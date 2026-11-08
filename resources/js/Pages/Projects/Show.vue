@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Head, Link } from '@inertiajs/vue3';
+import { Head, Link, usePage } from '@inertiajs/vue3';
 import { computed } from 'vue';
 import PublicLayout from '../../Layouts/PublicLayout.vue';
 import ProjectCard, { ProjectItem } from '../../Components/Public/ProjectCard.vue';
@@ -23,9 +23,10 @@ const categoryLabels: Record<string, string> = {
     sistem: 'Sistem Custom',
 };
 
+const page = usePage();
 const consultationWaUrl = computed(() => {
-    const wa = props.settings?.whatsapp || '62895325852575';
-    const cleanWa = wa.replace(/[^0-9]/g, '');
+    const wa = (page.props as any).siteSettings?.whatsapp || props.settings?.whatsapp || '62895325852575';
+    const cleanWa = String(wa).replace(/[^0-9]/g, '');
     const text = `Halo Swift Code Lampung, saya melihat portofolio *${props.project.title}* dan ingin membuat website serupa untuk bisnis saya.`;
     return `https://wa.me/${cleanWa}?text=${encodeURIComponent(text)}`;
 });

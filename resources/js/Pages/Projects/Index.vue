@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Head, Link } from '@inertiajs/vue3';
+import { Head, Link, usePage } from '@inertiajs/vue3';
 import { ref, computed } from 'vue';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
 import ProjectCard, { ProjectItem } from '@/Components/Public/ProjectCard.vue';
@@ -33,7 +33,11 @@ const categories = [
     { key: 'sistem', label: 'Sistem Custom' },
 ] as const;
 
-const whatsappNumber = computed(() => props.settings?.whatsapp || '62895325852575');
+const page = usePage();
+const whatsappNumber = computed(() => {
+    const raw = (page.props as any).siteSettings?.whatsapp || props.settings?.whatsapp || '62895325852575';
+    return String(raw).replace(/[^0-9]/g, '');
+});
 
 const waUrl = computed(() => {
     const text = 'Halo Swift Code Lampung, saya melihat galeri portofolio website Anda dan ingin berkonsultasi mengenai pembuatan website untuk bisnis saya.';
