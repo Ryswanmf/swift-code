@@ -19,11 +19,9 @@ Route::resource('packages', PackageController::class);
 Route::resource('testimonials', TestimonialController::class);
 Route::resource('faqs', FaqController::class);
 
-// Leads Management
-Route::get('leads', [LeadController::class, 'index'])->name('leads.index');
-Route::get('leads/{lead}', [LeadController::class, 'show'])->name('leads.show');
-Route::put('leads/{lead}', [LeadController::class, 'update'])->name('leads.update');
-Route::delete('leads/{lead}', [LeadController::class, 'destroy'])->name('leads.destroy');
+// CRUD Kontak / Leads Management
+Route::resource('leads', LeadController::class);
+Route::resource('kontak', LeadController::class);
 
 // Settings
 Route::get('settings', [SettingController::class, 'edit'])->name('settings.edit');

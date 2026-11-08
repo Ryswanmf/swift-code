@@ -21,7 +21,7 @@ const flashSuccess = computed(() => {
 
 const navigation = [
     { name: 'Dashboard', href: '/admin', id: 'dashboard' },
-    { name: 'Manajemen Leads', href: '/admin/leads', id: 'leads' },
+    { name: 'Kontak & Leads', href: '/admin/leads', id: 'leads' },
     { name: 'Portofolio Proyek', href: '/admin/projects', id: 'projects' },
     { name: 'Layanan', href: '/admin/services', id: 'services' },
     { name: 'Paket Harga', href: '/admin/packages', id: 'packages' },
@@ -33,6 +33,9 @@ const navigation = [
 const isCurrentUrl = (url: string) => {
     if (url === '/admin') {
         return page.url === '/admin' || page.url === '/admin/';
+    }
+    if (url === '/admin/leads') {
+        return page.url.startsWith('/admin/leads') || page.url.startsWith('/admin/kontak');
     }
     return page.url.startsWith(url);
 };

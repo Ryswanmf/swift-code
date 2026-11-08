@@ -138,3 +138,66 @@ test('admin can update site settings', function () {
         'value' => 'Swift Code Lampung Official',
     ]);
 });
+
+test('admin can perform full CRUD on contact leads including create and full edit', function () {
+    // 1. Render Create Page
+    $createResponse = $this->actingAs($this->admin)->get('/admin/leads/create');
+    $createResponse->assertStatus(200);
+
+    // 2. Store New Contact Lead
+    $storeResponse = $this->actingAs($this->admin)->post('/admin/leads', [
+        'name' => 'Budi Santoso - Toko Berkah',
+        'phone' => '089512345678',
+        'email' => 'budi@tokoberkah.com',
+        'service_type' => 'Toko Online (E-Commerce)',
+        'budget' => 'Rp 3.000.000 - Rp 5.000.000',
+        'message' => 'Ingin buat toko online kerajinan khas Lampung',
+        'status' => 'new',
+        'notes' => 'Hubungi via WA jam 2 siang.',
+    ]);
+
+    $storeResponse->assertRedirect(route('admin.leads.index'));
+    $this->assertDatabaseHas('leads', [
+        'name' => 'Budi Santoso - Toko Berkah',
+        'phone' => '089512345678',
+        'service_type' => 'Toko Online (E-Commerce)',
+    ]);
+
+    $createdLead = Lead::where('name', 'Budi Santoso - Toko Berkah')->first();
+    expect($createdLead)->not->toBeNull();
+
+    // 3. Render Edit Page
+    $editResponse = $this->actingAs($this->admin)->get("/admin/leads/{$createdLead->id}/edit");
+    $editResponse->assertStatus(200);
+
+    // 4. Update Full Contact Details
+    $updateResponse = $this->actingAs($this->admin)->put("/admin/leads/{$createdLead->id}", [
+        'name' => 'Budi Santoso - Toko Berkah Sentosa',
+        'phone' => '089512349999',
+        'email' => 'budi.sentosa@tokoberkah.com',
+        'service_type' => 'Toko Online (E-Commerce)',
+        'budget' => 'Di atas Rp 5.000.000',
+        'message' => 'Ingin buat toko online dengan fitur payment gateway dan ekspedisi',
+        'status' => 'deal',
+        'notes' => 'Closing paket custom. DP 50% diterima.',
+    ]);
+
+    $updateResponse->assertRedirect(route('admin.leads.index'));
+    $this->assertDatabaseHas('leads', [
+        'id' => $createdLead->id,
+        'name' => 'Budi Santoso - Toko Berkah Sentosa',
+        'phone' => '089512349999',
+        'status' => 'deal',
+    ]);
+
+    // 5. Test alias route /admin/kontak
+    $aliasResponse = $this->actingAs($this->admin)->get('/admin/kontak');
+    $aliasResponse->assertStatus(200);
+
+    // 6. Delete Lead
+    $deleteResponse = $this->actingAs($this->admin)->delete("/admin/leads/{$createdLead->id}");
+    $deleteResponse->assertRedirect(route('admin.leads.index'));
+    $this->assertDatabaseMissing('leads', [
+        'id' => $createdLead->id,
+    ]);
+});

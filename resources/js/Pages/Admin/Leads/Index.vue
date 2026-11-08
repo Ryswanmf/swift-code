@@ -69,15 +69,24 @@ const getWaUrl = (phone: string, name: string, service: string) => {
 </script>
 
 <template>
-    <Head title="Manajemen Leads - Panel Admin" />
+    <Head title="Kelola Kontak & Leads - Panel Admin" />
 
-    <AdminLayout title="Manajemen Leads Masuk">
+    <AdminLayout title="Kelola Kontak & Leads">
         <div class="space-y-6">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                    <h2 class="text-xl font-extrabold text-neutral-900 dark:text-white">Semua Leads & Calon Klien ({{ leads.total }})</h2>
-                    <p class="text-xs text-neutral-500">Daftar calon klien yang mengisi formulir konsultasi di website</p>
+                    <h2 class="text-xl font-extrabold text-neutral-900 dark:text-white">Daftar Kontak & Leads ({{ leads.total }})</h2>
+                    <p class="text-xs text-neutral-500">Kelola calon klien yang masuk dari formulir website, telepon, atau kontak langsung</p>
                 </div>
+                <Link
+                    href="/admin/leads/create"
+                    class="inline-flex items-center gap-2 px-4 py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs rounded-xl shadow-sm shadow-brand-600/30 transition-all self-start sm:self-auto cursor-pointer"
+                >
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                    </svg>
+                    <span>Tambah Kontak Baru</span>
+                </Link>
             </div>
 
             <!-- Status Tabs -->
@@ -233,17 +242,23 @@ const getWaUrl = (phone: string, name: string, service: string) => {
                                         {{ statusLabels[lead.status]?.label || lead.status }}
                                     </span>
                                 </td>
-                                <td class="py-4 px-6 text-right space-x-2">
+                                <td class="py-4 px-6 text-right space-x-2 whitespace-nowrap">
                                     <Link
                                         :href="`/admin/leads/${lead.id}`"
                                         class="px-2.5 py-1 rounded-lg bg-neutral-100 dark:bg-neutral-800 hover:bg-brand-600 hover:text-white font-semibold transition-colors"
                                     >
                                         Detail
                                     </Link>
+                                    <Link
+                                        :href="`/admin/leads/${lead.id}/edit`"
+                                        class="px-2.5 py-1 rounded-lg text-brand-600 hover:bg-brand-50 dark:hover:bg-brand-950/60 font-bold transition-colors"
+                                    >
+                                        Edit
+                                    </Link>
                                     <button
                                         type="button"
                                         @click="deleteLead(lead.id, lead.name)"
-                                        class="text-rose-600 font-bold hover:underline"
+                                        class="text-rose-600 font-bold hover:underline cursor-pointer"
                                     >
                                         Hapus
                                     </button>

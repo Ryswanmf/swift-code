@@ -156,12 +156,18 @@ const statusLabels: Record<string, { label: string; class: string }> = {
                                             {{ statusLabels[lead.status]?.label || lead.status }}
                                         </span>
                                     </td>
-                                    <td class="py-3.5 text-right">
+                                    <td class="py-3.5 text-right space-x-1.5 whitespace-nowrap">
                                         <Link
                                             :href="`/admin/leads/${lead.id}`"
-                                            class="inline-flex items-center px-2.5 py-1 rounded-lg bg-neutral-100 dark:bg-neutral-800 hover:bg-brand-600 hover:text-white transition-colors text-xs font-semibold"
+                                            class="inline-flex items-center px-2 py-1 rounded-lg bg-neutral-100 dark:bg-neutral-800 hover:bg-brand-600 hover:text-white transition-colors text-xs font-semibold"
                                         >
                                             Detail
+                                        </Link>
+                                        <Link
+                                            :href="`/admin/leads/${lead.id}/edit`"
+                                            class="inline-flex items-center px-2 py-1 rounded-lg text-brand-600 hover:bg-brand-50 dark:hover:bg-brand-950 font-bold transition-colors text-xs"
+                                        >
+                                            Edit
                                         </Link>
                                     </td>
                                 </tr>
@@ -179,10 +185,19 @@ const statusLabels: Record<string, { label: string; class: string }> = {
                         </h3>
                         <div class="grid grid-cols-1 gap-2 pt-1">
                             <Link
-                                href="/admin/projects/create"
+                                href="/admin/leads/create"
                                 class="flex items-center gap-3 p-3 rounded-xl bg-brand-50 hover:bg-brand-100 dark:bg-brand-950/60 dark:hover:bg-brand-900/60 text-brand-700 dark:text-brand-300 font-bold text-xs transition-colors"
                             >
                                 <svg class="w-4 h-4 text-brand-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                                </svg>
+                                <span>Tambah Kontak Masuk Baru</span>
+                            </Link>
+                            <Link
+                                href="/admin/projects/create"
+                                class="flex items-center gap-3 p-3 rounded-xl bg-neutral-50 hover:bg-neutral-100 dark:bg-neutral-800/60 dark:hover:bg-neutral-800 text-neutral-800 dark:text-neutral-200 font-bold text-xs transition-colors"
+                            >
+                                <svg class="w-4 h-4 text-neutral-600 dark:text-neutral-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                                 </svg>
                                 <span>Tambah Portofolio Proyek</span>

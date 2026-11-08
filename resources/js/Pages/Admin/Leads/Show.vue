@@ -57,16 +57,25 @@ const waChatUrl = computed(() => {
                     </h2>
                     <p class="text-xs text-neutral-500">Diterima pada {{ new Date(lead.created_at).toLocaleString('id-ID') }}</p>
                 </div>
-                <div class="flex items-center gap-3">
+                <div class="flex items-center gap-2 sm:gap-3">
+                    <Link
+                        :href="`/admin/leads/${lead.id}/edit`"
+                        class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs rounded-xl shadow-xs transition-colors flex items-center gap-1.5"
+                    >
+                        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        </svg>
+                        <span>Edit Kontak</span>
+                    </Link>
                     <Link href="/admin/leads" class="px-4 py-2 bg-neutral-200 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 font-bold text-xs rounded-xl">
                         Kembali
                     </Link>
                     <button
                         type="button"
                         @click="deleteLead"
-                        class="px-4 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold text-xs rounded-xl border border-rose-200"
+                        class="px-4 py-2 bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/50 dark:hover:bg-rose-900/50 text-rose-700 dark:text-rose-300 font-bold text-xs rounded-xl border border-rose-200 dark:border-rose-900 cursor-pointer"
                     >
-                        Hapus Lead
+                        Hapus
                     </button>
                 </div>
             </div>
