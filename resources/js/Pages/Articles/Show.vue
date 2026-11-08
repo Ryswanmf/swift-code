@@ -103,6 +103,9 @@ const articleSchema = computed(() =>
                     <img
                         :src="article.image"
                         :alt="article.title"
+                        loading="eager"
+                        fetchpriority="high"
+                        decoding="async"
                         class="w-full h-full object-cover"
                     />
                 </div>

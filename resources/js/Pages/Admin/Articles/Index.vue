@@ -326,6 +326,8 @@ const formatDateTime = (dateString: string | null) => {
                                                 v-if="article.image"
                                                 :src="article.image"
                                                 :alt="article.title"
+                                                loading="lazy"
+                                                decoding="async"
                                                 class="w-full h-full object-cover"
                                             />
                                             <div v-else class="w-full h-full flex items-center justify-center text-[10px] text-neutral-400 font-bold">

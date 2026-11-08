@@ -52,6 +52,7 @@ const categoryLabels: Record<string, string> = {
                     :src="project.cover_image"
                     :alt="project.title"
                     loading="lazy"
+                    decoding="async"
                     class="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
                 />
                 <!-- Fallback Crisp Preview when image is loading / empty -->

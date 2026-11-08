@@ -395,6 +395,7 @@ const getCategoryClass = (cat: string) => {
                                                 :alt="proj.title"
                                                 class="w-full h-full object-cover transition-transform hover:scale-105 duration-200"
                                                 loading="lazy"
+                                                decoding="async"
                                             />
                                             <div v-else class="w-full h-full flex items-center justify-center text-neutral-400 bg-neutral-100 dark:bg-neutral-800">
                                                 <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">

@@ -58,6 +58,8 @@ defineProps<{
                     v-if="testimonial.avatar"
                     :src="testimonial.avatar"
                     :alt="testimonial.name"
+                    loading="lazy"
+                    decoding="async"
                     class="w-full h-full rounded-full object-cover"
                 />
                 <span v-else>{{ testimonial.name.charAt(0) }}</span>

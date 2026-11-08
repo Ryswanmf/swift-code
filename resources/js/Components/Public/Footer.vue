@@ -70,7 +70,7 @@ const servicesList = computed(() => {
                 <!-- Col 1: Brand & Bio (4 cols) -->
                 <div class="lg:col-span-4 space-y-5">
                     <div v-if="siteLogo" class="h-10 flex items-center">
-                        <img :src="siteLogo" alt="Logo" class="max-h-10 w-auto object-contain" />
+                        <img :src="siteLogo" alt="Logo" class="max-h-10 w-auto object-contain" loading="lazy" decoding="async" />
                     </div>
                     <SwiftCodeLogo v-else size="md" :inverted="true" />
 

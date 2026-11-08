@@ -107,7 +107,7 @@ const activePartners = computed(() => (props.partners && props.partners.length >
                         v-if="partner.logo_image"
                         class="w-10 h-10 rounded-xl bg-neutral-50 border border-neutral-100 flex items-center justify-center p-1 overflow-hidden shrink-0 group-hover:scale-105 transition-transform"
                     >
-                        <img :src="partner.logo_image" :alt="partner.name" class="w-full h-full object-contain" />
+                        <img :src="partner.logo_image" :alt="partner.name" class="w-full h-full object-contain" loading="lazy" decoding="async" />
                     </div>
 
                     <!-- Partner Logo Badge (Icon SVG fallback) -->

@@ -49,7 +49,7 @@ const closeMobileMenu = () => {
                 <!-- Brand Logo -->
                 <Link :href="isHomePage ? '#hero' : '/'" class="flex items-center gap-2">
                     <div v-if="siteLogo" class="h-9 flex items-center">
-                        <img :src="siteLogo" alt="Logo" class="max-h-9 w-auto object-contain" />
+                        <img :src="siteLogo" alt="Logo" class="max-h-9 w-auto object-contain" loading="eager" decoding="async" />
                     </div>
                     <SwiftCodeLogo v-else size="md" />
                 </Link>

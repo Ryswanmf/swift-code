@@ -194,6 +194,9 @@ onUnmounted(() => {
                         :alt="project.title"
                         @click="openLightbox(0)"
                         class="w-full aspect-[16/9] object-cover object-top cursor-zoom-in"
+                        loading="eager"
+                        fetchpriority="high"
+                        decoding="async"
                     />
                     <div
                         v-else
@@ -257,6 +260,7 @@ onUnmounted(() => {
                                         :src="img"
                                         :alt="`${project.title} - Galeri ${idx + 1}`"
                                         loading="lazy"
+                                        decoding="async"
                                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                                     />
                                     <div class="absolute inset-0 bg-neutral-950/0 group-hover:bg-neutral-950/30 transition-colors flex items-center justify-center">
@@ -397,6 +401,7 @@ onUnmounted(() => {
                     <img
                         :src="galleryImages[lightboxIndex]"
                         :alt="`${project.title} - Foto ${lightboxIndex + 1}`"
+                        decoding="async"
                         class="max-w-full max-h-[75vh] object-contain rounded-2xl shadow-2xl"
                     />
                 </div>
@@ -430,7 +435,7 @@ onUnmounted(() => {
                             lightboxIndex === tIdx ? 'border-brand-500 scale-105' : 'border-white/30 opacity-60 hover:opacity-100',
                         ]"
                     >
-                        <img :src="img" alt="Thumbnail" class="w-full h-full object-cover" />
+                        <img :src="img" alt="Thumbnail" class="w-full h-full object-cover" loading="lazy" decoding="async" />
                     </button>
                 </div>
             </div>

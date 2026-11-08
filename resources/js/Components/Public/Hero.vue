@@ -169,6 +169,8 @@ const highlights = computed(() => [
                                     alt="Swift Code Lampung - Modern Web Development & Digital Solution"
                                     class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                                     loading="eager"
+                                    fetchpriority="high"
+                                    decoding="async"
                                 />
 
                                 <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-neutral-950/70 via-transparent to-transparent"></div>
