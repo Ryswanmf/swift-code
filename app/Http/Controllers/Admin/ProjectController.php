@@ -19,25 +19,50 @@ class ProjectController extends Controller
      */
     public function index(Request $request): Response
     {
+        $status = $request->input('status', 'all');
+        $category = $request->input('category');
+        $search = $request->input('search');
+
+        $counts = [
+            'all' => Project::count(),
+            'published' => Project::where('is_published', true)->count(),
+            'draft' => Project::where('is_published', false)->count(),
+            'featured' => Project::where('is_featured', true)->count(),
+        ];
+
         $query = Project::query()->orderBy('sort_order')->latest('id');
 
+        if ($status === 'published') {
+            $query->where('is_published', true);
+        } elseif ($status === 'draft') {
+            $query->where('is_published', false);
+        } elseif ($status === 'featured') {
+            $query->where('is_featured', true);
+        }
+
         if ($request->filled('category')) {
-            $query->where('category', $request->category);
+            $query->where('category', $category);
         }
 
         if ($request->filled('search')) {
-            $search = $request->search;
             $query->where(function ($q) use ($search) {
                 $q->where('title', 'like', "%{$search}%")
-                    ->orWhere('client_name', 'like', "%{$search}%");
+                    ->orWhere('client_name', 'like', "%{$search}%")
+                    ->orWhere('summary', 'like', "%{$search}%")
+                    ->orWhere('slug', 'like', "%{$search}%");
             });
         }
 
-        $projects = $query->paginate(10)->withQueryString();
+        $projects = $query->paginate(12)->withQueryString();
 
         return Inertia::render('Admin/Projects/Index', [
             'projects' => $projects,
-            'filters' => $request->only(['category', 'search']),
+            'filters' => [
+                'status' => $status,
+                'category' => $category,
+                'search' => $search,
+            ],
+            'counts' => $counts,
         ]);
     }
 
@@ -65,16 +90,15 @@ class ProjectController extends Controller
             'description' => 'nullable|string',
             'client_name' => 'nullable|string|max:255',
             'live_url' => 'nullable|url|max:255',
-            'cover_file' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:3072',
-            'gallery_files.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:3072',
+            'cover_file' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
+            'gallery_files.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
             'tech_stack' => 'nullable',
             'is_featured' => 'boolean',
             'is_published' => 'boolean',
-            'sort_order' => 'integer',
+            'sort_order' => 'nullable|integer',
         ]);
 
-        $slug = $validated['slug'] ? Str::slug($validated['slug']) : Str::slug($validated['title']);
-        // Ensure slug is unique
+        $slug = ! empty($validated['slug']) ? Str::slug($validated['slug']) : Str::slug($validated['title']);
         $originalSlug = $slug;
         $counter = 1;
         while (Project::where('slug', $slug)->exists()) {
@@ -94,7 +118,7 @@ class ProjectController extends Controller
             }
         }
 
-        $techStack = $this->parseTechStack($request->tech_stack);
+        $techStack = $this->parseTechStack($request->input('tech_stack'));
 
         Project::create([
             'title' => $validated['title'],
@@ -114,7 +138,15 @@ class ProjectController extends Controller
 
         Cache::forget('home_page_data');
 
-        return redirect()->route('admin.projects.index')->with('success', 'Proyek berhasil ditambahkan.');
+        return redirect()->route('admin.projects.index')->with('success', 'Proyek portofolio berhasil ditambahkan.');
+    }
+
+    /**
+     * Show the specified project (redirects to edit).
+     */
+    public function show(Project $project): RedirectResponse
+    {
+        return redirect()->route('admin.projects.edit', $project);
     }
 
     /**
@@ -141,29 +173,40 @@ class ProjectController extends Controller
             'description' => 'nullable|string',
             'client_name' => 'nullable|string|max:255',
             'live_url' => 'nullable|url|max:255',
-            'cover_file' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:3072',
-            'gallery_files.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:3072',
+            'cover_file' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
+            'gallery_files.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
+            'delete_cover' => 'nullable|boolean',
             'tech_stack' => 'nullable',
             'is_featured' => 'boolean',
             'is_published' => 'boolean',
-            'sort_order' => 'integer',
+            'sort_order' => 'nullable|integer',
         ]);
 
         $coverPath = $project->cover_image;
+        if ($request->boolean('delete_cover')) {
+            $coverPath = null;
+        }
+
         if ($request->hasFile('cover_file')) {
             $coverPath = ImageUploadService::uploadAsWebp($request->file('cover_file'), 'projects');
         }
 
-        $galleryPaths = $project->gallery ?? [];
+        $galleryPaths = is_array($project->gallery) ? $project->gallery : [];
         if ($request->hasFile('gallery_files')) {
             foreach ($request->file('gallery_files') as $file) {
                 $galleryPaths[] = ImageUploadService::uploadAsWebp($file, 'projects/gallery');
             }
         }
 
-        $techStack = $this->parseTechStack($request->tech_stack);
+        $techStack = $this->parseTechStack($request->input('tech_stack'));
 
-        $slug = $validated['slug'] ? Str::slug($validated['slug']) : Str::slug($validated['title']);
+        $slug = ! empty($validated['slug']) ? Str::slug($validated['slug']) : Str::slug($validated['title']);
+        $originalSlug = $slug;
+        $counter = 1;
+        while (Project::where('slug', $slug)->where('id', '!=', $project->id)->exists()) {
+            $slug = "{$originalSlug}-{$counter}";
+            $counter++;
+        }
 
         $project->update([
             'title' => $validated['title'],
@@ -183,7 +226,7 @@ class ProjectController extends Controller
 
         Cache::forget('home_page_data');
 
-        return redirect()->route('admin.projects.index')->with('success', 'Proyek berhasil diperbarui.');
+        return redirect()->route('admin.projects.index')->with('success', 'Proyek portofolio berhasil diperbarui.');
     }
 
     /**
@@ -194,7 +237,7 @@ class ProjectController extends Controller
         $project->delete();
         Cache::forget('home_page_data');
 
-        return redirect()->route('admin.projects.index')->with('success', 'Proyek berhasil dihapus.');
+        return redirect()->route('admin.projects.index')->with('success', 'Proyek portofolio berhasil dihapus.');
     }
 
     /**

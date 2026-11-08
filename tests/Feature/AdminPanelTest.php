@@ -98,6 +98,99 @@ test('admin can delete a project', function () {
     ]);
 });
 
+test('admin can perform full CRUD on portfolio projects with templates, filters, and aliases', function () {
+    // 1. Render Index and check props
+    $indexResponse = $this->actingAs($this->admin)->get('/admin/projects');
+    $indexResponse->assertStatus(200);
+    $indexResponse->assertInertia(fn (Assert $page) => $page
+        ->component('Admin/Projects/Index')
+        ->has('projects')
+        ->has('filters')
+        ->has('counts')
+    );
+
+    // 2. Test alias routes
+    $aliasPorto1 = $this->actingAs($this->admin)->get('/admin/portofolio');
+    $aliasPorto1->assertStatus(200);
+
+    $aliasPorto2 = $this->actingAs($this->admin)->get('/admin/portfolio');
+    $aliasPorto2->assertStatus(200);
+
+    // 3. Render Create Page
+    $createResponse = $this->actingAs($this->admin)->get('/admin/projects/create');
+    $createResponse->assertStatus(200);
+
+    // 4. Store Project with Tech Stack
+    $storeResponse = $this->actingAs($this->admin)->post('/admin/projects', [
+        'title' => 'Portal Berita & Informasi Lampung Gemilang',
+        'category' => 'company',
+        'client_name' => 'PT Lampung Gemilang Media',
+        'live_url' => 'https://lampunggemilang.co.id',
+        'summary' => 'Website portal media berita daerah Lampung dengan performa kilat dan arsitektur modern.',
+        'description' => 'Membangun platform portal berita dengan ribuan pembaca harian, integrasi iklan ads, dan Google News sitemap.',
+        'tech_stack' => 'Laravel, Vue.js, Inertia.js, Tailwind CSS, MySQL',
+        'is_featured' => true,
+        'is_published' => true,
+        'sort_order' => 1,
+    ]);
+
+    $storeResponse->assertRedirect(route('admin.projects.index'));
+    $this->assertDatabaseHas('projects', [
+        'title' => 'Portal Berita & Informasi Lampung Gemilang',
+        'category' => 'company',
+        'client_name' => 'PT Lampung Gemilang Media',
+        'is_featured' => true,
+        'is_published' => true,
+    ]);
+
+    $created = Project::where('title', 'Portal Berita & Informasi Lampung Gemilang')->first();
+    expect($created)->not->toBeNull();
+    expect($created->tech_stack)->toBeArray();
+    expect(count($created->tech_stack))->toBe(5);
+
+    // 5. Show route redirects to edit
+    $showResponse = $this->actingAs($this->admin)->get("/admin/projects/{$created->id}");
+    $showResponse->assertRedirect(route('admin.projects.edit', $created));
+
+    // 6. Render Edit Page
+    $editResponse = $this->actingAs($this->admin)->get("/admin/projects/{$created->id}/edit");
+    $editResponse->assertStatus(200);
+
+    // 7. Update Project
+    $updateResponse = $this->actingAs($this->admin)->put("/admin/projects/{$created->id}", [
+        'title' => 'Portal Berita & Informasi Lampung Gemilang Terkini',
+        'category' => 'sistem',
+        'client_name' => 'PT Lampung Gemilang Media Grup',
+        'live_url' => 'https://lampunggemilang.co.id',
+        'summary' => 'Pembaruan ringkasan portal berita dengan caching canggih.',
+        'description' => 'Studi kasus optimasi query database dan integrasi CDN.',
+        'tech_stack' => 'Laravel, Vue.js, Tailwind CSS, Redis',
+        'is_featured' => false,
+        'is_published' => true,
+        'sort_order' => 5,
+    ]);
+
+    $updateResponse->assertRedirect(route('admin.projects.index'));
+    $this->assertDatabaseHas('projects', [
+        'id' => $created->id,
+        'title' => 'Portal Berita & Informasi Lampung Gemilang Terkini',
+        'category' => 'sistem',
+        'is_featured' => false,
+        'sort_order' => 5,
+    ]);
+
+    // 8. Filter verification
+    $filterStatus = $this->actingAs($this->admin)->get('/admin/projects?status=published&category=sistem');
+    $filterStatus->assertStatus(200);
+
+    // 9. Delete Project
+    $deleteResponse = $this->actingAs($this->admin)->delete("/admin/projects/{$created->id}");
+    $deleteResponse->assertRedirect(route('admin.projects.index'));
+    $this->assertDatabaseMissing('projects', [
+        'id' => $created->id,
+    ]);
+});
+
 test('admin can view leads index and update lead status', function () {
     $lead = Lead::create([
         'name' => 'Calon Klien Tes',

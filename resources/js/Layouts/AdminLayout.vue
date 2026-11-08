@@ -38,6 +38,9 @@ const isCurrentUrl = (url: string) => {
     if (url === '/admin/leads') {
         return page.url.startsWith('/admin/leads') || page.url.startsWith('/admin/kontak');
     }
+    if (url === '/admin/projects') {
+        return page.url.startsWith('/admin/projects') || page.url.startsWith('/admin/portofolio') || page.url.startsWith('/admin/portfolio');
+    }
     if (url === '/admin/articles') {
         return page.url.startsWith('/admin/articles') || page.url.startsWith('/admin/artikel');
     }

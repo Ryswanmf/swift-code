@@ -17,6 +17,8 @@ Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 Route::resource('articles', ArticleController::class);
 Route::resource('artikel', ArticleController::class);
 Route::resource('projects', ProjectController::class);
+Route::resource('portofolio', ProjectController::class);
+Route::resource('portfolio', ProjectController::class);
 Route::resource('services', ServiceController::class);
 Route::resource('packages', PackageController::class);
 Route::resource('paket', PackageController::class);
