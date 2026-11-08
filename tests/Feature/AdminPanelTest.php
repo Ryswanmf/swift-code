@@ -217,12 +217,21 @@ test('admin can view leads index and update lead status', function () {
 });
 
 test('admin can update site settings', function () {
+    \Illuminate\Support\Facades\Storage::fake('public');
+    $photo = \Illuminate\Http\UploadedFile::fake()->image('owner.jpg');
+
     $response = $this->actingAs($this->admin)->put('/admin/settings', [
         'site_name' => 'Swift Code Lampung Official',
         'tagline' => 'Jasa Website Nomor 1 di Lampung',
         'whatsapp' => '62895325852575',
         'email' => 'halo@swiftcode.id',
         'address' => 'Bandar Lampung',
+        'owner_name' => 'Muhammad Riswan Mufid',
+        'owner_role' => 'Founder & Principal Software Engineer',
+        'owner_bio' => 'Software engineer berpengalaman membangun solusi web enterprise.',
+        'owner_linkedin' => 'https://linkedin.com/in/riswanmufid',
+        'owner_github' => 'https://github.com/Ryswanmf',
+        'owner_photo' => $photo,
     ]);
 
     $response->assertRedirect();
@@ -230,6 +239,17 @@ test('admin can update site settings', function () {
         'key' => 'site_name',
         'value' => 'Swift Code Lampung Official',
     ]);
+    $this->assertDatabaseHas('settings', [
+        'key' => 'owner_name',
+        'value' => 'Muhammad Riswan Mufid',
+    ]);
+    $this->assertDatabaseHas('settings', [
+        'key' => 'owner_role',
+        'value' => 'Founder & Principal Software Engineer',
+    ]);
+    $ownerPhotoSetting = \App\Models\Setting::get('owner_photo');
+    expect($ownerPhotoSetting)->not->toBeNull();
+    expect($ownerPhotoSetting)->toEndWith('.webp');
 });
 
 test('admin can perform full CRUD on contact leads including create and full edit', function () {

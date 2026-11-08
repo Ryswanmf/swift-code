@@ -20,6 +20,13 @@ const activeSettings = computed<Record<string, string>>(() => ({
 const siteName = computed(() => activeSettings.value.site_name || 'Swift Code Lampung');
 const whatsappNumber = computed(() => activeSettings.value.whatsapp || '62895325852575');
 
+const ownerName = computed(() => activeSettings.value.owner_name || 'Muhammad Riswan Mufid');
+const ownerRole = computed(() => activeSettings.value.owner_role || 'Founder & Lead Software Engineer');
+const ownerBio = computed(() => activeSettings.value.owner_bio || 'Praktisi software engineer dan pendiri Swift Code Lampung. Berfokus pada pembangunan sistem website modern dengan arsitektur kode bersih, performa loading kilat, dan solusi digital yang terbukti membantu bisnis berkembang secara konsisten.');
+const ownerPhoto = computed(() => activeSettings.value.owner_photo || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=800&auto=format&fit=crop');
+const ownerLinkedin = computed(() => activeSettings.value.owner_linkedin || null);
+const ownerGithub = computed(() => activeSettings.value.owner_github || null);
+
 const cleanWaNumber = computed(() => String(whatsappNumber.value).replace(/[^0-9]/g, ''));
 const waConsultUrl = computed(() => {
     const text = `Halo ${siteName.value}, saya membaca halaman Tentang Kami dan ingin berkonsultasi mengenai rencana pembuatan website bisnis saya.`;
@@ -189,7 +196,140 @@ const coreValues = [
             </div>
         </section>
 
-        <!-- 3. Vision & Mission Section -->
+        <!-- 3. Owner / Founder Profile Section -->
+        <section class="py-16 sm:py-20 bg-neutral-50/70 border-t border-neutral-200/80">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-xl mx-auto space-y-2 mb-10">
+                    <span class="text-xs font-bold text-brand-600 tracking-wider uppercase">Kepemimpinan & Dedikasi</span>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-neutral-900 tracking-tight">
+                        Sosok di Balik Swift Code
+                    </h2>
+                    <p class="text-xs sm:text-sm text-neutral-600">
+                        Dedikasi penuh dari praktisi teknologi untuk menghadirkan kualitas website terbaik bagi bisnis Anda.
+                    </p>
+                </div>
+
+                <!-- Main Founder Card -->
+                <div class="bg-white rounded-3xl border border-neutral-200/90 shadow-xl shadow-neutral-900/5 overflow-hidden">
+                    <div class="grid grid-cols-1 md:grid-cols-12 items-stretch">
+                        <!-- Left Photo Column (5 cols) -->
+                        <div class="md:col-span-5 relative bg-neutral-900 flex flex-col items-center justify-center min-h-[340px] sm:min-h-[400px] p-6 overflow-hidden">
+                            <!-- Background subtle decorative gradient -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/40 to-transparent z-10"></div>
+
+                            <!-- Founder Photo with WebP and Lazy Loading -->
+                            <img
+                                :src="ownerPhoto"
+                                :alt="ownerName"
+                                class="absolute inset-0 w-full h-full object-cover object-top filter contrast-[1.05]"
+                                loading="lazy"
+                                decoding="async"
+                            />
+
+                            <!-- Floating Badges over Photo -->
+                            <div class="absolute top-4 left-4 z-20">
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-neutral-950/80 backdrop-blur-md border border-white/15 text-[11px] font-semibold text-white shadow-sm">
+                                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                                    <span>Founder & Lead Dev</span>
+                                </span>
+                            </div>
+
+                            <div class="absolute bottom-4 left-4 right-4 z-20 text-white">
+                                <div class="px-3.5 py-2.5 rounded-2xl bg-black/70 backdrop-blur-md border border-white/10 flex items-center justify-between">
+                                    <div>
+                                        <p class="text-xs font-bold leading-tight">{{ ownerName }}</p>
+                                        <p class="text-[10px] text-white/70">{{ ownerRole }}</p>
+                                    </div>
+                                    <span class="text-[10px] font-mono text-brand-300 font-semibold px-2 py-0.5 rounded-md bg-brand-500/20 border border-brand-500/30">
+                                        Lampung
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Details Column (7 cols) -->
+                        <div class="md:col-span-7 p-6 sm:p-10 flex flex-col justify-between space-y-6">
+                            <div class="space-y-4">
+                                <div class="space-y-1">
+                                    <div class="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-md bg-brand-50 text-brand-700 text-xs font-bold tracking-wide">
+                                        Profil Pendiri
+                                    </div>
+                                    <h3 class="text-2xl sm:text-3xl font-extrabold text-neutral-900 tracking-tight">
+                                        {{ ownerName }}
+                                    </h3>
+                                    <p class="text-xs sm:text-sm font-semibold text-brand-600">
+                                        {{ ownerRole }}
+                                    </p>
+                                </div>
+
+                                <div class="relative pl-4 border-l-2 border-brand-500">
+                                    <p class="text-xs sm:text-sm text-neutral-600 leading-relaxed italic">
+                                        "{{ ownerBio }}"
+                                    </p>
+                                </div>
+
+                                <!-- Core Focus Tags -->
+                                <div class="space-y-2 pt-2">
+                                    <p class="text-[11px] font-bold text-neutral-400 uppercase tracking-wider">Fokus Keahlian & Spesialisasi</p>
+                                    <div class="flex flex-wrap gap-1.5">
+                                        <span class="px-2.5 py-1 rounded-lg bg-neutral-100 text-neutral-700 text-xs font-medium border border-neutral-200/60">Laravel Enterprise</span>
+                                        <span class="px-2.5 py-1 rounded-lg bg-neutral-100 text-neutral-700 text-xs font-medium border border-neutral-200/60">Vue 3 & Inertia</span>
+                                        <span class="px-2.5 py-1 rounded-lg bg-neutral-100 text-neutral-700 text-xs font-medium border border-neutral-200/60">Arsitektur Kode Bersih</span>
+                                        <span class="px-2.5 py-1 rounded-lg bg-neutral-100 text-neutral-700 text-xs font-medium border border-neutral-200/60">Optimasi Loading &lt; 2s</span>
+                                        <span class="px-2.5 py-1 rounded-lg bg-neutral-100 text-neutral-700 text-xs font-medium border border-neutral-200/60">Keamanan Server</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Footer Actions & Socials -->
+                            <div class="pt-6 border-t border-neutral-100 flex flex-wrap items-center justify-between gap-4">
+                                <a
+                                    :href="waConsultUrl"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-semibold text-xs shadow-md shadow-brand-600/20 transition-all duration-200 hover:-translate-y-0.5"
+                                >
+                                    <span>Diskusi Langsung dengan Pemilik</span>
+                                    <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                    </svg>
+                                </a>
+
+                                <div class="flex items-center gap-2">
+                                    <a
+                                        v-if="ownerLinkedin"
+                                        :href="ownerLinkedin"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        class="p-2.5 rounded-xl bg-neutral-100 hover:bg-brand-50 text-neutral-600 hover:text-brand-600 border border-neutral-200/80 transition-colors"
+                                        aria-label="LinkedIn Pemilik"
+                                    >
+                                        <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                                            <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                                        </svg>
+                                    </a>
+
+                                    <a
+                                        v-if="ownerGithub"
+                                        :href="ownerGithub"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        class="p-2.5 rounded-xl bg-neutral-100 hover:bg-brand-50 text-neutral-600 hover:text-brand-600 border border-neutral-200/80 transition-colors"
+                                        aria-label="GitHub Pemilik"
+                                    >
+                                        <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Vision & Mission Section -->
         <section class="py-16 sm:py-20 bg-neutral-50 border-y border-neutral-200/80">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
                 <div class="text-center max-w-2xl mx-auto space-y-2">

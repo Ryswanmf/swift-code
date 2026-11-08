@@ -24,12 +24,28 @@ const form = useForm({
     google_analytics_id: props.settings.google_analytics_id || '',
     google_tag_manager_id: props.settings.google_tag_manager_id || '',
     meta_pixel_id: props.settings.meta_pixel_id || '',
+    owner_name: props.settings.owner_name || 'Muhammad Riswan Mufid',
+    owner_role: props.settings.owner_role || 'Founder & Lead Software Engineer',
+    owner_bio: props.settings.owner_bio || 'Praktisi software engineer dan pendiri Swift Code Lampung. Berfokus pada pembangunan sistem website modern dengan arsitektur kode bersih, performa loading kilat, dan solusi digital yang terbukti membantu bisnis berkembang secara konsisten.',
+    owner_linkedin: props.settings.owner_linkedin || 'https://linkedin.com',
+    owner_github: props.settings.owner_github || 'https://github.com/Ryswanmf',
+    owner_photo: null as File | null,
     site_logo: null as File | null,
     site_favicon: null as File | null,
 });
 
 const logoPreview = ref<string | null>(props.settings.site_logo || null);
 const faviconPreview = ref<string | null>(props.settings.site_favicon || null);
+const ownerPhotoPreview = ref<string | null>(props.settings.owner_photo || null);
+
+const handleOwnerPhotoChange = (e: Event) => {
+    const target = e.target as HTMLInputElement;
+    if (target.files && target.files[0]) {
+        const file = target.files[0];
+        form.owner_photo = file;
+        ownerPhotoPreview.value = URL.createObjectURL(file);
+    }
+};
 
 const handleLogoChange = (e: Event) => {
     const target = e.target as HTMLInputElement;
@@ -237,6 +253,106 @@ const submit = () => {
                                 v-model="form.linkedin"
                                 type="text"
                                 placeholder="https://linkedin.com/company/swiftcode-lpg"
+                                class="w-full px-4 py-2.5 rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white text-xs focus:ring-2 focus:ring-brand-500 outline-none"
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Profil Pemilik / Founder (Halaman Tentang) -->
+                <div class="space-y-4">
+                    <h3 class="text-xs font-bold text-neutral-400 uppercase tracking-widest border-b border-neutral-100 dark:border-neutral-800 pb-2">
+                        Profil Pemilik / Founder (Tampil di Halaman Tentang)
+                    </h3>
+                    <p class="text-xs text-neutral-500">
+                        Atur foto, nama lengkap, gelar/jabatan, ringkasan bio, dan tautan sosial media pendiri Swift Code yang tampil di halaman Tentang Kami.
+                    </p>
+
+                    <div class="p-4 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-800/40 space-y-3">
+                        <label class="block text-xs font-bold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider">
+                            Foto Pemilik / Founder
+                        </label>
+                        <div class="flex items-center gap-4">
+                            <div class="w-20 h-20 rounded-2xl border-2 border-brand-500/30 overflow-hidden bg-white dark:bg-neutral-900 shrink-0 shadow-sm flex items-center justify-center">
+                                <img
+                                    v-if="ownerPhotoPreview"
+                                    :src="ownerPhotoPreview"
+                                    alt="Foto Pemilik"
+                                    class="w-full h-full object-cover"
+                                />
+                                <span v-else class="text-xs text-neutral-400 font-bold">Tanpa Foto</span>
+                            </div>
+                            <div class="flex-1 space-y-1">
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    @change="handleOwnerPhotoChange"
+                                    class="text-xs text-neutral-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-[11px] file:font-bold file:bg-brand-50 file:text-brand-700 hover:file:bg-brand-100 cursor-pointer"
+                                />
+                                <p class="text-[10px] text-neutral-400">JPG, PNG, atau WebP. Otomatis dikompresi ke WebP resolusi tinggi.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
+                                Nama Lengkap Pemilik / Founder
+                            </label>
+                            <input
+                                v-model="form.owner_name"
+                                type="text"
+                                placeholder="Contoh: Muhammad Riswan Mufid"
+                                class="w-full px-4 py-2.5 rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white text-xs focus:ring-2 focus:ring-brand-500 outline-none"
+                            />
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
+                                Posisi / Jabatan
+                            </label>
+                            <input
+                                v-model="form.owner_role"
+                                type="text"
+                                placeholder="Contoh: Founder & Lead Software Engineer"
+                                class="w-full px-4 py-2.5 rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white text-xs focus:ring-2 focus:ring-brand-500 outline-none"
+                            />
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
+                            Bio Singkat / Pernyataan Pemilik
+                        </label>
+                        <textarea
+                            v-model="form.owner_bio"
+                            rows="3"
+                            placeholder="Deskripsi singkat pengalaman atau dedikasi pemilik..."
+                            class="w-full px-4 py-2.5 rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white text-xs focus:ring-2 focus:ring-brand-500 outline-none resize-none"
+                        ></textarea>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
+                                Profil LinkedIn Pemilik
+                            </label>
+                            <input
+                                v-model="form.owner_linkedin"
+                                type="text"
+                                placeholder="https://linkedin.com/in/username"
+                                class="w-full px-4 py-2.5 rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white text-xs focus:ring-2 focus:ring-brand-500 outline-none"
+                            />
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
+                                Profil GitHub Pemilik
+                            </label>
+                            <input
+                                v-model="form.owner_github"
+                                type="text"
+                                placeholder="https://github.com/username"
                                 class="w-full px-4 py-2.5 rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white text-xs focus:ring-2 focus:ring-brand-500 outline-none"
                             />
                         </div>

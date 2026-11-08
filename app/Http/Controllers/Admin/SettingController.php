@@ -45,12 +45,18 @@ class SettingController extends Controller
             'google_analytics_id' => 'nullable|string|max:50',
             'google_tag_manager_id' => 'nullable|string|max:50',
             'meta_pixel_id' => 'nullable|string|max:50',
+            'owner_name' => 'nullable|string|max:255',
+            'owner_role' => 'nullable|string|max:255',
+            'owner_bio' => 'nullable|string|max:1000',
+            'owner_linkedin' => 'nullable|string|max:255',
+            'owner_github' => 'nullable|string|max:255',
+            'owner_photo' => 'nullable',
             'site_logo' => 'nullable',
             'site_favicon' => 'nullable',
         ]);
 
         foreach ($validated as $key => $value) {
-            if ($key !== 'site_logo' && $key !== 'site_favicon') {
+            if ($key !== 'site_logo' && $key !== 'site_favicon' && $key !== 'owner_photo') {
                 Setting::set($key, $value);
             }
         }
@@ -63,6 +69,11 @@ class SettingController extends Controller
         if ($request->hasFile('site_favicon')) {
             $faviconPath = ImageUploadService::uploadAsWebp($request->file('site_favicon'), 'settings');
             Setting::set('site_favicon', $faviconPath);
+        }
+
+        if ($request->hasFile('owner_photo')) {
+            $ownerPhotoPath = ImageUploadService::uploadAsWebp($request->file('owner_photo'), 'owner');
+            Setting::set('owner_photo', $ownerPhotoPath);
         }
 
         Cache::forget('home_page_data');
