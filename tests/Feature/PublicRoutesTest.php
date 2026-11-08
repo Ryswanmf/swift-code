@@ -59,10 +59,6 @@ test('about page loads successfully', function () {
     $response->assertStatus(200);
     $response->assertInertia(fn (Assert $page) => $page
         ->component('About/Index')
-        ->has('partners')
-        ->has('testimonials')
-        ->has('services')
-        ->has('projectsCount')
         ->has('settings')
     );
 });

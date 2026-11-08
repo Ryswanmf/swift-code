@@ -3,46 +3,11 @@ import { Head, Link, usePage } from '@inertiajs/vue3';
 import { computed } from 'vue';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
 
-interface PartnerItem {
-    id: number;
-    name: string;
-    category?: string;
-    color?: string;
-    icon?: string;
-    logo_image?: string;
-}
-
-interface TestimonialItem {
-    id: number;
-    name: string;
-    role?: string;
-    company?: string;
-    quote: string;
-    avatar?: string;
-    rating?: number;
-}
-
-interface ServiceItem {
-    id: number;
-    title: string;
-    badge?: string;
-    description: string;
-    icon?: string;
-}
-
 interface Props {
-    partners?: PartnerItem[];
-    testimonials?: TestimonialItem[];
-    services?: ServiceItem[];
-    projectsCount?: number;
     settings?: Record<string, string>;
 }
 
 const props = withDefaults(defineProps<Props>(), {
-    partners: () => [],
-    testimonials: () => [],
-    services: () => [],
-    projectsCount: 0,
     settings: () => ({}),
 });
 
@@ -54,8 +19,6 @@ const activeSettings = computed<Record<string, string>>(() => ({
 
 const siteName = computed(() => activeSettings.value.site_name || 'Swift Code Lampung');
 const whatsappNumber = computed(() => activeSettings.value.whatsapp || '62895325852575');
-const emailAddress = computed(() => activeSettings.value.email || 'halo@swiftcode.id');
-const officeAddress = computed(() => activeSettings.value.address || 'Bandar Lampung, Lampung, Indonesia');
 
 const cleanWaNumber = computed(() => String(whatsappNumber.value).replace(/[^0-9]/g, ''));
 const waConsultUrl = computed(() => {
@@ -63,76 +26,31 @@ const waConsultUrl = computed(() => {
     return `https://wa.me/${cleanWaNumber.value}?text=${encodeURIComponent(text)}`;
 });
 
-const totalProjectsDisplay = computed(() => {
-    const count = props.projectsCount || 0;
-    return count > 50 ? `${count}+` : '50+';
-});
-
 const coreValues = [
     {
         title: 'Kecepatan Tanpa Kompromi',
         description: 'Kami merancang arsitektur website dengan standar loading di bawah 2 detik. Kecepatan adalah kunci utama untuk menurunkan bounce rate dan meningkatkan konversi penjualan.',
-        icon: 'lightning',
     },
     {
         title: 'Kode Bersih & Terstruktur',
         description: 'Dibangun di atas fondasi Laravel 12 dan Vue 3 yang rapi, modular, dan mematuhi standar industri global. Sistem Anda siap dikembangkan lebih jauh kapan saja.',
-        icon: 'code',
     },
     {
         title: 'Desain Human-Centric',
         description: 'Setiap tata letak dirancang ramah pengguna (user-friendly) di ponsel pintar. Tampilan elegan, tipografi nyaman dibaca, dan navigasi yang mengarahkan pengunjung ke aksi nyata.',
-        icon: 'palette',
     },
     {
         title: 'Transparansi Biaya & Proses',
         description: 'Bebas dari biaya tersembunyi. Setiap rincian fitur, durasi pengerjaan, dan biaya investasi disampaikan terbuka sejak sesi konsultasi awal.',
-        icon: 'shield-check',
     },
     {
         title: 'Keamanan Tingkat Enterprise',
         description: 'Dilengkapi proteksi SSL/HTTPS, proteksi form anti-spam, sanitasi input database, dan konfigurasi server yang kokoh guna melindungi integritas data bisnis Anda.',
-        icon: 'lock',
     },
     {
         title: 'Dukungan & Garansi Purna Jual',
         description: 'Hubungan kerja kami tidak berhenti saat website diluncurkan. Kami menyediakan garansi pemeliharaan, panduan pengelolaan konten, dan jalur konsultasi teknis yang selalu responsif.',
-        icon: 'lifebuoy',
     },
-];
-
-const workSteps = [
-    {
-        step: '01',
-        title: 'Konsultasi & Pemetaan Kebutuhan',
-        description: 'Kami mendengarkan target bisnis, menganalisis kompetitor, serta menyusun struktur menu dan estimasi anggaran yang paling tepat secara gratis.',
-    },
-    {
-        step: '02',
-        title: 'Perancangan Antarmuka (UI/UX)',
-        description: 'Menyusun tata letak visual modern yang selaras dengan identitas brand Anda, memastikan alur konversi calon pembeli berjalan mulus.',
-    },
-    {
-        step: '03',
-        title: 'Pengembangan Kode & Integrasi',
-        description: 'Menerapkan kode bersih berstandar tinggi, mengintegrasikan fitur WhatsApp otomatis, konfigurasi database, dan panel admin mandiri yang mudah digunakan.',
-    },
-    {
-        step: '04',
-        title: 'Uji Mutu, Pelatihan & Peluncuran',
-        description: 'Pengujian kecepatan akses, uji kompatibilitas di berbagai perangkat ponsel, sesi panduan pengelolaan mandiri, dan penyerahan akun resmi.',
-    },
-];
-
-const techStack = [
-    { name: 'Laravel 12', role: 'Backend Framework Enterprise', badge: 'Keamanan & Keandalan' },
-    { name: 'Vue.js 3', role: 'Frontend Modern Reaktif', badge: 'Interaksi Cepat' },
-    { name: 'Inertia.js', role: 'Arsitektur Modern Monolith', badge: 'Tanpa Reload Kaku' },
-    { name: 'Tailwind CSS', role: 'Styling Presisi & Responsif', badge: 'Ringan & Konsisten' },
-    { name: 'TypeScript', role: 'Integritas Tipe Data', badge: 'Kode Bebas Bug' },
-    { name: 'MySQL / Redis', role: 'Penyimpanan & Caching Performa', badge: 'Kecepatan Query' },
-    { name: 'Vite', role: 'Next-Gen Frontend Tooling', badge: 'Kompilasi Kilat' },
-    { name: 'Cloudflare & SSL', role: 'CDN & Proteksi Jaringan', badge: 'Aman 24/7' },
 ];
 </script>
 
@@ -152,7 +70,7 @@ const techStack = [
 
     <PublicLayout>
         <!-- 1. Header Banner Section (Signature Brand Red Gradient) -->
-        <section class="relative pt-28 pb-14 sm:pt-32 sm:pb-18 bg-gradient-to-r from-brand-800 via-brand-600 to-rose-600 text-white overflow-hidden shadow-inner">
+        <section class="relative pt-28 pb-16 sm:pt-32 sm:pb-20 bg-gradient-to-r from-brand-800 via-brand-600 to-rose-600 text-white overflow-hidden shadow-inner">
             <!-- Subtle background ambient pattern -->
             <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none"></div>
 
@@ -183,33 +101,7 @@ const techStack = [
             </div>
         </section>
 
-        <!-- 2. Quick Highlight Metrics Section -->
-        <section class="relative -mt-8 z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 bg-white rounded-2xl shadow-xl shadow-neutral-900/5 border border-neutral-200/80 p-6 sm:p-8">
-                <div class="text-center space-y-1 sm:border-r border-neutral-100 last:border-r-0">
-                    <p class="text-3xl sm:text-4xl font-extrabold text-brand-600 tracking-tight font-mono">{{ totalProjectsDisplay }}</p>
-                    <p class="text-xs sm:text-sm font-semibold text-neutral-800">Proyek Terselesaikan</p>
-                    <p class="text-[11px] text-neutral-500 hidden sm:block">UMKM, Sekolah, & Perusahaan</p>
-                </div>
-                <div class="text-center space-y-1 sm:border-r border-neutral-100 last:border-r-0">
-                    <p class="text-3xl sm:text-4xl font-extrabold text-neutral-900 tracking-tight font-mono">99.8%</p>
-                    <p class="text-xs sm:text-sm font-semibold text-neutral-800">Tingkat Kepuasan</p>
-                    <p class="text-[11px] text-neutral-500 hidden sm:block">Ulasan Klien Positif</p>
-                </div>
-                <div class="text-center space-y-1 sm:border-r border-neutral-100 last:border-r-0">
-                    <p class="text-3xl sm:text-4xl font-extrabold text-neutral-900 tracking-tight font-mono">5+ Thn</p>
-                    <p class="text-xs sm:text-sm font-semibold text-neutral-800">Pengalaman Industri</p>
-                    <p class="text-[11px] text-neutral-500 hidden sm:block">Pengembangan Perangkat Lunak</p>
-                </div>
-                <div class="text-center space-y-1">
-                    <p class="text-3xl sm:text-4xl font-extrabold text-emerald-600 tracking-tight font-mono">&lt; 1 Detik</p>
-                    <p class="text-xs sm:text-sm font-semibold text-neutral-800">Rata-rata Loading</p>
-                    <p class="text-[11px] text-neutral-500 hidden sm:block">Optimasi Skor PageSpeed</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- 3. The Story Behind Swift Code -->
+        <!-- 2. The Story Behind Swift Code -->
         <section class="py-16 sm:py-24 bg-white">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
@@ -297,7 +189,7 @@ const techStack = [
             </div>
         </section>
 
-        <!-- 4. Vision & Mission Section -->
+        <!-- 3. Vision & Mission Section -->
         <section class="py-16 sm:py-20 bg-neutral-50 border-y border-neutral-200/80">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
                 <div class="text-center max-w-2xl mx-auto space-y-2">
@@ -368,7 +260,7 @@ const techStack = [
             </div>
         </section>
 
-        <!-- 5. Core Values Section -->
+        <!-- 4. Core Values Section -->
         <section class="py-16 sm:py-24 bg-white">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
                 <div class="text-center max-w-2xl mx-auto space-y-2">
@@ -397,132 +289,7 @@ const techStack = [
             </div>
         </section>
 
-        <!-- 6. Modern Tech Stack Ecosystem -->
-        <section class="py-16 sm:py-20 bg-neutral-900 text-white relative overflow-hidden">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 relative z-10">
-                <div class="text-center max-w-2xl mx-auto space-y-2">
-                    <span class="text-xs font-bold text-brand-400 tracking-wider uppercase">Arsitektur & Alat Bantu</span>
-                    <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-                        Ekosistem Teknologi Terkini yang Kami Gunakan
-                    </h2>
-                    <p class="text-sm sm:text-base text-neutral-400">
-                        Kami memilih teknologi yang telah teruji kestabilannya di level industri untuk memastikan website Anda cepat, tangguh, dan aman.
-                    </p>
-                </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-                    <div
-                        v-for="(tech, idx) in techStack"
-                        :key="idx"
-                        class="p-5 rounded-2xl bg-neutral-950/80 border border-neutral-800 hover:border-neutral-700 transition-colors space-y-2"
-                    >
-                        <div class="flex items-center justify-between">
-                            <span class="text-base font-bold text-white font-mono">{{ tech.name }}</span>
-                            <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-brand-500/20 text-brand-300 border border-brand-500/30">
-                                {{ tech.badge }}
-                            </span>
-                        </div>
-                        <p class="text-xs text-neutral-400 leading-relaxed">{{ tech.role }}</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 7. Our 4-Step Collaborative Workflow -->
-        <section class="py-16 sm:py-24 bg-white">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-                <div class="text-center max-w-2xl mx-auto space-y-2">
-                    <span class="text-xs font-bold text-brand-600 tracking-wider uppercase">Metodologi Kerja</span>
-                    <h2 class="text-2xl sm:text-3xl font-extrabold text-neutral-900 tracking-tight">
-                        Alur Transparan dari Ide Hingga Website Siap Online
-                    </h2>
-                    <p class="text-sm sm:text-base text-neutral-600">
-                        Proses terstruktur yang kami jalankan bersama setiap klien untuk memastikan hasil yang memuaskan dan tepat jadwal.
-                    </p>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <div
-                        v-for="(step, idx) in workSteps"
-                        :key="idx"
-                        class="relative p-6 rounded-2xl bg-neutral-50 border border-neutral-200/80 space-y-3"
-                    >
-                        <div class="text-3xl font-extrabold text-brand-600 font-mono tracking-tight">{{ step.step }}</div>
-                        <h3 class="text-base font-bold text-neutral-900">{{ step.title }}</h3>
-                        <p class="text-xs sm:text-sm text-neutral-600 leading-relaxed">{{ step.description }}</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 8. Testimonials Highlight (If Any) -->
-        <section v-if="testimonials && testimonials.length > 0" class="py-16 sm:py-20 bg-neutral-50 border-t border-neutral-200/80">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
-                <div class="text-center max-w-2xl mx-auto space-y-2">
-                    <span class="text-xs font-bold text-brand-600 tracking-wider uppercase">Kepercayaan Nyata</span>
-                    <h2 class="text-2xl sm:text-3xl font-extrabold text-neutral-900 tracking-tight">
-                        Apa Kata Klien Tentang Swift Code
-                    </h2>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div
-                        v-for="t in testimonials"
-                        :key="t.id"
-                        class="bg-white p-6 rounded-2xl border border-neutral-200/80 shadow-xs space-y-4 flex flex-col justify-between"
-                    >
-                        <p class="text-xs sm:text-sm text-neutral-700 leading-relaxed italic">
-                            "{{ t.quote }}"
-                        </p>
-                        <div class="flex items-center gap-3 pt-3 border-t border-neutral-100">
-                            <img
-                                v-if="t.avatar"
-                                :src="t.avatar"
-                                :alt="t.name"
-                                class="w-10 h-10 rounded-full object-cover border border-neutral-200"
-                                loading="lazy"
-                                decoding="async"
-                            />
-                            <div v-else class="w-10 h-10 rounded-full bg-brand-100 text-brand-700 font-bold flex items-center justify-center text-xs">
-                                {{ t.name.charAt(0) }}
-                            </div>
-                            <div>
-                                <h4 class="text-xs sm:text-sm font-bold text-neutral-900">{{ t.name }}</h4>
-                                <p class="text-[11px] text-neutral-500">{{ t.role }} {{ t.company ? `• ${t.company}` : '' }}</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 9. Partner / Client Marquee Showcase (If Any) -->
-        <section v-if="partners && partners.length > 0" class="py-12 bg-white border-t border-neutral-200/80">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
-                <p class="text-xs font-semibold text-neutral-500 uppercase tracking-wider">
-                    Mitra & Klien yang Mempercayakan Solusi Web Bersama Kami
-                </p>
-                <div class="flex flex-wrap items-center justify-center gap-6 sm:gap-10">
-                    <div
-                        v-for="partner in partners"
-                        :key="partner.id"
-                        class="flex items-center gap-2 px-4 py-2 rounded-xl bg-neutral-50 border border-neutral-200/60 text-neutral-700 text-xs sm:text-sm font-medium"
-                    >
-                        <img
-                            v-if="partner.logo_image"
-                            :src="partner.logo_image"
-                            :alt="partner.name"
-                            class="h-6 w-auto object-contain"
-                            loading="lazy"
-                            decoding="async"
-                        />
-                        <span>{{ partner.name }}</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 10. Call To Action (CTA) Section -->
+        <!-- 5. Call To Action (CTA) Section -->
         <section class="py-16 sm:py-24 bg-gradient-to-r from-brand-900 via-brand-700 to-rose-700 text-white text-center relative overflow-hidden">
             <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 relative z-10">
                 <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/15 border border-white/20 text-xs font-semibold tracking-wide uppercase text-white">
