@@ -439,3 +439,81 @@ test('admin can perform full CRUD on packages including templates and aliases', 
         'id' => $createdPackage->id,
     ]);
 });
+
+test('admin can perform full CRUD on services including templates and aliases', function () {
+    // 1. Render Services Index
+    $indexResponse = $this->actingAs($this->admin)->get('/admin/services');
+    $indexResponse->assertStatus(200);
+    $indexResponse->assertInertia(fn (Assert $page) => $page
+        ->component('Admin/Services/Index')
+        ->has('services')
+        ->has('filters')
+        ->has('counts')
+    );
+
+    // 2. Test alias route /admin/layanan
+    $aliasResponse = $this->actingAs($this->admin)->get('/admin/layanan');
+    $aliasResponse->assertStatus(200);
+
+    // 3. Render Create Page
+    $createResponse = $this->actingAs($this->admin)->get('/admin/services/create');
+    $createResponse->assertStatus(200);
+
+    // 4. Store New Service
+    $storeResponse = $this->actingAs($this->admin)->post('/admin/services', [
+        'icon' => 'building',
+        'title' => 'Website Profil Bisnis & Korporat Eksklusif',
+        'description' => 'Desain website eksklusif untuk perusahaan dan instansi dengan tampilan elegan, cepat, dan teroptimasi SEO lokal Lampung.',
+        'badge' => 'Paling Populer',
+        'sort_order' => 1,
+        'is_active' => true,
+    ]);
+
+    $storeResponse->assertRedirect(route('admin.services.index'));
+    $this->assertDatabaseHas('services', [
+        'title' => 'Website Profil Bisnis & Korporat Eksklusif',
+        'icon' => 'building',
+        'badge' => 'Paling Populer',
+        'is_active' => true,
+    ]);
+
+    $createdService = \App\Models\Service::where('title', 'Website Profil Bisnis & Korporat Eksklusif')->first();
+    expect($createdService)->not->toBeNull();
+
+    // 5. Show route redirects to edit
+    $showResponse = $this->actingAs($this->admin)->get("/admin/services/{$createdService->id}");
+    $showResponse->assertRedirect(route('admin.services.edit', $createdService));
+
+    // 6. Render Edit Page
+    $editResponse = $this->actingAs($this->admin)->get("/admin/services/{$createdService->id}/edit");
+    $editResponse->assertStatus(200);
+
+    // 7. Update Service
+    $updateResponse = $this->actingAs($this->admin)->put("/admin/services/{$createdService->id}", [
+        'icon' => 'rocket',
+        'title' => 'Website Profil Bisnis & Korporat Modern 2026',
+        'description' => 'Desain website eksklusif terintegrasi CRM dan katalog produk digital.',
+        'badge' => 'Pilihan Utama',
+        'sort_order' => 2,
+        'is_active' => true,
+    ]);
+
+    $updateResponse->assertRedirect(route('admin.services.index'));
+    $this->assertDatabaseHas('services', [
+        'id' => $createdService->id,
+        'title' => 'Website Profil Bisnis & Korporat Modern 2026',
+        'icon' => 'rocket',
+        'badge' => 'Pilihan Utama',
+    ]);
+
+    // 8. Filter test
+    $filterResponse = $this->actingAs($this->admin)->get('/admin/services?status=active&search=Modern');
+    $filterResponse->assertStatus(200);
+
+    // 9. Delete Service
+    $deleteResponse = $this->actingAs($this->admin)->delete("/admin/services/{$createdService->id}");
+    $deleteResponse->assertRedirect(route('admin.services.index'));
+    $this->assertDatabaseMissing('services', [
+        'id' => $createdService->id,
+    ]);
+});

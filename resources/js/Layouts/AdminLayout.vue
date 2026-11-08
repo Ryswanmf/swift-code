@@ -44,6 +44,9 @@ const isCurrentUrl = (url: string) => {
     if (url === '/admin/articles') {
         return page.url.startsWith('/admin/articles') || page.url.startsWith('/admin/artikel');
     }
+    if (url === '/admin/services') {
+        return page.url.startsWith('/admin/services') || page.url.startsWith('/admin/layanan');
+    }
     if (url === '/admin/packages') {
         return page.url.startsWith('/admin/packages') || page.url.startsWith('/admin/paket');
     }
